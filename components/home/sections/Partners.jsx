@@ -1,14 +1,8 @@
 "use client";
 
-import React from "react";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-
-const logoData = [
-  { src: "/l1.png", alt: "Logo 1" },
-  { src: "/l2.png", alt: "Logo 2" },
-  { src: "/l3.png", alt: "Logo 3" },
-];
+import { partnerLogoData } from "@/constants/data";
 
 const Partners = () => {
   const scrollRef = useRef(null);
@@ -35,7 +29,7 @@ const Partners = () => {
         ref={scrollRef}
         className="flex justify-center whitespace-nowrap space-x-8"
       >
-        {logoData.map((logo, index) => (
+        {partnerLogoData.map((logo, index) => (
           <Image
             key={index}
             src={logo.src}
@@ -46,7 +40,7 @@ const Partners = () => {
           />
         ))}
         {/* Repeat logos for infinite effect */}
-        {logoData.map((logo, index) => (
+        {partnerLogoData.map((logo, index) => (
           <Image
             key={`repeat-${index}`}
             src={logo.src}

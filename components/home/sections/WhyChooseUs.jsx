@@ -2,39 +2,6 @@ import Image from "next/image";
 import React from "react";
 
 const WhyChooseUs = () => {
-  const features = [
-    {
-      title: "Science Meets Nature",
-      description:
-        "Every product is a perfect fusion of cutting-edge research and nature's finest ingredients. No compromises, just pure, effective goodness.",
-      image: "/p1.png",
-    },
-    {
-      title: "Thoughtfully Curated for You",
-      description:
-        "From energy-boosting blends to beauty-enhancing supplements, our offerings are designed with one goal in mind – your well-being.",
-      image: "/p2.png",
-    },
-    {
-      title: "Empowering Your Journey",
-      description:
-        "With Ecowell, you're not just buying a product; you're joining a community committed to helping you thrive.",
-      image: "/p3.png",
-    },
-    {
-      title: "Premium You Can Trust",
-      description:
-        "Every formula is crafted with care, ensuring exceptional quality, safety, and results. It's wellness you can rely on.",
-      image: "/p4.png",
-    },
-    {
-      title: "Less is More",
-      description:
-        "We believe in keeping it minimal yet impactful – both in our products and our philosophy. Simple, effective solutions for your busy life.",
-      image: "/p1.png",
-    },
-  ];
-
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-16">
       {/* Section Header */}

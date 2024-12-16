@@ -1,14 +1,8 @@
+import { categoriesData } from "@/constants/data";
 import Image from "next/image";
 import React from "react";
 
 const ShopCategory = () => {
-  const categories = [
-    { name: "PROTEIN", image: "/p1.png" },
-    { name: "COLLAGEN", image: "/p2.png" },
-    { name: "SHILAJIT", image: "/p3.png" },
-    { name: "DAILY ESSENTIALS", image: "/p4.png" },
-  ];
-
   return (
     <div className="w-full h-fit flex flex-col items-center justify-center gap-6 p-8">
       {/* Title */}
@@ -16,7 +10,7 @@ const ShopCategory = () => {
 
       {/* Category Cards */}
       <div className="w-full flex items-center justify-center gap-4">
-        {categories.map((category, index) => (
+        {categoriesData.map((category, index) => (
           <div
             key={index}
             className="w-[250px] h-[250px] bg-gradient-to-t from-yellow-600 to-white rounded-lg shadow-lg flex flex-col items-center justify-center p-4"

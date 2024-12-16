@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import Notification from "./Notification";
 import Image from "next/image";
+import { links } from "@/constants/data";
 
 const Navbar = ({ companyName }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -38,38 +39,19 @@ const Navbar = ({ companyName }) => {
           />
         </div>
         <div className="flex space-x-4">
-          <Link
-            href="/"
-            className={`hover:text-gray-700 text-lg text-bold ${
-              isScrolled ? "text-black" : "text-white"
-            } ease-in-out duration-300`}
-          >
-            Home
-          </Link>
-          <Link
-            href="#products"
-            className={`hover:text-gray-700 text-lg text-bold ${
-              isScrolled ? "text-black" : "text-white"
-            } ease-in-out duration-300`}
-          >
-            Products
-          </Link>
-          <Link
-            href="#about"
-            className={`hover:text-gray-700 text-lg text-bold ${
-              isScrolled ? "text-black" : "text-white"
-            } ease-in-out duration-300`}
-          >
-            About Us
-          </Link>
-          <Link
-            href="#contact"
-            className={`hover:text-gray-700 text-lg text-bold ${
-              isScrolled ? "text-black" : "text-white"
-            } ease-in-out duration-300`}
-          >
-            Contact
-          </Link>
+          {links.map((link, index) => {
+            return (
+              <Link
+                key={index}
+                href={link.herf}
+                className={`hover:text-gray-700 text-lg text-bold ${
+                  isScrolled ? "text-black" : "text-white"
+                } ease-in-out duration-300`}
+              >
+                {link.head}
+              </Link>
+            );
+          })}
         </div>
         <div className="flex space-x-4">
           <CiSearch

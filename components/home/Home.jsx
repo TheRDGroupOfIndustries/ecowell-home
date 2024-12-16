@@ -1,4 +1,3 @@
-import React from "react";
 import Hero from "./sections/Hero";
 import Trending from "./sections/Trending";
 import ShopCategory from "./sections/ShopCategory";
@@ -11,7 +10,7 @@ import SafetyProduct from "./sections/products/SafetyProduct";
 import Partners from "./sections/Partners";
 import VoiceOfWellness from "./sections/VoiceOfWellness";
 
-const Home = () => {
+export default function Home() {
   return (
     <>
       <Hero />
@@ -27,6 +26,4 @@ const Home = () => {
       <VoiceOfWellness />
     </>
   );
-};
-
-export default Home;
+}
