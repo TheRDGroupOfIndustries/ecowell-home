@@ -146,10 +146,10 @@ export const features = [
 ];
 
 export const categoriesData = [
-  { name: "PROTEIN", image: "/p1.png" },
-  { name: "COLLAGEN", image: "/p2.png" },
-  { name: "SHILAJIT", image: "/p3.png" },
-  { name: "DAILY ESSENTIALS", image: "/p4.png" },
+  { name: "PROTEIN", image: "/p1.png", href: "/#shop?category=protein" },
+  { name: "COLLAGEN", image: "/p2.png", href: "/#shop?category=collagen" },
+  { name: "SHILAJIT", image: "/p3.png", href: "/#shop?category=shilajit" },
+  { name: "DAILY ESSENTIALS", image: "/p4.png", href: "/#shop?category=daily-essentials" },
 ];
 
 export const certificationsData = [

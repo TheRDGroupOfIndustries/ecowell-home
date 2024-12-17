@@ -1,34 +1,48 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import { motion } from "framer-motion";
+import { fadeIn, staggerContainer } from '@/lib/utils';
 
 const WhyChooseUs = () => {
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-16">
-      {/* Section Header */}
-      <div className="text-center mb-12">
+    <motion.div
+      variants={staggerContainer(0.1, 0.1)}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.25 }}
+      className="w-full max-w-7xl mx-auto px-4 py-16"
+    >
+      <motion.div 
+        variants={fadeIn('down', 0.2)}
+        className="text-center mb-12"
+      >
         <h2 className="text-3xl font-bold mb-4">Why to choose us?</h2>
         <p className="text-gray-600 max-w-2xl mx-auto">
           At Ecowell, we don&apos;t just create products – we craft experiences
           that elevate your wellness journey. Here&apos;s what sets us apart:
         </p>
-      </div>
+      </motion.div>
 
-      {/* Bento Grid */}
       <div className="w-full flex flex-col justify-center items-center">
-        <Image
-          src="/card1.png"
-          alt="Why Choose Us"
-          width={1000}
-          height={1000}
-        />
-        <Image
-          src="/bento.png"
-          alt="Why Choose Us"
-          width={1000}
-          height={1000}
-        />
+        <motion.div variants={fadeIn('up', 0.3)}>
+          <Image
+            src="/card1.png"
+            alt="Why Choose Us"
+            width={1000}
+            height={1000}
+          />
+        </motion.div>
+        <motion.div variants={fadeIn('up', 0.4)}>
+          <Image
+            src="/bento.png"
+            alt="Why Choose Us"
+            width={1000}
+            height={1000}
+          />
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
