@@ -1,9 +1,55 @@
+'use client'
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { footerData } from "@/constants/data";
+import { toast } from "sonner";
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [isValidEmail, setIsValidEmail] = useState(true);
+
+  const validateEmail = (email) => {
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegex.test(email);
+  };
+
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    setIsValidEmail(validateEmail(newEmail));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isValidEmail) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success('Thank you for subscribing!');
+        setEmail('');
+      } else {
+        toast.error(data.error || 'Subscription failed. Please try again.');
+      }
+    } catch (error) {
+      toast.error('An error occurred. Please try again later.');
+    }
+  };
+
   return (
     <footer className="w-full flex-center flex-col overflow-hidden">
       {/* Newsletter Section */}
@@ -12,19 +58,33 @@ export default function Footer() {
           {footerData.newsletter.title}
         </h2>
         <p className="text-xl mb-8">{footerData.newsletter.description}</p>
-        <div className="w-full border-2 border-[#333333] flex max-w-xl mx-auto">
-          <input
-            type="email"
-            placeholder={footerData.newsletter.placeholder}
-            className="w-[80vw] rounded-none border-black text-xl p-2 px-4"
-          />
-          <Button
-            variant="default"
-            className="w-fit h-full text-xl rounded-none bg-[#333333] hover:bg-zinc-700 py-2 px-8 xl:px-20"
-          >
-            {footerData.newsletter.buttonText}
-          </Button>
-        </div>
+        <form onSubmit={handleSubmit} className="w-full max-w-xl mx-auto">
+          <div className="flex flex-col items-center">
+            <div className="w-full border-2 border-[#333333] flex">
+              <input
+                type="email"
+                placeholder={footerData.newsletter.placeholder}
+                className={`w-[80vw] rounded-none border-black text-xl p-2 px-4 ${
+                  !isValidEmail && email ? 'border-red-500' : ''
+                }`}
+                value={email}
+                onChange={handleEmailChange}
+                required
+              />
+              <Button
+                type="submit"
+                variant="default"
+                className="w-fit h-full text-xl rounded-none bg-[#333333] hover:bg-zinc-700 py-2 px-8 xl:px-20"
+                disabled={!isValidEmail || !email}
+              >
+                {footerData.newsletter.buttonText}
+              </Button>
+            </div>
+            {!isValidEmail && email && (
+              <p className="text-red-500 mt-2">Please enter a valid email address</p>
+            )}
+          </div>
+        </form>
       </div>
 
       {/* Links, Help, and Contact Sections */}
@@ -70,9 +130,6 @@ export default function Footer() {
                 width={200}
                 height={200}
               />
-              {/* <h2 className="text-3xl font-bold mb-2">
-                {footerData.companyInfo.name}
-              </h2> */}
             </div>
             <p className="mb-8 text-lg">{footerData.companyInfo.description}</p>
             {/* Social Media Icons */}
