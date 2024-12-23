@@ -8,7 +8,7 @@ import ProductCard from "../../ui/productCard";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(['All Products']); // Update 1
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('');
   const [pagination, setPagination] = useState({
@@ -31,7 +31,7 @@ const Products = () => {
         const response = await fetch(`/api/products?${params}`);
         const data = await response.json();
         setProducts(data.products);
-        setCategories(data.categories);
+        setCategories([...data.categories]); // Update 1
         setPagination(data.pagination);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -48,7 +48,7 @@ const Products = () => {
   };
 
   const handleCategoryClick = (category) => {
-    setActiveCategory(category === activeCategory ? '' : category);
+    setActiveCategory(category === 'All Products' ? '' : category); // Update 2
   };
 
   const loadPage = async (pageNumber) => {
@@ -84,7 +84,7 @@ const Products = () => {
           <button
             key={category}
             className={`whitespace-nowrap ${
-              activeCategory === category 
+              (category === 'All Products' && activeCategory === '') || activeCategory === category // Update 3
               ? 'text-secondary-clr' 
               : 'hover:text-secondary-clr'
             }`}
@@ -97,7 +97,7 @@ const Products = () => {
       <div className="flex justify-between items-center mt-6">
         <h1 className="text-xl font-medium">
           {loading ? 'Loading...' : `${pagination.totalProducts} Products`}
-          {activeCategory && ` in ${activeCategory}`}
+          {activeCategory && activeCategory !== 'All Products' && ` in ${activeCategory}`} {/* Update 4 */}
         </h1>
         <div className="relative">
           <Button 
