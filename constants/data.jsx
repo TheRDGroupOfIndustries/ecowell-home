@@ -5,8 +5,10 @@ import {
   Youtube,
   PinIcon as Pinterest,
 } from "lucide-react";
-
 import { CiPhone, CiMail, CiLocationOn } from "react-icons/ci";
+
+export const emailRegex =
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export const links = [
   { id: 1, head: "Home", herf: "/" },
@@ -149,7 +151,11 @@ export const categoriesData = [
   { name: "PROTEIN", image: "/p1.png", href: "/#shop?category=protein" },
   { name: "COLLAGEN", image: "/p2.png", href: "/#shop?category=collagen" },
   { name: "SHILAJIT", image: "/p3.png", href: "/#shop?category=shilajit" },
-  { name: "DAILY ESSENTIALS", image: "/p4.png", href: "/#shop?category=daily-essentials" },
+  {
+    name: "DAILY ESSENTIALS",
+    image: "/p4.png",
+    href: "/#shop?category=daily-essentials",
+  },
 ];
 
 export const certificationsData = [

@@ -4,8 +4,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import connectToMongoDB from "@/utils/db";
 import User from "@/models/User";
-import { sendOtpToPhone, verifyOtpFromPhone } from "../core";
 import { capitalizeFirstLetter } from "@/lib/utils";
+import { sendOtpToPhone, verifyOtpFromPhone } from "../../core";
 
 export const authOptions = {
   providers: [

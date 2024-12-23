@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { CiFilter } from "react-icons/ci";
 import { CgSortAz } from "react-icons/cg";
 import ProductCard from "../../ui/productCard";
+import { useNotification } from "@/context/NotificationProvider";
 
 const Products = () => {
+  const { pt } = useNotification();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState(["All Products"]); // Update 1
   const [loading, setLoading] = useState(true);
@@ -72,7 +74,7 @@ const Products = () => {
   };
 
   return (
-    <div className="px-4 sm:px-8 lg:px-16 pt-28">
+    <div className={`${pt} py- px-4 sm:px-8 lg:px-16 overflow-hidden`}>
       <div className="w-full h-fit flex-center">
         <Button variant="link" size="sm" className="text-md">
           <CiFilter size={20} />

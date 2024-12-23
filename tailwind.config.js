@@ -57,6 +57,52 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      keyframes: {
+        fadeIn: {
+          "0%": {
+            opacity: "0",
+          },
+          "100%": {
+            opacity: "1",
+          },
+        },
+        slideUp: {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(100px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        slideDown: {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(-100px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        slideRight: {
+          "0%": {
+            opacity: "0",
+            transform: "translateX(-100px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateX(0)",
+          },
+        },
+      },
+      animation: {
+        "fade-in": "fadeIn 0.8s ease-in-out",
+        "slide-down": "slideDown 0.8s ease-in-out",
+        "slide-up": "slideUp 0.8s ease-in-out",
+        "slide-right": "slideRight 0.8s ease-in-out",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

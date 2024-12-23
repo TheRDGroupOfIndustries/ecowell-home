@@ -3,10 +3,12 @@
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeIn, staggerContainer } from "@/lib/utils";
+import { useNotification } from "@/context/NotificationProvider";
 import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   const router = useRouter();
+  const { isNotificationOpen } = useNotification();
   const handleShopNowBtn = () => router.push("/products");
   return (
     <motion.div
@@ -16,7 +18,11 @@ const Hero = () => {
       viewport={{ once: false, amount: 0.25 }}
       className="group"
     >
-      <div className="w-full mt-8 h-[70vh] relative overflow-hidden bg-transparent">
+      <div
+        className={`w-full h-[70vh] relative bg-transparent ${
+          isNotificationOpen ? "mt-6" : "mt-0"
+        } overflow-hidden`}
+      >
         <div className="z-10 w-full h-full flex items-end justify-center pb-14 2xl:pb-20">
           <div className="w-1/2 text-center flex flex-col items-center gap-4">
             <motion.h1

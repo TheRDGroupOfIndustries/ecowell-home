@@ -1,4 +1,7 @@
 import localFont from "next/font/local";
+import { getServerSession } from "next-auth";
+import { Toaster } from "@/components/ui/sonner";
+import AuthProvider from "@/context/AuthProvider";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -17,13 +20,18 @@ export const metadata = {
   description: "Ecowell",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await getServerSession();
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <AuthProvider session={session}>
+          {children}
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -7,11 +8,14 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeIn, staggerContainer } from "@/lib/utils";
 import { links } from "@/constants/data";
-import Notification from "./Notification";
 import { CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
+import Notification from "./Notification";
+import { useNotification } from "@/context/NotificationProvider";
 
 const Navbar = ({ companyName }) => {
   const pathname = usePathname();
+  const { data: session } = useSession(); // console.log(session);
+  const { isNotificationOpen } = useNotification();
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -38,7 +42,7 @@ const Navbar = ({ companyName }) => {
       animate="show"
       className="fixed top-0 left-0 w-full z-[99999] backdrop-blur-md overflow-hidden"
     >
-      <Notification />
+      {isNotificationOpen && <Notification />}
       <div className="w-full flex justify-between items-center p-4 px-8">
         <motion.div
           variants={fadeIn("down", 0.2)}
