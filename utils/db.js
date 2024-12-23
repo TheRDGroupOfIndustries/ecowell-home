@@ -8,7 +8,7 @@ if (!process.env.MONGODB_URI) {
     "Please define the MONGODB_URI environment variable inside .env.local"
   );
 }
-export async function connectToMongoDB() {
+export default async function connectToMongoDB() {
   if (cachedConnection) {
     console.log("Using cached db connection");
     return cachedConnection;

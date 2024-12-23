@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectToMongoDB } from "@/utils/db";
+import connectToMongoDB from "@/utils/db";
 import Categories from "@/models/Categories";
 
 export const GET = async (request) => {
