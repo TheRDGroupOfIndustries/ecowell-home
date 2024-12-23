@@ -1,53 +1,52 @@
-import Image from "next/image";
-import { Button } from "./button";
+import Image from 'next/image';
+import { Star } from 'lucide-react';
+import { useState } from 'react';
 
 const ProductCard = ({ product }) => {
+  const [imageError, setImageError] = useState(false);
+
   return (
-    <div className="w-[280px] group bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden">
-      <div className="absolute z-50 bg-primary-clr text-white text-xs font-bold px-2 py-1 rounded-tr-lg">
-        {product.discount}
+    <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      <div className="relative">
+        <Image
+          src={imageError ? '/placeholder.svg' : (product.variants[0]?.images[0] || '/placeholder.svg')}
+          alt={product.title}
+          width={400}
+          height={400}
+          className="w-full h-[300px] object-cover"
+          onError={() => setImageError(true)}
+        />
+        {product.discount > 0 && (
+          <span className="absolute top-2 right-2 bg-[#004D3C] text-white px-2 py-1 text-xs rounded">
+            {Math.round(product.discount)}% OFF
+          </span>
+        )}
+        {product.new && (
+          <span className="absolute top-2 left-2 bg-yellow-500 text-white px-2 py-1 text-xs rounded">
+            NEW
+          </span>
+        )}
       </div>
-
-      <div className="w-full h-[200px] relative bg-gray-100 overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center group-hover:opacity-0 ease-in-out duration-300 overflow-hidden">
-          <Image
-            src={product.image}
-            alt={product.title}
-            width={400}
-            height={400}
-            className="w-full h-full object-contain"
-          />
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 ease-in-out duration-300 overflow-hidden">
-          <Image
-            src={product.hoverImage}
-            alt={product.title}
-            width={400}
-            height={400}
-            className="w-full h-full object-contain"
-          />
-        </div>
-      </div>
-
-      <div className="mt-1">
-        <h3 className="text-sm font-bold">{product.title}</h3>
-
-        <div className="w-fit flex items-center gap-1 text-xs my-2 bg-white px-1 py-0.5 rounded-sm">
-          <span>⭐</span>
-          <span>{product.rating}</span>
-          <span className="text-gray-500">({product.reviews})</span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <span className="text-lg font-bold">{product.price}</span>
-          <span className="text-sm line-through text-gray-500">
-            {product.oldPrice}
+      <div className="p-4">
+        <h3 className="text-lg font-medium mb-2">{product.title}</h3>
+        <p className="text-sm text-gray-600 mb-2">{product.category.title}</p>
+        <div className="flex items-center gap-1 mb-2">
+          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+          <span className="text-sm">
+            {product.ratings.toFixed(1)} ({product.reviews_number})
           </span>
         </div>
-
-        <Button className="mt-4 w-full bg-primary-clr text-white py-2 rounded-md hover:bg-green-700 transition">
+        <div className="flex items-center gap-2">
+          <span className="text-lg font-bold">₹{product.salePrice}/-</span>
+          {product.price > product.salePrice && (
+            <span className="text-sm text-gray-500 line-through">
+              ₹{product.price}/-
+            </span>
+          )}
+        </div>
+        <button className="w-full mt-4 bg-[#004D3C] text-white py-2 rounded hover:bg-[#003D2F] transition-colors">
           Add To Cart
-        </Button>
+        </button>
       </div>
     </div>
   );
