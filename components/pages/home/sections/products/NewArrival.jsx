@@ -46,12 +46,26 @@ const NewArrival = () => {
         New Arrival
       </motion.h2>
       <div className="w-full flex flex-wrap items-center justify-center gap-6">
-        {products &&
-          products.map((product, index) => (
-            <motion.div key={index} variants={fadeIn("up", 0.3 + index * 0.1)}>
-              <ProductCard product={product} />
-            </motion.div>
-          ))}
+        {!loading
+          ? products.map((product, index) => (
+              <motion.div
+                key={index}
+                variants={fadeIn("up", 0.3 + index * 0.1)}
+              >
+                <ProductCard product={product} />
+              </motion.div>
+            ))
+          : Array.from({ length: 4 }, (_, index) => (
+              <motion.div
+                key={index}
+                variants={fadeIn("up", 0.3 + index * 0.1)}
+              >
+                <ProductCard
+                  loading={loading}
+                  product={specialOfferProducts[index]}
+                />
+              </motion.div>
+            ))}
       </div>
     </motion.div>
   );

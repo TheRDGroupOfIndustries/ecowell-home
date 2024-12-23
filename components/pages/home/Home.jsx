@@ -46,7 +46,7 @@ export default function Home() {
       <SpecialOffers products={products} />
       <WhyChooseUs />
       <NewArrival />
-      <RecommendedProducts />
+      <RecommendedProducts products={products} />
       <SafetyProduct />
       <Certifications />
       <Partners />

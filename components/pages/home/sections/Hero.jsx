@@ -1,11 +1,13 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import React from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeIn, staggerContainer } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const Hero = () => {
+  const router = useRouter();
+  const handleShopNowBtn = () => router.push("/products");
   return (
     <motion.div
       variants={staggerContainer()}
@@ -24,7 +26,12 @@ const Hero = () => {
               Redefining Wellness, One Scoop at a Time
             </motion.h1>
             <motion.div variants={fadeIn("up", 0.5)}>
-              <Button id="hero" variant="outline" className="btn-hover-fill text-white">
+              <Button
+                onClick={handleShopNowBtn}
+                id="hero"
+                variant="outline"
+                className="btn-hover-fill text-white"
+              >
                 Shop Now
               </Button>
             </motion.div>

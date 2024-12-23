@@ -55,7 +55,7 @@ const ShopCategory = () => {
                   height={400}
                   className="w-full h-full object-contain mb-4 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300"
                 />
-                <p className="text-md font-semibold mb-4">{category.title}</p>
+                <p className="relative z-10 text-md font-semibold mb-4">{category.title}</p>
               </div>
             </Link>
           </motion.div>
