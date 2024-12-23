@@ -9,10 +9,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply rounded-full bg-primary-clr;
+  @apply rounded-full bg-primary-clr cursor-grab active:cursor-grabbing;
 }
 ::-webkit-scrollbar {
-  @apply w-[6px] h-[6px] cursor-grab active:cursor-grabbing;
+  @apply w-[6px] h-[6px];
 }
 .scroll-none::-webkit-scrollbar {
   display: none;
