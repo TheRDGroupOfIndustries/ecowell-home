@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CiFilter } from "react-icons/ci";
 import { CgSortAz } from "react-icons/cg";
@@ -8,25 +8,25 @@ import ProductCard from "../../ui/productCard";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState(['All Products']); // Update 1
+  const [categories, setCategories] = useState(["All Products"]); // Update 1
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState('');
+  const [activeCategory, setActiveCategory] = useState("");
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
-    totalProducts: 0
+    totalProducts: 0,
   });
-  const [sort, setSort] = useState('');
+  const [sort, setSort] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
         const params = new URLSearchParams();
-        if (activeCategory) params.append('category', activeCategory);
-        if (sort) params.append('sort', sort);
-        params.append('page', '1');
-        params.append('limit', '12');
+        if (activeCategory) params.append("category", activeCategory);
+        if (sort) params.append("sort", sort);
+        params.append("page", "1");
+        params.append("limit", "12");
 
         const response = await fetch(`/api/products?${params}`);
         const data = await response.json();
@@ -34,7 +34,7 @@ const Products = () => {
         setCategories([...data.categories]); // Update 1
         setPagination(data.pagination);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       } finally {
         setLoading(false);
       }
@@ -48,31 +48,31 @@ const Products = () => {
   };
 
   const handleCategoryClick = (category) => {
-    setActiveCategory(category === 'All Products' ? '' : category); // Update 2
+    setActiveCategory(category === "All Products" ? "" : category); // Update 2
   };
 
   const loadPage = async (pageNumber) => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
-      if (activeCategory) params.append('category', activeCategory);
-      if (sort) params.append('sort', sort);
-      params.append('page', pageNumber.toString());
-      params.append('limit', '12');
+      if (activeCategory) params.append("category", activeCategory);
+      if (sort) params.append("sort", sort);
+      params.append("page", pageNumber.toString());
+      params.append("limit", "12");
 
       const response = await fetch(`/api/products?${params}`);
       const data = await response.json();
       setProducts(data.products);
       setPagination(data.pagination);
     } catch (error) {
-      console.error('Error loading page:', error);
+      console.error("Error loading page:", error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="px-4 sm:px-8 lg:px-16 mt-28">
+    <div className="px-4 sm:px-8 lg:px-16 pt-28">
       <div className="w-full h-fit flex-center">
         <Button variant="link" size="sm" className="text-md">
           <CiFilter size={20} />
@@ -84,9 +84,10 @@ const Products = () => {
           <button
             key={category}
             className={`whitespace-nowrap ${
-              (category === 'All Products' && activeCategory === '') || activeCategory === category // Update 3
-              ? 'text-secondary-clr' 
-              : 'hover:text-secondary-clr'
+              (category === "All Products" && activeCategory === "") ||
+              activeCategory === category // Update 3
+                ? "text-secondary-clr"
+                : "hover:text-secondary-clr"
             }`}
             onClick={() => handleCategoryClick(category)}
           >
@@ -96,48 +97,52 @@ const Products = () => {
       </div>
       <div className="flex justify-between items-center mt-6">
         <h1 className="text-xl font-medium">
-          {loading ? 'Loading...' : `${pagination.totalProducts} Products`}
-          {activeCategory && activeCategory !== 'All Products' && ` in ${activeCategory}`} {/* Update 4 */}
+          {loading ? "Loading..." : `${pagination.totalProducts} Products`}
+          {activeCategory &&
+            activeCategory !== "All Products" &&
+            ` in ${activeCategory}`}{" "}
+          {/* Update 4 */}
         </h1>
         <div className="relative">
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             className="text-md"
             onClick={() => {
-              const menu = document.getElementById('sortMenu');
-              menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+              const menu = document.getElementById("sortMenu");
+              menu.style.display =
+                menu.style.display === "none" ? "block" : "none";
             }}
           >
             <CgSortAz size={20} />
             Sort by
           </Button>
-          <div 
-            id="sortMenu" 
+          <div
+            id="sortMenu"
             className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md hidden z-10"
           >
             <div className="py-1">
               <button
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                onClick={() => handleSort('price-low-high')}
+                onClick={() => handleSort("price-low-high")}
               >
                 Price: Low to High
               </button>
               <button
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                onClick={() => handleSort('price-high-low')}
+                onClick={() => handleSort("price-high-low")}
               >
                 Price: High to Low
               </button>
               <button
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                onClick={() => handleSort('rating')}
+                onClick={() => handleSort("rating")}
               >
                 Highest Rated
               </button>
               <button
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                onClick={() => handleSort('newest')}
+                onClick={() => handleSort("newest")}
               >
                 Newest First
               </button>
@@ -159,17 +164,18 @@ const Products = () => {
           {pagination.totalPages > 1 && (
             <div className="flex justify-center gap-2 mt-8 mb-8">
               {[...Array(pagination.totalPages)].map((_, i) => (
-                <button
+                <Button
+                  size="icon"
                   key={i}
-                  className={`px-4 py-2 rounded ${
+                  className={`${
                     pagination.currentPage === i + 1
-                      ? 'bg-[#004D3C] text-white'
-                      : 'bg-gray-200 hover:bg-gray-300'
+                      ? "bg-[#004D3C] text-white"
+                      : "text-black bg-gray-200 hover:bg-gray-300"
                   }`}
                   onClick={() => loadPage(i + 1)}
                 >
                   {i + 1}
-                </button>
+                </Button>
               ))}
             </div>
           )}

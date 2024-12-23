@@ -69,7 +69,7 @@ const ProductCard = ({ product, loading = false }) => {
           <h3
             className={`${
               loading && "h-5 w-40 bg-slate-100"
-            } text-sm font-bold`}
+            } text-sm font-bold line-clamp-1`}
           >
             {!loading && product?.title}
           </h3>
@@ -101,9 +101,9 @@ const ProductCard = ({ product, loading = false }) => {
                 : ""}
             </span>
 
-            {!loading && product?.salePrice && (
+            {!loading && product?.price && (
               <span className="text-sm line-through text-gray-500">
-                {product?.salePrice}
+                {product?.price}
               </span>
             )}
           </div>
