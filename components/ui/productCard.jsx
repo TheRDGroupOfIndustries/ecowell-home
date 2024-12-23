@@ -9,14 +9,14 @@ const ProductCard = ({ product }) => {
     <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       <div className="relative">
         <Image
-          src={imageError ? '/placeholder.svg' : (product.variants[0]?.images[0] || '/placeholder.svg')}
+          src={imageError ? '/placeholder.svg' : (product.variants && product.variants[0]?.images[0] || '/placeholder.svg')}
           alt={product.title}
           width={400}
           height={400}
           className="w-full h-[300px] object-cover"
           onError={() => setImageError(true)}
         />
-        {product.discount > 0 && (
+        {product.discount && product.discount > 0 && (
           <span className="absolute top-2 right-2 bg-[#004D3C] text-white px-2 py-1 text-xs rounded">
             {Math.round(product.discount)}% OFF
           </span>
@@ -29,11 +29,13 @@ const ProductCard = ({ product }) => {
       </div>
       <div className="p-4">
         <h3 className="text-lg font-medium mb-2">{product.title}</h3>
-        <p className="text-sm text-gray-600 mb-2">{product.category.title}</p>
+        {product.category && (
+          <p className="text-sm text-gray-600 mb-2">{product.category.title}</p>
+        )}
         <div className="flex items-center gap-1 mb-2">
           <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
           <span className="text-sm">
-            {product.ratings.toFixed(1)} ({product.reviews_number})
+            {product.ratings ? product.ratings.toFixed(1) : 'N/A'} ({product.reviews_number || 0})
           </span>
         </div>
         <div className="flex items-center gap-2">
