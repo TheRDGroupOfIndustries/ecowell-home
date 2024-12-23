@@ -13,8 +13,8 @@ export async function GET(request) {
     await connectToMongoDB();
 
     let query = {};
-    if (category) {
-      query = { "category.title": category };
+    if (category && category !== 'All Products') {
+      query = { 'category.title': category };
     }
 
     let sortQuery = {};
@@ -40,7 +40,8 @@ export async function GET(request) {
     const skip = (page - 1) * limit;
 
     // First, get unique categories
-    const categories = await Products.distinct("category.title");
+    const categories = await Products.distinct('category.title');
+    categories.unshift('All Products');
 
     const [products, totalCount] = await Promise.all([
       Products.find(query)
