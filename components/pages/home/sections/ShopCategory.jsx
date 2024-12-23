@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeIn, staggerContainer } from "@/lib/utils";
-import { categoriesData } from "@/constants/data";
+// import { categoriesData } from "@/constants/data";
 
 const ShopCategory = () => {
   const [categories, setCategories] = useState([]);
