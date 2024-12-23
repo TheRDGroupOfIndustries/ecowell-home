@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import connectToMongoDB from "@/utils/db";
 import User from "@/models/User";
-import { sendOtpToPhone, verifyOtpFromPhone } from "../core";
+import { sendOtpToPhone, verifyOtpFromPhone } from "@/app/api/core";
 // import { capitalizeFirstLetter } from "@/lib/utils";
 
 export const POST = async (request) => {

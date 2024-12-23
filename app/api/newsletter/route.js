@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { connectToMongoDB } from '@/utils/db';
+import connectToMongoDB from "@/utils/db";
 import Newsletter from '@/models/Newsletter';
 import User from '@/models/User';
 import { transporter } from '@/app/api/core';

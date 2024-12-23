@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import connectToMongoDB from "@/utils/db";
 import User from "@/models/User";
 import { capitalizeFirstLetter } from "@/lib/utils";
-import { sendOtpToPhone, verifyOtpFromPhone } from "../../core";
+import { sendOtpToPhone, verifyOtpFromPhone } from "@/app/api/core";
 
 export const authOptions = {
   providers: [
