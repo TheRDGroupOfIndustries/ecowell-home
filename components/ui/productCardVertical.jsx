@@ -1,14 +1,14 @@
 import Image from "next/image";
 import { Button } from "./button";
 
-const ProductCard = ({ product }) => {
+const ProductCardVertical = ({ product }) => {
   return (
-    <div className="w-[280px] group bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden">
+    <div className="w-fit max-w-[300px] group grid grid-cols-2 gap-2 bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden">
       <div className="absolute z-50 bg-primary-clr text-white text-xs font-bold px-2 py-1 rounded-tr-lg">
         {product.discount}
       </div>
 
-      <div className="w-full h-[200px] relative bg-gray-100 overflow-hidden">
+      <div className="w-full h-[140px] relative bg-gray-100 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center group-hover:opacity-0 ease-in-out duration-300 overflow-hidden">
           <Image
             src={product.image}
@@ -45,7 +45,10 @@ const ProductCard = ({ product }) => {
           </span>
         </div>
 
-        <Button className="mt-4 w-full bg-primary-clr text-white py-2 rounded-md hover:bg-green-700 transition">
+        <Button
+          size="sm"
+          className="mt-4 w-full bg-primary-clr text-white py-2 rounded-md hover:bg-green-700 transition"
+        >
           Add To Cart
         </Button>
       </div>
@@ -53,4 +56,4 @@ const ProductCard = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default ProductCardVertical;

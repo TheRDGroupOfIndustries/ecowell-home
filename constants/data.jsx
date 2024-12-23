@@ -10,7 +10,7 @@ import { CiPhone, CiMail, CiLocationOn } from "react-icons/ci";
 
 export const links = [
   { id: 1, head: "Home", herf: "/" },
-  { id: 1, head: "Products", herf: "/#products" },
+  { id: 1, head: "Products", herf: "/products" },
   { id: 1, head: "About Us", herf: "/#about-us" },
   { id: 1, head: "Contact", herf: "/#contact" },
 ];
@@ -71,20 +71,20 @@ export const footerData = {
             type: "phone",
             content: "+91-9355951519",
             href: "tel:+91-9355951519",
-            icon: <CiPhone size={20} className="w-6 h-6 text-[#0B3D2E]" />,
+            icon: <CiPhone size={20} className="w-6 h-6 text-primary-clr" />,
           },
           {
             type: "email",
             content: "ecowellonline@gmail.com",
             href: "mailto:ecowellonline@gmail.com",
-            icon: <CiMail size={20} className="w-6 h-6 text-[#0B3D2E]" />,
+            icon: <CiMail size={20} className="w-6 h-6 text-primary-clr" />,
           },
           {
             type: "address",
             content:
               "19, Park Lane, Church road, Vasant Kunj, New Delhi-110070",
             icon: (
-              <CiLocationOn size={20} className="w-12 h-12 text-[#0B3D2E]" />
+              <CiLocationOn size={20} className="w-12 h-12 text-primary-clr" />
             ),
           },
         ],

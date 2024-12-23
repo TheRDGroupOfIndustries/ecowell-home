@@ -29,7 +29,7 @@ const ShopCategory = () => {
             variants={fadeIn('up', 0.3 + index * 0.1)}
           >
             <Link href={category.href}>
-              <div className="w-[250px] h-[250px] group bg-gradient-to-t from-[#D4A017] to-white hover:to-50% hover:translate-x-1 hover:translate-y-2 rounded-lg shadow-lg flex flex-col items-center justify-center p-4 ease-in-out duration-300 overflow-hidden">
+              <div className="w-[250px] h-[250px] group bg-gradient-to-t from-secondary-clr to-white hover:to-50% hover:translate-x-1 hover:translate-y-2 rounded-lg shadow-lg flex flex-col items-center justify-center p-4 ease-in-out duration-300 overflow-hidden">
                 <Image
                   src={category.image}
                   alt={category.name}

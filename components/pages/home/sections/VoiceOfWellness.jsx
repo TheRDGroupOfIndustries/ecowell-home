@@ -137,8 +137,8 @@ const VoiceOfWellness = () => {
                 page === 0
                   ? "bg-gray-300"
                   : page === testimonials.length - 1
-                  ? "bg-[#D4A017] hover:bg-yellow-600 text-white"
-                  : "bg-gray-200 hover:bg-[#D4A017] hover:text-white text-[#D4A017]"
+                  ? "bg-secondary-clr hover:bg-yellow-600 text-white"
+                  : "bg-gray-200 hover:bg-secondary-clr hover:text-white text-secondary-clr"
               } flex items-center justify-center transition-colors z-50`}
             >
               <span className="text-2xl">&#8249;</span>
@@ -149,7 +149,7 @@ const VoiceOfWellness = () => {
               className={`w-10 h-10 rounded-full ${
                 page === testimonials.length - 1
                   ? "bg-gray-300"
-                  : "bg-[#D4A017] hover:bg-yellow-600"
+                  : "bg-secondary-clr hover:bg-yellow-600"
               } text-white flex items-center justify-center transition-colors z-50`}
             >
               <span className="text-2xl -mt-0.5 ml-1">&#8250;</span>
@@ -181,7 +181,7 @@ const TestimonialCard = ({ testimonial }) => {
         </div>
       </div>
       <div className="relative">
-        <span className="text-5xl text-[#D4A017] absolute -left-4 -top-4">
+        <span className="text-5xl text-secondary-clr absolute -left-4 -top-4">
           &quot;
         </span>
         <p className="text-gray-700 text-lg leading-relaxed pl-4">

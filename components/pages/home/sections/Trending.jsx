@@ -32,7 +32,7 @@ const Trending = () => {
         <div className="w-full h-fit flex items-center justify-center gap-4">
           {trendingData.map((item, index) => (
             <motion.div key={index} variants={fadeIn("right", 0.2 * index, 1)}>
-              <div className="hover-fill border border-gray-950 hover:text-white hover:border-[#D4A017] w-fit h-fit p-2 px-4 flex items-center justify-center gap-2 text-lg 2xl:text-xl">
+              <div className="hover-fill border border-gray-950 hover:text-white hover:border-secondary-clr w-fit h-fit p-2 px-4 flex items-center justify-center gap-2 text-lg 2xl:text-xl">
                 {item.icon}
                 <span>{item.text}</span>
               </div>

@@ -5,7 +5,7 @@ import { footerData } from "@/constants/data";
 
 export default function Footer() {
   return (
-    <footer className="w-full flex flex-col items-center justify-center">
+    <footer className="w-full flex-center flex-col overflow-hidden">
       {/* Newsletter Section */}
       <div className="w-full container px-4 py-12 grid items-center justify-center text-center">
         <h2 className="text-4xl 2xl:text-5xl mb-4">
@@ -81,7 +81,7 @@ export default function Footer() {
                 <Link
                   key={index}
                   href={social.href}
-                  className="bg-[#0B3D2E] p-2 rounded-lg hover:opacity-90"
+                  className="bg-primary-clr p-2 rounded-lg hover:opacity-90"
                 >
                   <social.icon className="w-6 h-6 text-white" />
                 </Link>

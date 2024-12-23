@@ -1,15 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
-import Notification from "./Notification";
 import Image from "next/image";
-import { links } from "@/constants/data";
 import { motion } from "framer-motion";
 import { fadeIn, staggerContainer } from "@/lib/utils";
+import { links } from "@/constants/data";
+import Notification from "./Notification";
+import { CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 
 const Navbar = ({ companyName }) => {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -28,12 +30,13 @@ const Navbar = ({ companyName }) => {
     return () => observer.disconnect();
   }, []);
 
+  const isHomeScrolled = pathname === "/" ? isScrolled : true;
   return (
     <motion.div
       variants={staggerContainer()}
       initial="hidden"
       animate="show"
-      className="fixed top-0 left-0 w-full z-[99999] backdrop-blur-md"
+      className="fixed top-0 left-0 w-full z-[99999] backdrop-blur-md overflow-hidden"
     >
       <Notification />
       <div className="w-full flex justify-between items-center p-4 px-8">
@@ -41,12 +44,14 @@ const Navbar = ({ companyName }) => {
           variants={fadeIn("down", 0.2)}
           className="text-lg font-bold"
         >
-          <Image
-            src={"/logo.png"}
-            alt={companyName || "Logo"}
-            width={150}
-            height={150}
-          />
+          <Link href="/">
+            <Image
+              src={"/logo.png"}
+              alt={companyName || "Logo"}
+              width={150}
+              height={150}
+            />
+          </Link>
         </motion.div>
         <motion.div variants={fadeIn("down", 0.3)} className="flex space-x-4">
           {links.map((link, index) => (
@@ -54,7 +59,7 @@ const Navbar = ({ companyName }) => {
               key={index}
               href={link.herf}
               className={`hover:text-gray-700 text-lg text-bold ${
-                isScrolled ? "text-black" : "text-white"
+                isHomeScrolled ? "text-black" : "text-white"
               } ease-in-out duration-300`}
             >
               {link.head}
@@ -65,19 +70,19 @@ const Navbar = ({ companyName }) => {
           <CiSearch
             size={20}
             className={`hover:text-gray-700 ${
-              isScrolled ? "text-black" : "text-white"
+              isHomeScrolled ? "text-black" : "text-white"
             } ease-in-out duration-300`}
           />
           <CiShoppingCart
             size={20}
             className={`hover:text-gray-700 ${
-              isScrolled ? "text-black" : "text-white"
+              isHomeScrolled ? "text-black" : "text-white"
             } ease-in-out duration-300`}
           />
           <CiUser
             size={20}
             className={`hover:text-gray-700 ${
-              isScrolled ? "text-black" : "text-white"
+              isHomeScrolled ? "text-black" : "text-white"
             } ease-in-out duration-300`}
           />
         </motion.div>
