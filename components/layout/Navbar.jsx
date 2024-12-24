@@ -77,18 +77,22 @@ const Navbar = ({ companyName }) => {
               isHomeScrolled ? "text-black" : "text-white"
             } ease-in-out duration-300`}
           />
-          <CiShoppingCart
-            size={20}
-            className={`hover:text-gray-700 ${
-              isHomeScrolled ? "text-black" : "text-white"
-            } ease-in-out duration-300`}
-          />
-          <CiUser
-            size={20}
-            className={`hover:text-gray-700 ${
-              isHomeScrolled ? "text-black" : "text-white"
-            } ease-in-out duration-300`}
-          />
+          <Link href="/account/cart">
+            <CiShoppingCart
+              size={20}
+              className={`hover:text-gray-700 ${
+                isHomeScrolled ? "text-black" : "text-white"
+              } ease-in-out duration-300`}
+            />
+          </Link>
+          <Link href="/account">
+            <CiUser
+              size={20}
+              className={`hover:text-gray-700 ${
+                isHomeScrolled ? "text-black" : "text-white"
+              } ease-in-out duration-300`}
+            />
+          </Link>
         </motion.div>
       </div>
     </motion.div>

@@ -6,6 +6,8 @@ export async function PUT(request) {
   const { userId, cartItemId, action, quantity, variant } =
     await request.json();
 
+  console.log("requested data", userId, cartItemId, action, quantity, variant);
+
   try {
     await connectToMongoDB();
 
@@ -21,13 +23,24 @@ export async function PUT(request) {
       return NextResponse.json({ error: "Cart item not found", status: 404 });
     }
 
+    console.log("cart item", cartItem);
+
+    // ensuring that the variant price is a valid number before performing calculations
+    const itemPrice = parseFloat(cartItem.variant?.price);
+    if (isNaN(itemPrice)) {
+      return NextResponse.json({
+        error: "Invalid item price",
+        status: 400,
+      });
+    }
+
     // updating totals by subtracting the current item's impact
     cart.totalQuantity -= cartItem.quantity;
-    cart.totalPrice -= cartItem.quantity * cartItem.variant.price;
+    cart.totalPrice -= cartItem.quantity * itemPrice;
 
     let message = "";
 
-    // performig the requested action
+    // performing the requested action
     switch (action) {
       case "increment-quantity":
         cartItem.quantity += 1;
@@ -64,9 +77,18 @@ export async function PUT(request) {
         });
     }
 
+    // ensuring that quantity is a valid number before recalculating totals
+    const validQuantity = parseInt(quantity, 10);
+    if (isNaN(validQuantity) || validQuantity <= 0) {
+      return NextResponse.json({
+        error: "Invalid quantity",
+        status: 400,
+      });
+    }
+
     // recalculating totals based on the updated cart item
     cart.totalQuantity += cartItem.quantity;
-    cart.totalPrice += cartItem.quantity * cartItem.variant.price;
+    cart.totalPrice += cartItem.quantity * itemPrice;
 
     const updatedCart = await cart.save();
 

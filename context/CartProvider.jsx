@@ -30,13 +30,13 @@ export const CartProvider = ({ children }) => {
         headers: { "Cache-Control": "no-cache" },
       });
       const data = await response.json();
-      console.log("data of cart:", data);
+      // console.log("data of cart:", data);
       if (response.ok) {
-        setCartItems(data.cart.items || []);
-        setTotalQuantity(data.cart.totalQuantity);
-        setTotalPrice(data.cart.totalPrice);
+        setCartItems(data?.cart?.items || []);
+        setTotalQuantity(data?.cart?.totalQuantity || 0);
+        setTotalPrice(data?.cart?.totalPrice || 0);
       } // else {
-      //   toast.error(data.message || "Failed to fetch cart items.");
+      //   toast.error(data?.message || "Failed to fetch cart items.");
       // }
     } catch (error) {
       console.error("Error fetching cart:", error);
@@ -76,30 +76,30 @@ export const CartProvider = ({ children }) => {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("cartTotal: ", data.updatedCart.items);
+      console.log("cartTotal: ", data?.updatedCart?.items || []);
 
-      setCartItems(data.updatedCart.items || []);
-      setTotalQuantity(data.updatedCart.totalQuantity);
-      setTotalPrice(data.updatedCart.totalPrice);
+      setCartItems(data?.updatedCart?.items || []);
+      setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
+      setTotalPrice(data?.updatedCart?.totalPrice || 0);
 
       toast.success("Product added to cart Successfully!");
     } else {
       // Handle error response
-      toast.error(data.error || "Failed to add product to cart.");
+      toast.error(data?.error || "Failed to add product to cart.");
     }
   };
 
   const updateCartItem = async (cartItemId, action, quantity, variant) => {
-    // console.log("add to cart variant", cartItemId, quantity, variant);
+    // console.log("update to cart variant", cartItemId, quantity, variant);
     if (!userId) {
       router.push("/auth/sign-in");
       return;
     }
 
     const selectedVariant = {
-      flavor: variant.flavor,
-      image_link: variant.images[0],
-      stock: variant.stock,
+      flavor: variant?.flavor,
+      image_link: variant?.images[0],
+      stock: variant?.stock,
     };
 
     const updatedCartItemData = {
@@ -113,7 +113,7 @@ export const CartProvider = ({ children }) => {
     // console.log("updated Cart Item Data", updatedCartItemData);
 
     const response = await fetch("/api/products/cart/update", {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -122,17 +122,22 @@ export const CartProvider = ({ children }) => {
 
     const data = await response.json();
 
+    console.log("cartTotal: ", data);
     if (response.ok) {
-      setCartItems(data.updatedCart.items);
-      setTotalQuantity(data.updatedCart.totalQuantity);
-      setTotalPrice(data.updatedCart.totalPrice);
+      if (data?.status === 400) {
+        return toast.error(
+          data?.error || "Failed to update product quantity, please try again."
+        );
+      }
+      setCartItems(data?.updatedCart?.items || []);
+      setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
+      setTotalPrice(data?.updatedCart?.totalPrice || 0);
 
-      console.log("cartTotal: ", data.updatedCart.items);
-      toast.success(data.message || "Product quantity updated!");
+      toast.success(data?.message || "Product quantity updated!");
     } else {
       // Handle error response
       toast.error(
-        data.error || "Failed to update product quantity, please try again."
+        data?.error || "Failed to update product quantity, please try again."
       );
     }
   };
@@ -155,16 +160,16 @@ export const CartProvider = ({ children }) => {
     const data = await response.json();
 
     if (response.ok) {
-      setCartItems(data.updatedCart.items);
-      setTotalQuantity(data.updatedCart.totalQuantity);
-      setTotalPrice(data.updatedCart.totalPrice);
+      setCartItems(data?.updatedCart?.items || []);
+      setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
+      setTotalPrice(data?.updatedCart?.totalPrice || 0);
 
-      console.log("cartTotal: ", data.updatedCart.items);
-      toast.success(data.message || "Removed Product from your cart!");
+      console.log("cartTotal: ", data?.updatedCart?.items || []);
+      toast.success(data?.message || "Removed Product from your cart!");
     } else {
       // Handle error response
       toast.error(
-        data.error ||
+        data?.error ||
           "Failed to remove product from the cart, please try again."
       );
     }

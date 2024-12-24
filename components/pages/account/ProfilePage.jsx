@@ -1,16 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "sonner";
-
-const DEFAULT_AVATAR = "/public/pfp.png";
+import { DEFAULT_AVATAR } from "@/constants/data";
 
 export default function ProfilePage() {
   const { data: session, update } = useSession();
@@ -172,7 +171,9 @@ export default function ProfilePage() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="first_name" className='text-lg'>First Name</Label>
+              <Label htmlFor="first_name" className="text-lg">
+                First Name
+              </Label>
               <Input
                 id="first_name"
                 name="first_name"
@@ -182,7 +183,9 @@ export default function ProfilePage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="last_name" className='text-lg'>Last Name</Label>
+              <Label htmlFor="last_name" className="text-lg">
+                Last Name
+              </Label>
               <Input
                 id="last_name"
                 name="last_name"
@@ -195,7 +198,9 @@ export default function ProfilePage() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className='text-lg'>Email</Label>
+              <Label htmlFor="email" className="text-lg">
+                Email
+              </Label>
               <Input
                 id="email"
                 name="email"
@@ -206,7 +211,9 @@ export default function ProfilePage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phone_number" className='text-lg'>Phone Number</Label>
+              <Label htmlFor="phone_number" className="text-lg">
+                Phone Number
+              </Label>
               <Input
                 id="phone_number"
                 name="phone_number"
@@ -222,7 +229,9 @@ export default function ProfilePage() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="address" className='text-lg'>Address</Label>
+              <Label htmlFor="address" className="text-lg">
+                Address
+              </Label>
               <Input
                 id="address"
                 name="address"
@@ -232,7 +241,9 @@ export default function ProfilePage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="flat_plot" className='text-lg'>Flat / Plot</Label>
+              <Label htmlFor="flat_plot" className="text-lg">
+                Flat / Plot
+              </Label>
               <Input
                 id="flat_plot"
                 name="flat_plot"
@@ -246,7 +257,9 @@ export default function ProfilePage() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="country" className='text-lg'>Country</Label>
+              <Label htmlFor="country" className="text-lg">
+                Country
+              </Label>
               <Input
                 id="country"
                 name="country"
@@ -256,7 +269,9 @@ export default function ProfilePage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="region_state" className='text-lg'>Region/State</Label>
+              <Label htmlFor="region_state" className="text-lg">
+                Region/State
+              </Label>
               <Input
                 id="region_state"
                 name="region_state"
@@ -269,7 +284,9 @@ export default function ProfilePage() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="city" className='text-lg'>City</Label>
+              <Label htmlFor="city" className="text-lg">
+                City
+              </Label>
               <Input
                 id="city"
                 name="city"
@@ -279,7 +296,9 @@ export default function ProfilePage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="zip_code" className='text-lg'>Zip Code</Label>
+              <Label htmlFor="zip_code" className="text-lg">
+                Zip Code
+              </Label>
               <Input
                 id="zip_code"
                 name="zip_code"
@@ -304,7 +323,7 @@ export default function ProfilePage() {
                   variant="outline"
                   onClick={handleCancel}
                   disabled={loading}
-                  className='text-lg'
+                  className="text-lg"
                 >
                   Cancel
                 </Button>
