@@ -9,12 +9,6 @@ const VariantSchema = new Schema({
   nutritionFacts: { type: [String], required: true }, // E.g., ["Calories: 150", "Protein: 30g"]
   allergens: { type: [String], required: false }, // E.g., ["Peanuts", "Soy"]
   servingSize: { type: String, required: true }, // E.g., "30g scoop"
-  // Add pack size options
-  packSizes: [{
-    size: { type: String, required: true }, // e.g., "PACK OF 2", "PACK OF 5"
-    price: { type: Number, required: true },
-    salePrice: { type: Number, required: true }
-  }]
 });
 
 const FaqSchema = new Schema({
@@ -27,11 +21,25 @@ const AdditionalInfoSchema = new Schema({
   countryOfOrigin: { type: String, required: true },
   phone: { type: String, required: true },
   email: { type: String, required: true },
-  // Add certification information
-  certifications: [{
-    name: { type: String, required: true }, // e.g., "FSSAI", "GMP", "HACCP"
-    image: { type: String, required: true }
-  }]
+});
+
+const HeroBannerSchema = new Schema({
+  title: { type: String, required: true },
+  subtitle: { type: String, required: true },
+  description: { type: String, required: true },
+  backgroundImage: { type: String, required: true },
+});
+
+const DailyRitualSchema = new Schema({
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  lifestyleImage: { type: String, required: true },
+});
+
+const IngredientHighlightSchema = new Schema({
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  image: { type: String, required: true },
 });
 
 const ProductSchema = new Schema(
@@ -60,24 +68,13 @@ const ProductSchema = new Schema(
     reviews_number: { type: Number, default: 0 },
 
     // New fields based on the images
-    ecoCoins: { type: Number, required: false }, // Reward points
-    shippingOptions: {
-      emiAvailable: { type: Boolean, default: false },
-      cashOnDelivery: { type: Boolean, default: false },
-      freeShippingMinAmount: { type: Number, required: false }
-    },
-    relatedProducts: [{
-      productId: { type: Schema.Types.ObjectId, ref: 'Products' },
-      sortOrder: { type: Number, default: 0 }
-    }],
-    frequentlyBoughtTogether: [{
-      productId: { type: Schema.Types.ObjectId, ref: 'Products' },
-      sortOrder: { type: Number, default: 0 }
-    }],
     productFeatures: [{
       title: { type: String, required: true },
       icon: { type: String, required: true }
-    }]
+    }],
+    heroBanner: HeroBannerSchema,
+    dailyRitual: DailyRitualSchema,
+    ingredientHighlights: [IngredientHighlightSchema],
   },
   { timestamps: true }
 );
