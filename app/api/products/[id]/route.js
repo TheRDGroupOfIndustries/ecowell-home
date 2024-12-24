@@ -2,13 +2,13 @@ import { NextResponse } from "next/server";
 import connectToMongoDB from "@/utils/db";
 import Products from "@/models/Products";
 
-export async function GET(request, context) {
-  const { params } = context;
+export async function GET(request, { params }) {
+  const { id } = params;
 
   try {
     await connectToMongoDB();
 
-    const product = await Products.findById(params.id);
+    const product = await Products.findById(id);
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });

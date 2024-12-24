@@ -109,12 +109,12 @@ const Details = () => {
             <div className="text-xs">Price include GST</div>
           </div>
         </div>
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <div className="w-fit bg-[#333333] text-white font-extralight text-sm p-2">
             Extra 10% off auto-applied at checkout
           </div>
           <div className="">Earn 🪙 500 EcoCoins</div>
-        </div>
+        </div> */}
         <div className="space-y-1">
           <div className="text-sm md:text-md lg:text-lg xl:text-xl">
             Description
