@@ -1,16 +1,18 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 export const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(true);
+  const [pt, setPt] = useState("pt-28");
 
-  const handleCloseNotification = () =>
-    setIsNotificationOpen(!isNotificationOpen);
+  const handleCloseNotification = () => setIsNotificationOpen(false);
 
-  const pt = isNotificationOpen ? "pt-28" : "pt-20";
+  useEffect(() => {
+    setPt(isNotificationOpen ? "pt-28" : "pt-20");
+  }, [isNotificationOpen]);
 
   return (
     <NotificationContext.Provider

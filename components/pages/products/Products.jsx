@@ -74,7 +74,7 @@ const Products = () => {
   };
 
   return (
-    <div className={`${pt} py- px-4 sm:px-8 lg:px-16 overflow-hidden`}>
+    <div className={`${pt} px-4 sm:px-8 lg:px-16 overflow-hidden`}>
       <div className="w-full h-fit flex-center">
         <Button variant="link" size="sm" className="text-md">
           <CiFilter size={20} />
