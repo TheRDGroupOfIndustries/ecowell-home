@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Button } from "./button";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, }) => {
   return (
     <div className="w-[280px] group bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden">
       <div className="absolute z-50 bg-[#0B3D2E] text-white text-xs font-bold px-2 py-1 rounded-tr-lg">
