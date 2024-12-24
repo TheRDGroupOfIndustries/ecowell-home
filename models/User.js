@@ -38,7 +38,7 @@ const UserSchema = new Schema(
     profile_image: {
       type: String,
       required: true,
-      default: "/assets/images/user.png",
+      default: "/public/pfp.png",
     },
     date_of_birth: {
       type: Date,
