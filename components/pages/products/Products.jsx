@@ -30,20 +30,20 @@ const Products = () => {
         params.append("page", "1");
         params.append("limit", "12");
 
-        const response = await fetch(`/api/products?${params}`);
+        const response = await fetch(`/api/products?category=${activeCategory}&sort=${sort}&page=${pagination.currentPage}`);
         const data = await response.json();
         setProducts(data.products);
-        setCategories([...data.categories]); // Update 1
+        setCategories([...data.categories]);
         setPagination(data.pagination);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
-        setLoading(false);
+        setTimeout(() => setLoading(false), 1000); // Add a slight delay to show the skeleton
       }
     };
 
     fetchProducts();
-  }, [activeCategory, sort]);
+  }, [activeCategory, sort, pagination.currentPage]);
 
   const handleSort = (value) => {
     setSort(value);
@@ -74,7 +74,7 @@ const Products = () => {
   };
 
   return (
-    <div className={`${pt} py- px-4 sm:px-8 lg:px-16 overflow-hidden`}>
+    <div className={`${pt} mt-[120px] px-4 sm:px-8 lg:px-16 overflow-hidden`}>
       <div className="w-full h-fit flex-center">
         <Button variant="link" size="sm" className="text-md">
           <CiFilter size={20} />
@@ -153,12 +153,14 @@ const Products = () => {
         </div>
       </div>
       {loading ? (
-        <div className="flex-center min-h-[400px]">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+        {[...Array(12)].map((_, index) => (
+          <ProductCard key={index} loading={true} />
+        ))}
+      </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 mt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
             {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
