@@ -3,27 +3,27 @@
 import Image from "next/image";
 import { useState } from "react";
 
-const ProductCardSelect = ({ product }) => {
-  const [isChecked, setIsChecked] = useState(false);
+const ProductCardSelect = ({ product, isSelected, onToggle }) => {
+  // const [isChecked, setIsChecked] = useState(false);
 
-  const handleCardClick = () => {
-    setIsChecked(!isChecked);
-  };
+  // const handleCardClick = () => {
+  //   setIsChecked(!isChecked);
+  // };
 
-  const handleCheckboxClick = (e) => {
-    e.stopPropagation();
-    setIsChecked(e.target.checked);
-  };
+  // const handleCheckboxClick = (e) => {
+  //   e.stopPropagation();
+  //   setIsChecked(e.target.checked);
+  // };
   return (
     <div
-      onClick={handleCardClick}
+      onClick={onToggle}
       className="relative w-[280px] cursor-pointer group bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden"
     >
       <div className="absolute top-1.5 right-2.5 z-50">
         <input
           type="checkbox"
-          checked={isChecked}
-          onChange={handleCheckboxClick}
+          checked={isSelected}
+          onChange={onToggle}
           name="select"
           className="w-fit h-fit scale-125 cursor-pointer rounded-none"
         />

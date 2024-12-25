@@ -3,7 +3,7 @@ import { Button } from "./button";
 
 const ProductCardVertical = ({ product }) => {
   return (
-    <div className="w-fit max-w-[300px] group grid grid-cols-2 gap-2 bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden">
+    <div className="  group grid grid-cols-2 gap-2 bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden">
       <div className="absolute z-50 bg-primary-clr text-white text-xs font-bold px-2 py-1 rounded-tr-lg">
         {product.discount}
       </div>
@@ -29,7 +29,7 @@ const ProductCardVertical = ({ product }) => {
         </div>
       </div>
 
-      <div className="mt-1">
+      <div className="mt-1 w-full">
         <h3 className="text-sm font-bold">{product.title}</h3>
 
         <div className="w-fit flex items-center gap-1 text-xs my-2 bg-white px-1 py-0.5 rounded-sm">
