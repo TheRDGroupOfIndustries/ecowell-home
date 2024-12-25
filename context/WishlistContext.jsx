@@ -19,7 +19,7 @@ export function WishlistProvider({ children }) {
 
   const fetchWishlist = async () => {
     try {
-      const response = await fetch('/api/wishlist');
+      const response = await fetch('/api/account/wishlist');
       if (response.ok) {
         const data = await response.json();
         setWishlistProducts(data.wishlist);
@@ -31,7 +31,7 @@ export function WishlistProvider({ children }) {
 
   const addToWishlist = async (productId) => {
     try {
-      const response = await fetch('/api/wishlist', {
+      const response = await fetch('/api/account/wishlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId }),
@@ -46,7 +46,7 @@ export function WishlistProvider({ children }) {
 
   const removeFromWishlist = async (productId) => {
     try {
-      const response = await fetch('/api/wishlist', {
+      const response = await fetch('/api/account/wishlist', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId }),

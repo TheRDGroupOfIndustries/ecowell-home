@@ -36,7 +36,7 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("/api/profile");
+        const response = await fetch("/api/account");
         if (!response.ok) throw new Error("Failed to fetch user data");
         const userData = await response.json();
 
@@ -100,7 +100,7 @@ export default function ProfilePage() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/profile/update", {
+      const response = await fetch("/api/account/update", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
