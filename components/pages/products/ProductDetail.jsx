@@ -7,6 +7,13 @@ import { specialOfferProducts } from "@/constants/product";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/ui/productCard";
 import NewArrival from "../home/sections/products/NewArrival";
+import { FrequentlyBoughtTogether } from "./components/BroughtTogether";
+import RelatedProduct from "./components/RelatedProduct";
+import ProductDiscover from "./components/ProductDiscover";
+import TheStories from "./components/TheStories";
+import PurposeAndTrust from "./components/PurposeAndTrust";
+import FrequentlyAskedQuestions from "./components/FrequentlyAskedQuestions";
+import CustomerReviews from "./components/CustomerReviews";
 
 const ProductDetail = () => {
   return (
@@ -16,8 +23,13 @@ const ProductDetail = () => {
           <ImageGallery />
           <Details />
         </div>
-        <NewArrival />
-        {/* <div className=""></div> */}
+        <FrequentlyBoughtTogether/>
+        <RelatedProduct/>
+        <ProductDiscover/>
+        <TheStories/>
+        <PurposeAndTrust/>
+        <FrequentlyAskedQuestions/>
+        <CustomerReviews/>
       </section>
     </>
   );
