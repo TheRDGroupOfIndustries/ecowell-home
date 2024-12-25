@@ -64,7 +64,7 @@ function WishlistPage() {
         <p className="text-center text-gray-500 text-xl">No wishlist products found!</p>
       )}
       <div className="mt-6 flex justify-center">
-        <Link href="/" passHref>
+        <Link href="/products" passHref>
           <Button variant="outline" className='text-base bg-primary-clr hover:bg-green-700 text-white transition-colors'>Continue Shopping</Button>
         </Link>
       </div>
