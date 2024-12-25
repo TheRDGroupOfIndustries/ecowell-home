@@ -5,10 +5,15 @@ import Cart from "@/models/Cart";
 export async function DELETE(request) {
   const { userId, cartItemId } = await request.json();
 
+  // console.log("userId:", userId, cartItemId);
+
   try {
     await connectToMongoDB();
 
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId }).populate({
+      path: "items.productId",
+      select: "_id title sku salePrice price variants",
+    });
 
     if (!cart) {
       return NextResponse.json({ error: "Cart not found", status: 404 });
@@ -22,13 +27,27 @@ export async function DELETE(request) {
 
     const productName = cartItem.variant.flavor;
 
-    // updating totalQuantity and totalPrice
-    cart.totalQuantity -= cartItem.quantity;
-    cart.totalPrice -= cartItem.quantity * cartItem.variant.price;
-
+    // Remove cart item
     cart.items.pull(cartItemId);
 
+    // Calculate new totals using reduce
+    const totals = cart.items.reduce(
+      (acc, item) => {
+        const price = item.productId.salePrice || item.productId.price;
+        return {
+          totalQuantity: acc.totalQuantity + item.quantity,
+          totalPrice: acc.totalPrice + price * item.quantity,
+        };
+      },
+      { totalQuantity: 0, totalPrice: 0 }
+    );
+
+    cart.totalQuantity = totals.totalQuantity;
+    cart.totalPrice = totals.totalPrice;
+
     const updatedCart = await cart.save();
+
+    // console.log(updatedCart);
 
     return NextResponse.json({
       message: `Cart ${productName} deleted successfully`,

@@ -6,12 +6,15 @@ export async function PUT(request) {
   const { userId, cartItemId, action, quantity, variant } =
     await request.json();
 
-  console.log("requested data", userId, cartItemId, action, quantity, variant);
+  // console.log("requested data", userId, cartItemId, action, quantity, variant);
 
   try {
     await connectToMongoDB();
 
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId }).populate({
+      path: "items.productId",
+      select: "_id title sku salePrice price variants",
+    });
 
     if (!cart) {
       return NextResponse.json({ error: "Cart not found", status: 404 });
@@ -24,19 +27,6 @@ export async function PUT(request) {
     }
 
     console.log("cart item", cartItem);
-
-    // ensuring that the variant price is a valid number before performing calculations
-    const itemPrice = parseFloat(cartItem.variant?.price);
-    if (isNaN(itemPrice)) {
-      return NextResponse.json({
-        error: "Invalid item price",
-        status: 400,
-      });
-    }
-
-    // updating totals by subtracting the current item's impact
-    cart.totalQuantity -= cartItem.quantity;
-    cart.totalPrice -= cartItem.quantity * itemPrice;
 
     let message = "";
 
@@ -77,18 +67,19 @@ export async function PUT(request) {
         });
     }
 
-    // ensuring that quantity is a valid number before recalculating totals
-    const validQuantity = parseInt(quantity, 10);
-    if (isNaN(validQuantity) || validQuantity <= 0) {
-      return NextResponse.json({
-        error: "Invalid quantity",
-        status: 400,
-      });
-    }
+    const totals = cart.items.reduce(
+      (acc, item) => {
+        const price = item.productId.salePrice || item.productId.price;
+        return {
+          totalQuantity: acc.totalQuantity + item.quantity,
+          totalPrice: acc.totalPrice + price * item.quantity,
+        };
+      },
+      { totalQuantity: 0, totalPrice: 0 }
+    );
 
-    // recalculating totals based on the updated cart item
-    cart.totalQuantity += cartItem.quantity;
-    cart.totalPrice += cartItem.quantity * itemPrice;
+    cart.totalQuantity = totals.totalQuantity;
+    cart.totalPrice = totals.totalPrice;
 
     const updatedCart = await cart.save();
 

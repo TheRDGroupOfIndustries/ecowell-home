@@ -11,7 +11,7 @@ export async function GET(request, { params }) {
     // const cart = await Cart.findOne({ userId });
     const cart = await Cart.findOne({ userId }).populate({
       path: "items.productId",
-      select: "_id title sku salePrice price",
+      select: "_id title sku salePrice price variants",
     });
     if (!cart) {
       return NextResponse.json({ error: "Cart not found", status: 404 });

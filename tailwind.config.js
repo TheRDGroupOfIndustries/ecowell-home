@@ -22,12 +22,12 @@ module.exports = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-          clr: "#0B3D2E",
+          clr: "var(--primary-clr)",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
-          clr: "#D4A017",
+          clr: "var(--secondary-clr)",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -58,6 +58,11 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        shine: {
+          "0%": { backgroundPosition: "200% 0" },
+          "25%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "-200% 0" },
+        },
         fadeIn: {
           "0%": {
             opacity: "0",
@@ -98,6 +103,7 @@ module.exports = {
         },
       },
       animation: {
+        shine: "shine 3s ease-out infinite",
         "fade-in": "fadeIn 0.8s ease-in-out",
         "slide-down": "slideDown 0.8s ease-in-out",
         "slide-up": "slideUp 0.8s ease-in-out",

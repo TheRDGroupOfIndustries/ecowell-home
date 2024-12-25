@@ -14,29 +14,40 @@ const Cart = () => {
   const { pt } = useNotification();
 
   return (
-    <div className={`w-full h-fit p-4 md:p-8 lg:p-16 xl:p-20 mt-28 ${pt}`}>
+    <div className={`w-full h-fit p-8 mt-28 ${pt} bg-[#f8f1e9]`}>
       <div className="container mx-auto">
-        <h2 className="text-2xl font-semibold mb-8">Shopping Cart</h2>
-
-        {/* Cart Table */}
         {cartItems.length > 0 ? (
           <>
-            <CartTable />
+            {/* Cart Table */}
+            <div className="bg-white shadow-md rounded-md overflow-hidden">
+              <CartTable />
+            </div>
 
             {/* Total and Actions */}
-            <div className="w-full mt-8 flex-between flex-col lg:flex-row">
-              <Link href="/auth/sign-up">
-                <Button className="mb-4 lg:mb-0 bg-primary-clr text-white py-2 rounded-none hover:bg-green-700 transition">
-                  Continue Shopping
+            <div className="mt-8 flex flex-col lg:flex-row items-center justify-between">
+              <Link href="/products">
+                <Button
+                  effect="gooeyRight"
+                  className="bg-secondary-clr text-white py-2 px-6 rounded-md hover:bg-[#b28714] transition"
+                >
+                  CONTINUE SHOPPING
                 </Button>
               </Link>
-              <div className="text-lg font-semibold mt-4 lg:mt-0 lg:ml-8">
+              <div className="text-xl font-semibold mt-4 lg:mt-0">
                 Total Price:{" "}
-                <span className="text-primary-clr">₹{totalPrice}</span>
+                <span className="text-secondary-clr">
+                  ₹
+                  <span className="text-2xl">
+                    {totalPrice.toLocaleString()}
+                  </span>
+                </span>
               </div>
-              <Link href="/auth/sign-up">
-                <Button className="mb-4 lg:mb-0 bg-primary-clr text-white py-2 rounded-none hover:bg-green-700 transition">
-                  Check Out
+              <Link href="/account/checkout">
+                <Button
+                  variant="custom"
+                  // className="bg-[#d7a11b] text-white py-2 px-6 rounded-md hover:bg-[#b28714] transition"
+                >
+                  CHECK OUT
                 </Button>
               </Link>
             </div>
@@ -56,96 +67,71 @@ export default Cart;
 const CartTable = () => {
   const { cartItems, removeCartItem, updateCartItem } = useCart();
   const handleQuantityChange = (itemId, action) => {
-    updateCartItem(itemId, action, 1); // Calling updateCartItem with action and quantity 1
+    updateCartItem(itemId, action, 1);
   };
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full table-auto border-collapse border border-gray-700">
-        <thead>
+      <table className="w-full text-left border-collapse">
+        <thead className="bg-[#f8f1e9] border-b border-gray-300">
           <tr>
-            <th className="border border-gray-600 py-4 px-6 text-left">
-              Image
-            </th>
-            <th className="border border-gray-600 py-4 px-6 text-left">
-              Product Name
-            </th>
-            <th className="border border-gray-600 py-4 px-6 text-left">
-              Price
-            </th>
-            <th className="border border-gray-600 py-4 px-6 text-left">
-              Quantity
-            </th>
-            <th className="border border-gray-600 py-4 px-6 text-left">
-              Action
-            </th>
-            <th className="border border-gray-600 py-4 px-6 text-left">
-              Total
-            </th>
+            <th className="py-4 px-6">Image</th>
+            <th className="py-4 px-6">Product Name</th>
+            <th className="py-4 px-6">Price</th>
+            <th className="py-4 px-6">Quantity</th>
+            <th className="py-4 px-6">Action</th>
+            <th className="py-4 px-6">Total</th>
           </tr>
         </thead>
         <tbody>
           {cartItems.map((item, index) => (
-            <tr key={index}>
-              <td className="border border-gray-600 py-4 px-6">
+            <tr key={index} className="border-b border-gray-300">
+              <td className="py-4 px-6">
                 {item?.variant?.image_link ? (
                   <Image
                     src={item?.variant?.image_link}
                     alt={item?.productId?.title}
-                    width={100}
-                    height={100}
-                    className="w-16 h-16 object-cover"
+                    width={70}
+                    height={70}
+                    className="w-16 h-16 object-cover rounded-md"
                   />
                 ) : (
                   <ImageOff className="w-16 h-16 object-cover" />
                 )}
               </td>
-              <td className="border border-gray-600 py-4 px-6">
-                {item?.productId?.title}
+              <td className="py-4 px-6 text-sm">{item?.productId?.title}</td>
+              <td className="py-4 px-6">
+                ₹{item?.productId?.price.toLocaleString()}
               </td>
-              <td className="border border-gray-600 py-4 px-6">
-                ₹
-                {item?.productId?.salePrice
-                  ? item?.productId?.salePrice.toLocaleString()
-                  : item?.productId?.price.toLocaleString()}
-              </td>
-              <td className="w-full h-full py-4 px-6 flex-center">
-                {/* Decrement button */}
+              <td className="py-4 px-6 flex items-center">
                 <Button
                   variant="outline"
+                  className="border-gray-400 text-gray-600"
                   onClick={() =>
                     handleQuantityChange(item?._id, "decrement-quantity")
                   }
                 >
-                  <TfiMinus className="text-lg text-gray-700" />
+                  <TfiMinus />
                 </Button>
-                <span className="w-fit text-center mx-2 px-4 border border-gray-600 rounded-lg">
-                  {item?.quantity}
-                </span>
-                {/* Increment button */}
+                <span className="mx-2 w-10 text-center">{item?.quantity}</span>
                 <Button
                   variant="outline"
+                  className="border-gray-400 text-gray-600"
                   onClick={() =>
                     handleQuantityChange(item?._id, "increment-quantity")
                   }
                 >
-                  <TfiPlus className="text-lg text-gray-700" />
+                  <TfiPlus />
                 </Button>
               </td>
-              <td className="border border-gray-600 py-4 px-6 text-center">
+              <td className="py-4 px-6 text-center">
                 <RxCross1
-                  onClick={() => removeCartItem(item?.id)}
-                  color="red"
-                  className="cursor-pointer active:scale-90 ease-in-out duration-200"
+                  onClick={() => removeCartItem(item?._id)}
+                  className="text-red-600 cursor-pointer"
                 />
               </td>
-              <td className="border border-gray-600 py-4 px-6">
-                ₹
-                {item?.productId?.salePrice
-                  ? (
-                      item?.productId?.salePrice * item?.quantity
-                    ).toLocaleString()
-                  : (item?.productId?.price * item?.quantity).toLocaleString()}
+              <td className="py-4 px-6">
+                ₹{(item?.productId?.price * item?.quantity).toLocaleString()}
               </td>
             </tr>
           ))}

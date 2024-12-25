@@ -4,8 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { Button } from "./button";
+import { useCart } from "@/context/CartProvider";
 
 const ProductCard = ({ product, loading = false }) => {
+  // console.log("product", product);
+
+  const { addToCart } = useCart();
+
   const [imageError, setImageError] = useState(false);
   const [imageTwoError, setImageTwoError] = useState(false);
 
@@ -115,6 +120,7 @@ const ProductCard = ({ product, loading = false }) => {
             )}
         </div>
         <Button
+          onClick={() => addToCart(product, 1, product.variants[0])}
           disabled={loading}
           className={`mt-2 w-full ${
             loading ? "bg-gray-300" : "bg-primary-clr"
