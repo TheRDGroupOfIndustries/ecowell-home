@@ -3,12 +3,12 @@ import connectToMongoDB from "@/utils/db";
 import Products from "@/models/Products";
 
 export async function GET(request, { params }) {
-  const { id } = params;
+  const { sku } = params;
 
   try {
     await connectToMongoDB();
 
-    const product = await Products.findById(id);
+    const product = await Products.findOne({ sku: sku });
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
