@@ -133,9 +133,9 @@ export default function ProfilePage() {
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Personal Detail</CardTitle>
           <Button
-            variant="outline"
-            onClick={() => router.push("/orders")}
-            className="bg-primary-clr hover:bg-green-700 text-white transition-colors text-lg"
+            onClick={() => router.push("/account/orders")}
+            effect="gooeyLeft"
+            className="bg-primary-clr text-white py-2 rounded-md hover:bg-green-700 transition"
           >
             My Orders
           </Button>

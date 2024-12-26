@@ -1,3 +1,5 @@
+import MyOrders from "@/components/pages/account/MyOrdersPage";
+
 export default function OrderPage() {
-  return <div>OrderPage</div>;
+  return <MyOrders />;
 }

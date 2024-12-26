@@ -22,7 +22,8 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [orderList, setOrderList] = useState([]);
+
+  const [userOrderList, setUserOrderList] = useState([]);
   const [placingOrder, setPlacingOrder] = useState(false);
 
   const fetchCart = useCallback(async () => {
@@ -226,7 +227,7 @@ export const CartProvider = ({ children }) => {
       }
 
       if (orderResult.status === 200) {
-        setOrderList(orderResult?.updatedOrders || []);
+        setUserOrderList(orderResult?.updatedOrders || []);
         router.push(
           `/account/orders/order-success?orderId=${orderResult?.orderId}`
         );
@@ -244,6 +245,38 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const cancelPlacedOrder = async (order_id) => {
+    try {
+      const response = await fetch("/api/order/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: userId,
+          order_id,
+          updatedStatus: "cancelled",
+        }),
+      });
+
+      const data = await response.json();
+      // console.log("cancel order data:", data);
+
+      if (response.ok) {
+        if (data.status === 404) {
+          return toast.error(
+            data?.error || "Failed to cancel order, please try again."
+          );
+        }
+        setUserOrderList(data?.updatedOrders?.orders || userOrderList || []);
+        toast.success(data?.message || "Order cancelled successfully!");
+      } else {
+        toast.error(data?.error || "Failed to cancel order, please try again.");
+      }
+    } catch (error) {
+      console.log("error:", error);
+      toast.error("Something went wrong, please try again later.");
+    }
+  };
+
   const noOfCartItems = cartItems.length;
 
   return (
@@ -256,9 +289,11 @@ export const CartProvider = ({ children }) => {
         addToCart,
         removeCartItem,
         updateCartItem,
+        cancelPlacedOrder,
         placeOrder,
         placingOrder,
-        orderList,
+        userOrderList,
+        setUserOrderList,
       }}
     >
       {children}

@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
 import connectToMongoDB from "@/utils/db";
 import Order from "@/models/Order";
+import Products from "@/models/Products";
 
 export async function GET(request, { params }) {
-  const { userId } = params;
+  const { user_id } = params;
 
   try {
     await connectToMongoDB();
 
-    const userOrders = await Order.findOne({ user_id: userId }).populate({
+    const userOrders = await Order.findOne({ user_id }).populate({
       path: "orders.products.product_id",
-      model: "Products",
       select: "_id title sku salePrice price variants",
     });
 

@@ -153,27 +153,27 @@ function Search({isHomeScrolled}) {
 
 
 
-  useEffect(() => {
-    async function searchProducts() {
-      if (!query.trim()) {
-        setResults([]);
-        return;
-      }
+  // useEffect(() => {
+  //   async function searchProducts() {
+  //     if (!query.trim()) {
+  //       setResults([]);
+  //       return;
+  //     }
 
-      setIsLoading(true);
-      try {
-        // Simulate API call delay
+  //     setIsLoading(true);
+  //     try {
+  //       // Simulate API call delay
       
-      } catch (error) {
-        console.error('Error searching products:', error);
-        setResults([]);
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  //     } catch (error) {
+  //       console.error('Error searching products:', error);
+  //       setResults([]);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
 
-    searchProducts();
-  }, [debouncedSearch]);
+  //   searchProducts();
+  // }, [debouncedSearch]);
 
 
   return (

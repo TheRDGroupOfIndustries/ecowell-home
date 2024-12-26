@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connectToMongoDB from "@/utils/db";
 import Order from "@/models/Order";
+import Products from "@/models/Products";
 
 export async function GET(request, { params }) {
   const { user_id, order_id } = params;
@@ -12,8 +13,8 @@ export async function GET(request, { params }) {
 
     const userOrders = await Order.findOne({ user_id }).populate({
       path: "orders.products.product_id",
-      model: "Products",
       select: "_id title sku salePrice price variants",
+      // model: "Products",
     });
 
     if (!userOrders) {
