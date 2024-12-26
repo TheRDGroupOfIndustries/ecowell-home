@@ -51,7 +51,7 @@ const ProductCardSelect = ({ product, isSelected, onToggle }) => {
       </div>
 
       <div className="mt-1">
-        <h3 className="text-sm font-bold">{product.title}</h3>
+        <h3 className="text-sm font-bold line-clamp-1">{product.title}</h3>
 
         <div className="flex items-center gap-2">
           <span className="text-lg font-bold">{product.price}</span>

@@ -6,6 +6,7 @@ import { fadeIn, staggerContainer } from "@/lib/utils";
 import { GiDna2, GiHoneycomb } from "react-icons/gi";
 import { SiThunderstore } from "react-icons/si";
 import { TbDeviceLandlinePhone } from "react-icons/tb";
+import { Search } from "@/components/layout/Navbar";
 
 const trendingData = [
   { icon: <GiDna2 size={20} />, text: "Protein" },
@@ -15,13 +16,29 @@ const trendingData = [
 ];
 
 const Trending = () => {
+  const [searchOpen, setSearchOpen] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const handleTrendingItemClick = (text) => {
+    setSearchQuery(text);
+    setSearchOpen(true);
+  };
+
   return (
     <motion.div
       variants={staggerContainer}
       initial="hidden"
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
+      className="relative"
     >
+      <Search
+        isHomeScrolled={true}
+        open={searchOpen}
+        setOpen={setSearchOpen}
+        initialQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
       <div className="w-full h-fit flex flex-col items-center justify-center gap-6 p-8">
         <motion.h2
           variants={fadeIn("up", 0.2, 1)}
@@ -31,8 +48,12 @@ const Trending = () => {
         </motion.h2>
         <div className="w-full h-fit flex items-center justify-center gap-4">
           {trendingData.map((item, index) => (
-            <motion.div key={index} variants={fadeIn("right", 0.2 * index, 1)}>
-              <div className="hover-fill border border-gray-950 hover:text-white hover:border-secondary-clr w-fit h-fit p-2 px-4 flex items-center justify-center gap-2 text-lg 2xl:text-xl">
+            <motion.div 
+              key={index} 
+              variants={fadeIn("right", 0.2 * index, 1)}
+              onClick={() => handleTrendingItemClick(item.text)}
+            >
+              <div className="hover-fill border border-gray-950 hover:text-white hover:border-secondary-clr w-fit h-fit p-2 px-4 flex items-center justify-center gap-2 text-lg 2xl:text-xl cursor-pointer">
                 {item.icon}
                 <span>{item.text}</span>
               </div>

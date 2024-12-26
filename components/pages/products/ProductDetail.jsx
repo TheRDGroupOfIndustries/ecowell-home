@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FrequentlyBoughtTogether } from "./components/BroughtTogether";
@@ -10,23 +10,26 @@ import TheStories from "./components/TheStories";
 import PurposeAndTrust from "./components/PurposeAndTrust";
 import FrequentlyAskedQuestions from "./components/FrequentlyAskedQuestions";
 import CustomerReviews from "./components/CustomerReviews";
-import AddToCartBtn from './components/AddToCartBtn';
+import SkeletonLoader from "./components/SkeletonLoader";
+import AddToCartBtn from "./components/AddToCartBtn";
 
 const ProductDetail = ({ productSku }) => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedVariant, setSelectedVariant] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await fetch(`/api/products/${productSku}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch product');
+          throw new Error("Failed to fetch product");
         }
         const data = await response.json();
         setProduct(data);
+        setSelectedVariant(data.variants[0]); // Set the first variant as default
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error("Error fetching product:", error);
       } finally {
         setLoading(false);
       }
@@ -36,7 +39,7 @@ const ProductDetail = ({ productSku }) => {
   }, [productSku]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <SkeletonLoader />;
   }
 
   if (!product) {
@@ -46,19 +49,23 @@ const ProductDetail = ({ productSku }) => {
   return (
     <>
       <section className="w-full h-full space-y-8 p-4 md:px-8 lg:px-10 xl:px-14 md:pt-28">
-      <AddToCartBtn/>
-      
+        <AddToCartBtn />
+
         <div className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8">
-          <ImageGallery images={product.variants[0].images} />
-          <Details product={product} />
+          <ImageGallery images={selectedVariant.images} />
+          <Details
+            product={product}
+            selectedVariant={selectedVariant}
+            setSelectedVariant={setSelectedVariant}
+          />
         </div>
-        <FrequentlyBoughtTogether/>
-        <RelatedProduct/>
-        <ProductDiscover/>
-        <TheStories/>
-        <PurposeAndTrust/>
-        <FrequentlyAskedQuestions faqs={product.faqs}/>
-        <CustomerReviews/>
+        <FrequentlyBoughtTogether />
+        <RelatedProduct category={product.category.title} />
+        <ProductDiscover />
+        <TheStories />
+        <PurposeAndTrust />
+        <FrequentlyAskedQuestions faqs={product.faqs} />
+        <CustomerReviews productId={product._id} />
       </section>
     </>
   );
@@ -68,6 +75,20 @@ export default ProductDetail;
 
 export const ImageGallery = ({ images }) => {
   const [activeImage, setActiveImage] = useState(images[0]);
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const scrollUp = () => {
+    setScrollPosition(Math.max(scrollPosition - 1, 0));
+  };
+
+  const scrollDown = () => {
+    setScrollPosition(Math.min(scrollPosition + 1, images.length - 1));
+  };
+
+  useEffect(() => {
+    setActiveImage(images[0]);
+    setScrollPosition(0);
+  }, [images]);
 
   return (
     <>
@@ -79,21 +100,37 @@ export const ImageGallery = ({ images }) => {
           id="images-gallery"
           className="w-full h-fit lg:h-[65vh] flex gap-4 select-none overflow-hidden"
         >
-          <div
-            id="images"
-            className="w-[20%] h-full overflow-x-hidden overflow-y-scroll scroll-none"
-          >
-            {images.map((image, index) => (
-              <Image
-                key={index}
-                src={image}
-                alt={`image ${index + 1}`}
-                width={200}
-                height={200}
-                className="w-full h-fit cursor-pointer"
-                onClick={() => setActiveImage(image)}
-              />
-            ))}
+          <div id="images" className="w-[20%] h-full relative overflow-hidden">
+            <button
+              onClick={scrollUp}
+              className="absolute top-0 left-0 w-full bg-gray-200 z-10"
+            >
+              ▲
+            </button>
+            <div className="h-full overflow-y-scroll mt-6">
+              {images.map((image, index) => (
+                <Image
+                  key={index}
+                  src={image}
+                  alt={`image ${index + 1}`}
+                  width={200}
+                  height={200}
+                  className={`w-full h-auto cursor-pointer transition-all mb-2 ${
+                    activeImage === image
+                      ? "border-2 border-primary-clr shadow-xl"
+                      : ""
+                  }`}
+                  onClick={() => setActiveImage(image)}
+                  style={{ transform: `translateY(-${scrollPosition * 100}%)` }}
+                />
+              ))}
+            </div>
+            <button
+              onClick={scrollDown}
+              className="absolute bottom-0 left-0 w-full bg-gray-200 z-10"
+            >
+              ▼
+            </button>
           </div>
           <div id="active-image" className="w-[80%] h-full">
             <Image
@@ -101,7 +138,7 @@ export const ImageGallery = ({ images }) => {
               alt="Active product image"
               width={1000}
               height={1000}
-              className="w-full h-fit"
+              className="w-full h-full object-contain"
             />
           </div>
         </div>
@@ -132,7 +169,14 @@ export const ImageGallery = ({ images }) => {
   );
 };
 
-export const Details = ({ product }) => {
+const Details = ({ product, selectedVariant, setSelectedVariant }) => {
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const description = product.description;
+  const shortDescription = description.split(".").slice(0, 2).join(".");
+
+  const handleVariantChange = (variant) => {
+    setSelectedVariant(variant);
+  };
   return (
     <>
       <div
@@ -148,7 +192,7 @@ export const Details = ({ product }) => {
           </div>
           <div className="space-y-1 text-primary-clr">
             <div className="text-md md:text-lg lg:text-2xl xl:text-3xl font-semibold">
-              ₹{product.price}/-
+              ₹{product.price.toFixed(2)}/-
             </div>
             <div className="text-xs">Price include GST</div>
           </div>
@@ -158,23 +202,24 @@ export const Details = ({ product }) => {
             Description
           </div>
           <p className="text-xs md:text-sm">
-            {product.description.slice(0, 150)}...{" "}
-            <span>
+            {showFullDescription ? description : shortDescription}
+            {description.length > shortDescription.length && (
               <Button
                 variant="link"
                 size="sm"
-                className="w-fit px-0 text-xs md:text-sm"
+                className="w-fit p-0 text-xs md:text-sm ml-3"
+                onClick={() => setShowFullDescription(!showFullDescription)}
               >
-                Read more
+                {showFullDescription ? "Read less" : "Read more"}
               </Button>
-            </span>
+            )}
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
           {product.variants.map((variant, index) => (
             <div
               key={index}
-              className="text-sm text-primary-clr border border-gray-300 p-1 px-3"
+              className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer`}
             >
               {variant.netQuantity}
             </div>
@@ -184,7 +229,12 @@ export const Details = ({ product }) => {
           {product.variants.map((variant, index) => (
             <div
               key={index}
-              className="text-sm text-primary-clr border border-gray-300 p-1 px-3"
+              className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer ${
+                selectedVariant.flavor === variant.flavor
+                  ? "bg-primary-clr text-white"
+                  : ""
+              }`}
+              onClick={() => handleVariantChange(variant)}
             >
               {variant.flavor.toUpperCase()}
             </div>
@@ -238,4 +288,3 @@ export const Details = ({ product }) => {
     </>
   );
 };
-

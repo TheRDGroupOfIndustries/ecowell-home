@@ -3,7 +3,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,12 +12,12 @@ import { useCart } from "@/context/CartProvider";
 import { useNotification } from "@/context/NotificationProvider";
 import { fadeIn, staggerContainer } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Heart, ImageIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import Notification from "./Notification";
 import { Input } from "../ui/input";
@@ -26,14 +25,17 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { ScrollArea } from "../ui/scroll-area";
 import { Badge } from "../ui/badge";
 import { useDebounce } from "@/hooks/debounce";
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
+import ReactCountUp from "../ui/countUp";
 
 const Navbar = ({ companyName }) => {
   const pathname = usePathname();
-  const { data: session } = useSession(); // console.log(session);
+  const { data: session } = useSession();
   const { noOfCartItems } = useCart();
   const { isNotificationOpen } = useNotification();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -51,7 +53,13 @@ const Navbar = ({ companyName }) => {
     return () => observer.disconnect();
   }, []);
 
+  const handleTrendingItemClick = useCallback((text) => {
+    setSearchOpen(true);
+    setSearchQuery(text);
+  }, []);
+
   const isHomeScrolled = pathname === "/" ? isScrolled : true;
+
   return (
     <motion.div
       variants={staggerContainer()}
@@ -79,23 +87,29 @@ const Navbar = ({ companyName }) => {
             <Link
               key={index}
               href={link.herf}
-              className={`hover:text-gray-700 text-lg text-bold ${isHomeScrolled ? "text-black" : "text-white"
-                } ease-in-out duration-300`}
+              className={`hover:text-gray-700 text-lg text-bold ${
+                isHomeScrolled ? "text-black" : "text-white"
+              } ease-in-out duration-300`}
             >
               {link.head}
             </Link>
           ))}
         </motion.div>
         <motion.div variants={fadeIn("down", 0.4)} className="flex space-x-4">
-
-          <Search isHomeScrolled={isHomeScrolled} />
-
+          <Search
+            isHomeScrolled={isHomeScrolled}
+            open={searchOpen}
+            setOpen={setSearchOpen}
+            initialQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
           <Link href="/account/wishlist">
             <div className="relative">
               <CiHeart
                 size={20}
-                className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
-                  } ease-in-out duration-300`}
+                className={`hover:text-gray-700 ${
+                  isHomeScrolled ? "text-black" : "text-white"
+                } ease-in-out duration-300`}
               />
             </div>
           </Link>
@@ -108,16 +122,18 @@ const Navbar = ({ companyName }) => {
               )}
               <CiShoppingCart
                 size={20}
-                className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
-                  } ease-in-out duration-300`}
+                className={`hover:text-gray-700 ${
+                  isHomeScrolled ? "text-black" : "text-white"
+                } ease-in-out duration-300`}
               />
             </div>
           </Link>
           <Link href="/account">
             <CiUser
               size={20}
-              className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
-                } ease-in-out duration-300`}
+              className={`hover:text-gray-700 ${
+                isHomeScrolled ? "text-black" : "text-white"
+              } ease-in-out duration-300`}
             />
           </Link>
         </motion.div>
@@ -128,85 +144,127 @@ const Navbar = ({ companyName }) => {
 
 export default Navbar;
 
-
-function Search({isHomeScrolled}) {
-  const [searchQuery, setSearchQuery] = useState('');
+export function Search({
+  isHomeScrolled,
+  open,
+  setOpen,
+  initialQuery,
+  setSearchQuery: setParentSearchQuery,
+}) {
+  const [searchQuery, setLocalSearchQuery] = useState(initialQuery || "");
   const debouncedSearch = useDebounce(searchQuery, 300);
   const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState([
-    {
-      id: '1',
-      name: 'Wireless Headphones',
-      price: 199.99,
-      originalPrice: 249.99,
-      discount: 20,
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80',
-    },
-    {
-      id: '2',
-      name: 'Smart Watch',
-      price: 299.99,
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80',
-    },
-    // Add more mock products as needed
-  ]);
+  const [results, setResults] = useState([]);
+  const dialogRef = useRef(null);
 
+  useEffect(() => {
+    setLocalSearchQuery(initialQuery || "");
+  }, [initialQuery]);
 
+  const handleSearchChange = (e) => {
+    const newValue = e.target.value;
+    setLocalSearchQuery(newValue);
+    setParentSearchQuery(newValue);
+  };
 
-  // useEffect(() => {
-  //   async function searchProducts() {
-  //     if (!query.trim()) {
-  //       setResults([]);
-  //       return;
-  //     }
+  useEffect(() => {
+    async function searchProducts() {
+      if (!debouncedSearch.trim()) {
+        setResults([]);
+        return;
+      }
 
-  //     setIsLoading(true);
-  //     try {
-  //       // Simulate API call delay
-      
-  //     } catch (error) {
-  //       console.error('Error searching products:', error);
-  //       setResults([]);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   }
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `/api/products/search?query=${encodeURIComponent(debouncedSearch)}`
+        );
+        const data = await response.json();
 
-  //   searchProducts();
-  // }, [debouncedSearch]);
+        const sortedResults = data.sort((a, b) => {
+          if (a.title.toLowerCase().includes(debouncedSearch.toLowerCase()))
+            return -1;
+          if (b.title.toLowerCase().includes(debouncedSearch.toLowerCase()))
+            return 1;
+          if (
+            a.description.toLowerCase().includes(debouncedSearch.toLowerCase())
+          )
+            return -1;
+          if (
+            b.description.toLowerCase().includes(debouncedSearch.toLowerCase())
+          )
+            return 1;
+          if (
+            a.category.title
+              .toLowerCase()
+              .includes(debouncedSearch.toLowerCase())
+          )
+            return -1;
+          if (
+            b.category.title
+              .toLowerCase()
+              .includes(debouncedSearch.toLowerCase())
+          )
+            return 1;
+          return 0;
+        });
 
+        setResults(sortedResults);
+      } catch (error) {
+        console.error("Error searching products:", error);
+        setResults([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    searchProducts();
+  }, [debouncedSearch]);
+
+  const handleClose = () => {
+    setOpen(false);
+    setLocalSearchQuery("");
+    setParentSearchQuery("");
+    setResults([]);
+  };
 
   return (
-    <Dialog>
-      <DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild className="cursor-default">
         <CiSearch
           size={20}
-          className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
-            } ease-in-out duration-300`}
+          className={`hover:text-gray-700 cursor-default ${
+            isHomeScrolled ? "text-black" : "text-white"
+          } ease-in-out duration-300`}
+          onClick={() => setOpen(true)}
         />
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] z-50">
+      <DialogContent className="sm:max-w-[600px] z-50" ref={dialogRef}>
         <DialogHeader>
           <DialogTitle className="text-left mb-4">Search Products</DialogTitle>
           <div className="relative">
             <Input
               placeholder="Search for products..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               className="w-full"
             />
           </div>
         </DialogHeader>
-        
+
         <ScrollArea className="mt-4 max-h-[60vh] rounded-md">
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
             </div>
           ) : results.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2">
+            <div className="grid grid-cols-1 sm:grid-cols-1 gap-4 p-2">
               {results.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductNode
+                  key={product._id}
+                  productDetails={product}
+                  onClose={handleClose}
+                />
               ))}
             </div>
           ) : searchQuery ? (
@@ -221,42 +279,60 @@ function Search({isHomeScrolled}) {
         </ScrollArea>
       </DialogContent>
     </Dialog>
-
-  )
-}
-
-function ProductCard({ product, className }) {
-  return (
-    <Card className={cn('overflow-hidden group cursor-pointer', className)}>
-      <CardContent className="p-0">
-        <div className="aspect-square  relative">
-          <Image
-            src={product.image}
-            alt={product.name}
-            width={50}
-            height={50}
-            className="object-cover w-full h-full transition-transform group-hover:scale-105"
-          />
-          {product.discount > 0 && (
-            <Badge className="absolute top-2 right-2 bg-red-500">
-              -{product.discount}%
-            </Badge>
-          )}
-        </div>
-      </CardContent>
-      <CardFooter className="p-4">
-        <div className="space-y-1">
-          <h3 className="font-semibold text-sm">{product.name}</h3>
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-bold">${product.price}</span>
-            {product.originalPrice && (
-              <span className="text-sm text-muted-foreground line-through">
-                ${product.originalPrice}
-              </span>
-            )}
-          </div>
-        </div>
-      </CardFooter>
-    </Card>
   );
 }
+
+export const ProductNode = ({ productDetails, onClose }) => {
+  const chosedVariant = productDetails?.variants[0];
+
+  return (
+    <div className="w-full h-fit">
+      <Link
+        href={`/products/${productDetails?.sku}`}
+        onClick={onClose}
+        className="w-full"
+      >
+        <div className="w-full h-fit group flex justify-between gap-3 hover:shadow-md transition-transform duration-300">
+          {chosedVariant ? (
+            <div className="w-20 h-20 group-hover:scale-105 transition-transform duration-300 overflow-hidden">
+              <Image
+                src={chosedVariant?.images[0]}
+                alt={chosedVariant?.flavor}
+                width={150}
+                height={150}
+                // className="w-full h-full animate-fade-in overflow-hidden"
+              />
+              {/* <Image
+              src={
+                chosedVariant?.images[1]
+                  ? chosedVariant?.images[1]
+                  : chosedVariant?.images[0]
+              }
+              alt={chosedVariant?.flavor}
+              width={100}
+              height={150}
+              className="animate-fade-in hidden group-hover:block transition-transform"
+            /> */}
+            </div>
+          ) : (
+            <ImageIcon src={""} alt={""} width={100} height={150} />
+          )}
+          <div className="w-full flex-1 flex flex-col gap-1">
+            <h5 className="text-base font-semibold">{productDetails?.title}</h5>
+            <p className="text-base">{chosedVariant?.flavor}</p>
+          </div>
+
+          <div className="w-fit flex flex-col gap-1">
+            <h5 className="text-base font-semibold">Price</h5>
+            <p className="text-base">
+              <ReactCountUp
+                amt={productDetails?.salePrice || productDetails?.price || 0}
+                prefix="₹"
+              />
+            </p>
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
+};
