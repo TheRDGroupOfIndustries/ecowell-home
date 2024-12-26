@@ -30,7 +30,7 @@ export default async function RootLayout({ children }) {
       >
         <AuthProvider session={session}>
           {children}
-          <Toaster richColors closeButton />
+          <Toaster richColors closeButton position="bottom-center" />
         </AuthProvider>
       </body>
     </html>
