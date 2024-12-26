@@ -10,6 +10,7 @@ import TheStories from "./components/TheStories";
 import PurposeAndTrust from "./components/PurposeAndTrust";
 import FrequentlyAskedQuestions from "./components/FrequentlyAskedQuestions";
 import CustomerReviews from "./components/CustomerReviews";
+import AddToCartBtn from './components/AddToCartBtn';
 
 const ProductDetail = ({ productSku }) => {
   const [product, setProduct] = useState(null);
@@ -45,6 +46,8 @@ const ProductDetail = ({ productSku }) => {
   return (
     <>
       <section className="w-full h-full space-y-8 p-4 md:px-8 lg:px-10 xl:px-14 md:pt-28">
+      <AddToCartBtn/>
+      
         <div className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8">
           <ImageGallery images={product.variants[0].images} />
           <Details product={product} />
@@ -63,7 +66,7 @@ const ProductDetail = ({ productSku }) => {
 
 export default ProductDetail;
 
-const ImageGallery = ({ images }) => {
+export const ImageGallery = ({ images }) => {
   const [activeImage, setActiveImage] = useState(images[0]);
 
   return (
@@ -129,7 +132,7 @@ const ImageGallery = ({ images }) => {
   );
 };
 
-const Details = ({ product }) => {
+export const Details = ({ product }) => {
   return (
     <>
       <div
@@ -235,3 +238,4 @@ const Details = ({ product }) => {
     </>
   );
 };
+

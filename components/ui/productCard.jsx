@@ -6,6 +6,7 @@ import { Star } from "lucide-react";
 import { Button } from "./button";
 import { useCart } from "@/context/CartProvider";
 import Link from "next/link";
+import AddToCartmodel from "./addToCartmodel";
 
 const ProductCard = ({ product, loading = false }) => {
   // console.log("product", product);
@@ -125,20 +126,7 @@ const ProductCard = ({ product, loading = false }) => {
           </div>
         </div>
       </Link>
-      <Button
-        onClick={() => addToCart(product, 1, product.variants[0])}
-        disabled={loading}
-        effect="gooeyLeft"
-        className={`mt-2 w-full ${
-          loading ? "bg-gray-300" : "bg-primary-clr"
-        } text-white py-2 rounded-md hover:bg-green-700 transition`}
-      >
-        {loading ? (
-          <div className="h-4 w-3/4 bg-gray-400"></div>
-        ) : (
-          "Add To Cart"
-        )}
-      </Button>
+      <AddToCartmodel loading={loading} product={product} />
     </div>
   );
 };
