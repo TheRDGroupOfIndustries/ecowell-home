@@ -10,8 +10,8 @@ import TheStories from "./components/TheStories";
 import PurposeAndTrust from "./components/PurposeAndTrust";
 import FrequentlyAskedQuestions from "./components/FrequentlyAskedQuestions";
 import CustomerReviews from "./components/CustomerReviews";
-import AddToCartBtn from './components/AddToCartBtn';
 import SkeletonLoader from './components/SkeletonLoader';
+import AddToCartBtn from './components/AddToCartBtn';
 
 const ProductDetail = ({ productSku }) => {
   const [product, setProduct] = useState(null);
@@ -27,6 +27,7 @@ const ProductDetail = ({ productSku }) => {
         }
         const data = await response.json();
         setProduct(data);
+        setSelectedVariant(data.variants[0]); // Set the first variant as default
       } catch (error) {
         console.error('Error fetching product:', error);
       } finally {
@@ -38,7 +39,7 @@ const ProductDetail = ({ productSku }) => {
   }, [productSku]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <SkeletonLoader />;
   }
 
   if (!product) {
@@ -51,15 +52,14 @@ const ProductDetail = ({ productSku }) => {
       <AddToCartBtn/>
       
         <div className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8">
-          <ImageGallery images={product.variants[0].images} />
-          <Details product={product} />
+          <ImageGallery images={selectedVariant.images} />
+          <Details product={product} selectedVariant={selectedVariant} setSelectedVariant={setSelectedVariant} />
         </div>
         <FrequentlyBoughtTogether/>
         <RelatedProduct category={product.category.title}/>
         <ProductDiscover/>
         <TheStories/>
         <PurposeAndTrust/>
-        <Image src={"/banner1.png"} alt="Banner" width={1000} height={1000} className='w-full h-[900px]' />
         <FrequentlyAskedQuestions faqs={product.faqs}/>
         <CustomerReviews productId={product._id}/>
       </section>
@@ -71,6 +71,20 @@ export default ProductDetail;
 
 export const ImageGallery = ({ images }) => {
   const [activeImage, setActiveImage] = useState(images[0]);
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const scrollUp = () => {
+    setScrollPosition(Math.max(scrollPosition - 1, 0));
+  };
+
+  const scrollDown = () => {
+    setScrollPosition(Math.min(scrollPosition + 1, images.length - 1));
+  };
+
+  useEffect(() => {
+    setActiveImage(images[0]);
+    setScrollPosition(0);
+  }, [images]);
 
   return (
     <>
@@ -84,20 +98,23 @@ export const ImageGallery = ({ images }) => {
         >
           <div
             id="images"
-            className="w-[20%] h-full overflow-x-hidden overflow-y-scroll scroll-none"
+            className="w-[20%] h-full relative overflow-hidden"
           >
             <button onClick={scrollUp} className="absolute top-0 left-0 w-full bg-gray-200 z-10">▲</button>
-            {images.map((image, index) => (
-              <Image
-                key={index}
-                src={image}
-                alt={`image ${index + 1}`}
-                width={200}
-                height={200}
-                className="w-full h-fit cursor-pointer"
-                onClick={() => setActiveImage(image)}
-              />
-            ))}
+            <div className="h-full overflow-y-scroll mt-6">
+              {images.map((image, index) => (
+                <Image
+                  key={index}
+                  src={image}
+                  alt={`image ${index + 1}`}
+                  width={200}
+                  height={200}
+                  className={`w-full h-auto cursor-pointer transition-all mb-2 ${activeImage === image ? 'border-2 border-primary-clr shadow-xl' : ''}`}
+                  onClick={() => setActiveImage(image)}
+                  style={{ transform: `translateY(-${scrollPosition * 100}%)` }}
+                />
+              ))}
+            </div>
             <button onClick={scrollDown} className="absolute bottom-0 left-0 w-full bg-gray-200 z-10">▼</button>
           </div>
           <div id="active-image" className="w-[80%] h-full">
@@ -106,7 +123,7 @@ export const ImageGallery = ({ images }) => {
               alt="Active product image"
               width={1000}
               height={1000}
-              className="w-full h-fit"
+              className="w-full h-full object-contain"
             />
           </div>
         </div>
@@ -145,7 +162,6 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant);
   };
-
   return (
     <>
       <div
@@ -161,7 +177,7 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
           </div>
           <div className="space-y-1 text-primary-clr">
             <div className="text-md md:text-lg lg:text-2xl xl:text-3xl font-semibold">
-            ₹{product.price.toFixed(2)}/-
+              ₹{product.price.toFixed(2)}/-
             </div>
             <div className="text-xs">Price include GST</div>
           </div>
@@ -171,7 +187,7 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
             Description
           </div>
           <p className="text-xs md:text-sm">
-          {showFullDescription ? description : shortDescription}
+            {showFullDescription ? description : shortDescription}
             {description.length > shortDescription.length && (
               <Button
                 variant="link"
@@ -188,7 +204,7 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
           {product.variants.map((variant, index) => (
             <div
               key={index}
-              className="text-sm text-primary-clr border border-gray-300 p-1 px-3"
+              className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer`}
             >
               {variant.netQuantity}
             </div>
@@ -201,6 +217,7 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
               className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer ${
                 selectedVariant.flavor === variant.flavor ? 'bg-primary-clr text-white' : ''
               }`}
+              onClick={() => handleVariantChange(variant)}
             >
               {variant.flavor.toUpperCase()}
             </div>
