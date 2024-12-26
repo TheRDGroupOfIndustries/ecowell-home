@@ -13,7 +13,7 @@ import { useCart } from "@/context/CartProvider";
 import { useNotification } from "@/context/NotificationProvider";
 import { fadeIn, staggerContainer } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Heart, ImageIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,6 +27,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Badge } from "../ui/badge";
 import { useDebounce } from "@/hooks/debounce";
 import { cn } from '@/lib/utils';
+import ReactCountUp from "../ui/countUp";
 
 const Navbar = ({ companyName }) => {
   const pathname = usePathname();
@@ -133,23 +134,7 @@ function Search({isHomeScrolled}) {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearch = useDebounce(searchQuery, 300);
   const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState([
-    {
-      id: '1',
-      name: 'Wireless Headphones',
-      price: 199.99,
-      originalPrice: 249.99,
-      discount: 20,
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80',
-    },
-    {
-      id: '2',
-      name: 'Smart Watch',
-      price: 299.99,
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80',
-    },
-    // Add more mock products as needed
-  ]);
+  const [results, setResults] = useState();
 
 
 
@@ -206,7 +191,7 @@ function Search({isHomeScrolled}) {
           ) : results.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2">
               {results.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductNode key={product.id} productDetails={product} />
               ))}
             </div>
           ) : searchQuery ? (
@@ -225,38 +210,67 @@ function Search({isHomeScrolled}) {
   )
 }
 
-function ProductCard({ product, className }) {
+const ProductNode = ({productDetails}) => {
+  const productDetail = productDetails?.productDetails;
+  // console.log(productDetail);
+
+  const chosedVariant = productDetail?.product_id?.variants.find(
+    (variant) => variant?.flavor === productDetail?.variant_flavor
+  );
+
+  // console.log(chosedVariant);
+
   return (
-    <Card className={cn('overflow-hidden group cursor-pointer', className)}>
-      <CardContent className="p-0">
-        <div className="aspect-square  relative">
-          <Image
-            src={product.image}
-            alt={product.name}
-            width={50}
-            height={50}
-            className="object-cover w-full h-full transition-transform group-hover:scale-105"
-          />
-          {product.discount > 0 && (
-            <Badge className="absolute top-2 right-2 bg-red-500">
-              -{product.discount}%
-            </Badge>
+    <>
+      <Link href={`/products/${productDetail?.product_id?.sku}`}>
+        <div className="group grid grid-cols-4 gap-3 items-center hover:shadow-md transition-transform duration-300">
+          {chosedVariant ? (
+            <div className="group-hover:scale-105 transition-transform duration-300 overflow-hidden">
+              <Image
+                src={chosedVariant?.images[0]}
+                alt={chosedVariant?.flavor}
+                width={100}
+                height={150}
+                className="animate-fade-in group-hover:hidden transition-transform"
+              />
+              <Image
+                src={
+                  chosedVariant?.images[1]
+                    ? chosedVariant?.images[1]
+                    : chosedVariant?.images[0]
+                }
+                alt={chosedVariant?.flavor}
+                width={100}
+                height={150}
+                className="animate-fade-in hidden group-hover:block transition-transform"
+              />
+            </div>
+          ) : (
+            <ImageIcon src={""} alt={""} width={100} height={150} />
           )}
-        </div>
-      </CardContent>
-      <CardFooter className="p-4">
-        <div className="space-y-1">
-          <h3 className="font-semibold text-sm">{product.name}</h3>
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-bold">${product.price}</span>
-            {product.originalPrice && (
-              <span className="text-sm text-muted-foreground line-through">
-                ${product.originalPrice}
-              </span>
-            )}
+          <div className="w-full flex flex-col gap-1">
+            <h5 className="text-base font-semibold">
+              {productDetail?.product_id?.title}
+            </h5>
+            <p className="text-base">{productDetail?.variant_flavor}</p>
+          </div>
+
+        
+          <div className="w-full flex flex-col gap-1">
+            <h5 className="text-base font-semibold">Price</h5>
+            <p className="text-base">
+              <ReactCountUp
+                amt={
+                  productDetail?.product_id?.salePrice ||
+                  productDetail?.product_id?.price ||
+                  0
+                }
+                prefix="₹"
+              />
+            </p>
           </div>
         </div>
-      </CardFooter>
-    </Card>
+      </Link>
+    </>
   );
-}
+};
