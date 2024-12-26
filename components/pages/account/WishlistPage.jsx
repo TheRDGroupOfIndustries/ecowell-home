@@ -6,6 +6,7 @@ import { useWishlist } from '@/context/WishlistContext';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart, X } from 'lucide-react'
+import Image from 'next/image';
 
 function WishlistPage() {
   const { wishlistProducts, removeFromWishlist } = useWishlist();
@@ -30,7 +31,7 @@ function WishlistPage() {
               <TableRow key={item._id}>
                 <TableCell>
                   <Link href={`/page/product/${item.sku}`}>
-                    <img src={item.variants[0].images[0]} alt={item.title} className="w-16 h-16 object-cover" />
+                    <Image src={item.variants[0].images[0]} alt={item.title} className="w-16 h-16 object-cover" />
                   </Link>
                 </TableCell>
                 <TableCell>

@@ -14,6 +14,7 @@ import { useState } from "react";
 import { Button } from "./button";
 
 export default function AddToCartmodel({ loading, product }) {
+    console.log("product", product);
     return (
         <Dialog>
             <DialogTrigger className="w-full">
@@ -42,6 +43,9 @@ export default function AddToCartmodel({ loading, product }) {
 
 const Modal = ({ product }) => {
     const [imageTwoError, setImageTwoError] = useState(false);
+    const [variantCheck, setVariantCheck] = useState( product?.variants[0].flavor);
+    console.log("variantCheck",variantCheck);
+
     const [quantity, setQuantity] = useState(1);
     const { addToCart } = useCart();
 
@@ -53,10 +57,7 @@ const Modal = ({ product }) => {
         setQuantity(prev => prev + 1);
     };
 
-    const handleAddToCart = () => {
-        // Add your cart logic here
-        console.log(`Adding ${quantity} items to cart`);
-    };
+
 
     return (
 
@@ -120,6 +121,27 @@ const Modal = ({ product }) => {
                         </div>
                     </div>
 
+                    <div className="mb-4">
+                        <h3 className="font-semibold mb-2">variants</h3>
+                        <div className="flex max-w-[200px] items-center  h-9 ">
+                            {product.variants.map((variant, index) => (
+                                <Button
+                                key={index}
+                                variant="ghost"
+                                onClick={() => setVariantCheck(variant.flavor)}
+                                className={`px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600 border border-gray-400 "
+                                aria-label="Decrease quantity ${variant.flavor === variantCheck ? "bg-slate-100" : ""}`}
+                            >
+                                {variant.flavor}
+                            </Button>
+                                
+                            ))}
+
+
+
+                        </div>
+                    </div>
+
                     {/* Quantity Selector */}
 
                     <div className="mb-4 flex flex-col gap-2">
@@ -147,7 +169,7 @@ const Modal = ({ product }) => {
                         </div>
                         <div className=" flex flex-row items-center gap-2">
                             <Button
-                                onClick={handleAddToCart}
+                                onClick={() => addToCart(product, quantity, product.variants[0])}
                                 size="sm"
                                 className=" rounded-none w-[200px] bg-primary-clr text-white py-2  hover:bg-green-700 transition"
                             >

@@ -1,16 +1,17 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import React, { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { fadeIn, staggerContainer } from "@/lib/utils";
 import { links } from "@/constants/data";
 import { useCart } from "@/context/CartProvider";
 import { useNotification } from "@/context/NotificationProvider";
-import { CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
+import { fadeIn, staggerContainer } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { Heart } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import Notification from "./Notification";
 
 const Navbar = ({ companyName }) => {
@@ -64,9 +65,8 @@ const Navbar = ({ companyName }) => {
             <Link
               key={index}
               href={link.herf}
-              className={`hover:text-gray-700 text-lg text-bold ${
-                isHomeScrolled ? "text-black" : "text-white"
-              } ease-in-out duration-300`}
+              className={`hover:text-gray-700 text-lg text-bold ${isHomeScrolled ? "text-black" : "text-white"
+                } ease-in-out duration-300`}
             >
               {link.head}
             </Link>
@@ -75,10 +75,18 @@ const Navbar = ({ companyName }) => {
         <motion.div variants={fadeIn("down", 0.4)} className="flex space-x-4">
           <CiSearch
             size={20}
-            className={`hover:text-gray-700 ${
-              isHomeScrolled ? "text-black" : "text-white"
-            } ease-in-out duration-300`}
+            className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
+              } ease-in-out duration-300`}
           />
+          <Link href="/account/wishlist">
+            <div className="relative">
+              <CiHeart
+                size={20}
+                className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
+                  } ease-in-out duration-300`}
+              />
+            </div>
+          </Link>
           <Link href="/account/cart">
             <div className="relative">
               {noOfCartItems > 0 && (
@@ -88,18 +96,16 @@ const Navbar = ({ companyName }) => {
               )}
               <CiShoppingCart
                 size={20}
-                className={`hover:text-gray-700 ${
-                  isHomeScrolled ? "text-black" : "text-white"
-                } ease-in-out duration-300`}
+                className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
+                  } ease-in-out duration-300`}
               />
             </div>
           </Link>
           <Link href="/account">
             <CiUser
               size={20}
-              className={`hover:text-gray-700 ${
-                isHomeScrolled ? "text-black" : "text-white"
-              } ease-in-out duration-300`}
+              className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
+                } ease-in-out duration-300`}
             />
           </Link>
         </motion.div>
@@ -109,3 +115,6 @@ const Navbar = ({ companyName }) => {
 };
 
 export default Navbar;
+
+
+
