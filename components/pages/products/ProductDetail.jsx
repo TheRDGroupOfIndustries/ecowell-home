@@ -11,10 +11,12 @@ import PurposeAndTrust from "./components/PurposeAndTrust";
 import FrequentlyAskedQuestions from "./components/FrequentlyAskedQuestions";
 import CustomerReviews from "./components/CustomerReviews";
 import AddToCartBtn from './components/AddToCartBtn';
+import SkeletonLoader from './components/SkeletonLoader';
 
 const ProductDetail = ({ productSku }) => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedVariant, setSelectedVariant] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -53,12 +55,12 @@ const ProductDetail = ({ productSku }) => {
           <Details product={product} />
         </div>
         <FrequentlyBoughtTogether/>
-        <RelatedProduct/>
+        <RelatedProduct category={product.category.title}/>
         <ProductDiscover/>
         <TheStories/>
         <PurposeAndTrust/>
         <FrequentlyAskedQuestions faqs={product.faqs}/>
-        <CustomerReviews/>
+        <CustomerReviews productId={product._id}/>
       </section>
     </>
   );
@@ -83,6 +85,7 @@ export const ImageGallery = ({ images }) => {
             id="images"
             className="w-[20%] h-full overflow-x-hidden overflow-y-scroll scroll-none"
           >
+            <button onClick={scrollUp} className="absolute top-0 left-0 w-full bg-gray-200 z-10">▲</button>
             {images.map((image, index) => (
               <Image
                 key={index}
@@ -94,6 +97,7 @@ export const ImageGallery = ({ images }) => {
                 onClick={() => setActiveImage(image)}
               />
             ))}
+            <button onClick={scrollDown} className="absolute bottom-0 left-0 w-full bg-gray-200 z-10">▼</button>
           </div>
           <div id="active-image" className="w-[80%] h-full">
             <Image
@@ -132,7 +136,15 @@ export const ImageGallery = ({ images }) => {
   );
 };
 
-export const Details = ({ product }) => {
+const Details = ({ product, selectedVariant, setSelectedVariant }) => {
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const description = product.description;
+  const shortDescription = description.split('.').slice(0, 2).join('.');
+
+  const handleVariantChange = (variant) => {
+    setSelectedVariant(variant);
+  };
+
   return (
     <>
       <div
@@ -148,7 +160,7 @@ export const Details = ({ product }) => {
           </div>
           <div className="space-y-1 text-primary-clr">
             <div className="text-md md:text-lg lg:text-2xl xl:text-3xl font-semibold">
-              ₹{product.price}/-
+            ₹{product.price.toFixed(2)}/-
             </div>
             <div className="text-xs">Price include GST</div>
           </div>
@@ -158,16 +170,17 @@ export const Details = ({ product }) => {
             Description
           </div>
           <p className="text-xs md:text-sm">
-            {product.description.slice(0, 150)}...{" "}
-            <span>
+          {showFullDescription ? description : shortDescription}
+            {description.length > shortDescription.length && (
               <Button
                 variant="link"
                 size="sm"
-                className="w-fit px-0 text-xs md:text-sm"
+                className="w-fit p-0 text-xs md:text-sm ml-3"
+                onClick={() => setShowFullDescription(!showFullDescription)}
               >
-                Read more
+                {showFullDescription ? 'Read less' : 'Read more'}
               </Button>
-            </span>
+            )}
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -184,7 +197,9 @@ export const Details = ({ product }) => {
           {product.variants.map((variant, index) => (
             <div
               key={index}
-              className="text-sm text-primary-clr border border-gray-300 p-1 px-3"
+              className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer ${
+                selectedVariant.flavor === variant.flavor ? 'bg-primary-clr text-white' : ''
+              }`}
             >
               {variant.flavor.toUpperCase()}
             </div>
@@ -238,4 +253,3 @@ export const Details = ({ product }) => {
     </>
   );
 };
-
