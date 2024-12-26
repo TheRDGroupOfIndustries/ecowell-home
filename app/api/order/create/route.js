@@ -3,31 +3,61 @@ import connectToMongoDB from "@/utils/db";
 import User from "@/models/User";
 import Order from "@/models/Order";
 import Cart from "@/models/Cart";
-import Product from "@/models/Product";
+import Product from "@/models/Products";
 
 export async function POST(request) {
   const {
     user_id,
     order_info: {
       payment_method,
+      total_price,
+
       first_name,
       last_name,
-      total_price,
+      phone,
+      email,
+      address,
+      country,
+      state,
+      city,
+      pincode,
+
       order_date,
       delivery_date,
       shipping_date,
       cancelled_date,
-      phone,
-      email,
-      address,
-      city,
-      state,
-      country,
-      pincode,
+
       status,
     },
     products,
   } = await request.json();
+
+  // console.log(
+  //   "order_info",
+  //   {
+  //     payment_method,
+  //     total_price,
+
+  //     first_name,
+  //     last_name,
+  //     phone,
+  //     email,
+  //     address,
+  //     country,
+  //     state,
+  //     city,
+  //     pincode,
+
+  //     order_date,
+  //     delivery_date,
+  //     shipping_date,
+  //     cancelled_date,
+
+  //     status,
+  //   },
+  //   user_id,
+  //   products
+  // );
 
   // Validate payment method
   if (!["online", "cod"].includes(payment_method)) {
@@ -66,16 +96,16 @@ export async function POST(request) {
   if (
     !user_id ||
     !payment_method ||
-    !first_name ||
-    !last_name ||
     !total_price ||
     !order_date ||
+    !first_name ||
+    !last_name ||
     !phone ||
     !email ||
     !address ||
-    !city ||
-    !state ||
     !country ||
+    !state ||
+    !city ||
     !pincode ||
     !products ||
     products.length === 0

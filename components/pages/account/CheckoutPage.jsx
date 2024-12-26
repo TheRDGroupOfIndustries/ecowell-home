@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import ReactCountUp from "@/components/ui/countUp";
 import { useCart } from "@/context/CartProvider";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
@@ -9,46 +10,46 @@ const Checkout = () => {
   const { data: session } = useSession();
   const user = session?.user;
 
-  const { placeOrder, placingOrder } = useCart();
+  const { placeOrder, placingOrder, cartItems, totalPrice } = useCart();
 
   const [billingDetails, setBillingDetails] = useState({
+    profileImage: "/assets/user.png",
+    dateOfBirth: "",
+    gender: "",
+
     firstName: "",
     lastName: "",
     email: "",
+    phone: "",
     address: "",
-    city: "",
-    postalCode: "",
-    cardNumber: "",
-    expiry: "",
-    cvv: "",
-    phoneNumber: "",
-    profileImage: "/public/pfp.png",
-    dateOfBirth: "",
-    gender: "",
-    flatPlot: "",
     country: "India",
-    regionState: "",
-    zipCode: "",
+    state: "",
+    city: "",
+    flatPlot: "",
+    postalCode: "",
     cod: true,
   });
+
+  const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
     if (user) {
       setBillingDetails((prev) => ({
         ...prev,
-        firstName: user.first_name || "",
-        lastName: user.last_name || "",
-        email: user.email || "",
-        phoneNumber: user.phone_number || "",
-        profileImage: user.profile_image || "/public/pfp.png",
-        dateOfBirth: user.date_of_birth || "",
-        gender: user.gender || "",
-        flatPlot: user.flat_plot || "",
-        address: user.address || "",
-        country: user.country || "India",
-        regionState: user.region_state || "",
-        city: user.city || "",
-        zipCode: user.zip_code || "",
+        flatPlot: user?.flat_plot || "",
+        profileImage: user?.profile_image || "/assets/user.png",
+        dateOfBirth: user?.date_of_birth || "",
+        gender: user?.gender || "",
+
+        firstName: user?.first_name || "",
+        lastName: user?.last_name || "",
+        email: user?.email || "",
+        phone: user?.phone_number || "",
+        address: user?.address || "",
+        country: user?.country || "India",
+        state: user?.region_state || "",
+        city: user?.city || "",
+        postalCode: user?.zip_code || "",
       }));
     }
   }, [user]);
@@ -70,32 +71,36 @@ const Checkout = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (billingDetails) return;
 
-    const orderInfo = {
+    if (!billingDetails) return;
+
+    const order_info = {
       payment_method: billingDetails.cod ? "cod" : "online",
+      total_price: totalPrice - discount,
+
       first_name: billingDetails.firstName,
       last_name: billingDetails.lastName,
-      total_price:
-        cartTotal - currentDiscount > 0 ? cartTotal - currentDiscount : 0,
-      order_date: new Date().toISOString(),
       phone: billingDetails.phone,
       email: billingDetails.email,
       address: billingDetails.address,
-      city: billingDetails.city,
-      state: billingDetails.state,
       country: billingDetails.country,
-      pincode: billingDetails.pincode,
+      state: billingDetails.state,
+      city: billingDetails.city,
+      pincode: billingDetails.postalCode,
+
+      order_date: new Date().toISOString(),
+
       status: "pending",
     };
 
-    const products = cartItems.map((item) => ({
+    const products = cartItems?.map((item) => ({
       product_id: item.productId._id,
       variant_flavor: item.variant.flavor,
       quantity: item.quantity,
     }));
 
-    await placeOrder(orderInfo, products);
+    const success = await placeOrder(order_info, products);
+    console.log(success);
   };
 
   return (
@@ -179,10 +184,32 @@ const Checkout = () => {
                   )}
                 </div>
                 <div className="relative">
+                  <label htmlFor="phone" className="block mb-1">
+                    Phone
+                  </label>
+                  <input
+                    type="text"
+                    name="phone"
+                    id="phone"
+                    placeholder="Phone"
+                    className="w-full p-2 border rounded"
+                    value={billingDetails.phone}
+                    onChange={handleChange}
+                  />
+                  {billingDetails.phone && (
+                    <span
+                      className="absolute right-2 top-8 text-xl cursor-pointer"
+                      onClick={() => clearInput("phone")}
+                    >
+                      &times;
+                    </span>
+                  )}
+                </div>
+                <div className="relative">
                   <label htmlFor="address" className="block mb-1">
                     Address
                   </label>
-                  <input
+                  <textarea
                     type="text"
                     name="address"
                     id="address"
@@ -201,6 +228,50 @@ const Checkout = () => {
                   )}
                 </div>
                 <div className="grid grid-cols-2 gap-4">
+                  <div className="relative">
+                    <label htmlFor="country" className="block mb-1">
+                      Country
+                    </label>
+                    <input
+                      type="text"
+                      name="country"
+                      id="country"
+                      placeholder="Country"
+                      className="p-2 border rounded w-full"
+                      value={billingDetails.country}
+                      onChange={handleChange}
+                    />
+                    {billingDetails.country && (
+                      <span
+                        className="absolute right-2 top-8 text-xl cursor-pointer"
+                        onClick={() => clearInput("country")}
+                      >
+                        &times;
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <label htmlFor="state" className="block mb-1">
+                      State
+                    </label>
+                    <input
+                      type="text"
+                      name="state"
+                      id="state"
+                      placeholder="State"
+                      className="p-2 border rounded w-full"
+                      value={billingDetails.state}
+                      onChange={handleChange}
+                    />
+                    {billingDetails.state && (
+                      <span
+                        className="absolute right-2 top-8 text-xl cursor-pointer"
+                        onClick={() => clearInput("state")}
+                      >
+                        &times;
+                      </span>
+                    )}
+                  </div>
                   <div className="relative">
                     <label htmlFor="city" className="block mb-1">
                       City
@@ -248,98 +319,47 @@ const Checkout = () => {
                 </div>
               </div>
             </div>
-
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h2 className="text-2xl font-semibold mb-6">Payment Method</h2>
-              <div className="space-y-4">
-                <div className="relative">
-                  <label htmlFor="cardNumber" className="block mb-1">
-                    Card Number
-                  </label>
-                  <input
-                    type="text"
-                    name="cardNumber"
-                    id="cardNumber"
-                    placeholder="Card Number"
-                    className="w-full p-2 border rounded"
-                    value={billingDetails.cardNumber}
-                    onChange={handleChange}
-                  />
-                  {billingDetails.cardNumber && (
-                    <span
-                      className="absolute right-2 top-8 text-xl cursor-pointer"
-                      onClick={() => clearInput("cardNumber")}
-                    >
-                      &times;
-                    </span>
-                  )}
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="relative">
-                    <label htmlFor="expiry" className="block mb-1">
-                      Expiry
-                    </label>
-                    <input
-                      type="text"
-                      name="expiry"
-                      id="expiry"
-                      placeholder="MM/YY"
-                      className="p-2 border rounded w-full"
-                      value={billingDetails.expiry}
-                      onChange={handleChange}
-                    />
-                    {billingDetails.expiry && (
-                      <span
-                        className="absolute right-2 top-8 text-xl cursor-pointer"
-                        onClick={() => clearInput("expiry")}
-                      >
-                        &times;
-                      </span>
-                    )}
-                  </div>
-                  <div className="relative">
-                    <label htmlFor="cvv" className="block mb-1">
-                      CVV
-                    </label>
-                    <input
-                      type="text"
-                      name="cvv"
-                      id="cvv"
-                      placeholder="CVV"
-                      className="p-2 border rounded w-full"
-                      value={billingDetails.cvv}
-                      onChange={handleChange}
-                    />
-                    {billingDetails.cvv && (
-                      <span
-                        className="absolute right-2 top-8 text-xl cursor-pointer"
-                        onClick={() => clearInput("cvv")}
-                      >
-                        &times;
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Right Column - Order Summary */}
           <div className="bg-white p-6 rounded-lg shadow h-fit">
-            <h2 className="text-2xl font-semibold mb-6">Order Summary</h2>
+            <div className="flex-between">
+              <h3 className="text-2xl font-semibold mb-6">Products</h3>
+              <h3 className="text-2xl font-semibold mb-6">Totals</h3>
+            </div>
             <div className="space-y-4">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span>$99.00</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Shipping</span>
-                <span>$5.00</span>
+              <div className="space-y-2">
+                {cartItems?.map((item) => (
+                  <div key={item.id} className="flex-between items-center">
+                    <span>{`${item?.productId?.title} x ${item.quantity}`}</span>
+                    <ReactCountUp
+                      amt={
+                        item?.productId?.salePrice
+                          ? item?.productId?.salePrice * item.quantity
+                          : item?.productId?.price * item.quantity
+                      }
+                      prefix="₹"
+                    />
+                  </div>
+                ))}
               </div>
               <div className="border-t pt-4">
-                <div className="flex justify-between font-semibold">
-                  <span>Total</span>
-                  <span>$104.00</span>
+                <div className="flex-between">
+                  <span>Subtotal</span>
+                  <ReactCountUp amt={totalPrice} prefix="₹" />
+                  {/* <span>{`$${totalPrice.toFixed(2)}`}</span> */}
+                </div>
+                <div className="flex-between">
+                  <span>Discount</span>
+                  <ReactCountUp amt={discount} prefix="₹" />
+                  {/* <span>{`-$${discount.toFixed(2)}`}</span> */}
+                </div>
+                <div className="border-t pt-4">
+                  <div className="flex-between font-semibold text-xl text-primary-clr">
+                    <span>Total</span>
+                    <ReactCountUp amt={totalPrice - discount} prefix="₹" />
+                    {/* <span>{`$${(totalPrice - discount).toFixed(2)}`}</span> */}
+                  </div>
                 </div>
               </div>
               <div className="flex-between gap-4">
@@ -355,7 +375,6 @@ const Checkout = () => {
                 </label>
                 <Button
                   type="submit"
-                  effect="gooeyRight"
                   disabled={placingOrder}
                   className="bg-secondary-clr text-white py-2 px-6 rounded-md hover:bg-[#b28714] transition"
                 >

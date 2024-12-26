@@ -7,7 +7,7 @@ import { CartProvider } from "@/context/CartProvider";
 
 export default async function RootLayout({ children }) {
   const session = await getServerSession();
-  if (!session) redirect("/auth/sign-in");
+  // if (!session) redirect("/auth/sign-in");
   return (
     <>
       <CartProvider>

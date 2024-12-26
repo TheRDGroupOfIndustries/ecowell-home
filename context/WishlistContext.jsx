@@ -20,7 +20,7 @@ export function WishlistProvider({ children }) {
       const response = await fetch("/api/account/wishlist");
       if (response.ok) {
         const data = await response.json();
-        setWishlistProducts(data.wishlist);
+        setWishlistProducts(data.wishlist || []);
       }
     } catch (error) {
       console.error("Error fetching wishlist:", error);

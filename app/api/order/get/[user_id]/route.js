@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import connectToMongoDB from "@/utils/db";
+import Order from "@/models/Order";
 
 export async function GET(request, { params }) {
   const { userId } = params;

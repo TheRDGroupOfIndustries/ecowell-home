@@ -86,7 +86,7 @@ const CartTable = () => {
           </tr>
         </thead>
         <tbody>
-          {cartItems.map((item, index) => (
+          {cartItems.reverse().map((item, index) => (
             <tr key={index} className="border-b border-gray-300">
               <td className="py-4 px-6">
                 {item?.variant?.image_link ? (

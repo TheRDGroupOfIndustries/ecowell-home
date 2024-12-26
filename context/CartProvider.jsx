@@ -204,6 +204,8 @@ export const CartProvider = ({ children }) => {
   }, [fetchCart]);
 
   const placeOrder = async (order_info, products) => {
+    // console.log("order_info", products);
+
     if (!userId) {
       router.push("/auth/sign-in");
       return;
@@ -225,7 +227,9 @@ export const CartProvider = ({ children }) => {
 
       if (orderResult.status === 200) {
         setOrderList(orderResult?.updatedOrders || []);
-        router.push(`/page/order-success?orderId=${orderResult?.orderId}`);
+        router.push(
+          `/account/orders/order-success?orderId=${orderResult?.orderId}`
+        );
         toast.success(orderResult?.message || "Order placed successfully!");
         return true;
       }
