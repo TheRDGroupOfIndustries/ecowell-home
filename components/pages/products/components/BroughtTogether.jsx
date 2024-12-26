@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import ProductCardSelect from '@/components/ui/productCardSelect';
 import { useCart } from "@/context/CartProvider";
+import Image from 'next/image';
+import { Check } from 'lucide-react';
 
 // New Skeleton component
 const SkeletonCard = () => (
