@@ -1,15 +1,41 @@
 'use client'
-import { Button } from '@/components/ui/button';
-import ProductCard from '@/components/ui/productCard';
+import { useEffect, useState } from 'react';
 import ProductCardSelect from '@/components/ui/productCardSelect';
-import { specialOfferProducts } from '@/constants/product';
-import { Check } from 'lucide-react';
-import Image from 'next/image';
-import React, { useState } from 'react';
+import { useCart } from "@/context/CartProvider";
 
+// New Skeleton component
+const SkeletonCard = () => (
+  <div className="animate-pulse">
+    <div className="bg-gray-300 h-[200px] w-full rounded-lg mb-2"></div>
+    <div className="bg-gray-300 h-4 w-3/4 rounded mb-2"></div>
+    <div className="bg-gray-300 h-4 w-1/2 rounded"></div>
+  </div>
+);
 
 export function FrequentlyBoughtTogether() {
+  const { addToCart } = useCart();
+  
   const [selectedProducts, setSelectedProducts] = useState(new Set([]));
+  const [randomProducts, setRandomProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRandomProducts = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('/api/products?sort=random-products&limit=3');
+        const data = await response.json();
+        setRandomProducts(data.products);
+        setSelectedProducts(new Set(data.products.map(p => p._id)));
+      } catch (error) {
+        console.error('Error fetching random products:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRandomProducts();
+  }, []);
 
   const toggleProduct = (productId) => {
     const newSelected = new Set(selectedProducts);
@@ -21,44 +47,68 @@ export function FrequentlyBoughtTogether() {
     setSelectedProducts(newSelected);
   };
 
-  const totalPrice = specialOfferProducts
-    .filter(product => selectedProducts.has(product.id))
-    .reduce((sum, product) => sum + product.price, 0);
+  const totalPrice = randomProducts
+    .filter(product => selectedProducts.has(product._id))
+    .reduce((sum, product) => sum + (product.salePrice || product.price), 0);
+
+  const handleAddToCart = () => {
+    randomProducts
+      .filter(product => selectedProducts.has(product._id))
+      .forEach(product => {
+        addToCart(product, 1, product.variants[0]);
+      });
+  };
 
   return (
     <div className="max-w-7xl mx-auto p-6">
       <h2 className="text-2xl font-bold mb-6">Frequently bought together</h2>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-        {specialOfferProducts.map((product, index) => (
-          <div key={product.id} className="relative">
-            {index > 0 && (
-              <div className="absolute -left-6 top-1/2 -translate-y-1/2 text-2xl font-light text-gray-400 hidden md:block">
-                +
-              </div>
-            )}
-            <ProductCardSelect 
-              product={product} 
-              isSelected={selectedProducts.has(product.id)}
-              onToggle={() => toggleProduct(product.id)} 
-            />
-          </div>
-        ))}
+        {isLoading ? (
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
+        ) : (
+          randomProducts.map((product, index) => (
+            <div key={product._id} className="relative">
+              {index > 0 && (
+                <div className="absolute -left-6 top-1/2 -translate-y-1/2 text-2xl font-light text-gray-400 hidden md:block">
+                  +
+                </div>
+              )}
+              <ProductCardSelect 
+                product={{
+                  id: product._id,
+                  title: product.title,
+                  price: `₹${product.salePrice || product.price}`,
+                  oldPrice: product.salePrice ? `₹${product.price}` : undefined,
+                  image: product.variants[0]?.images[0] || '/placeholder.png',
+                  hoverImage: product.variants[0]?.images[1] || '/placeholder.png',
+                }}
+                isSelected={selectedProducts.has(product._id)}
+                onToggle={() => toggleProduct(product._id)} 
+              />
+            </div>
+          ))
+        )}
         <div className="flex flex-col ml-auto items-center justify-center p-4 rounded-lg w-full">
           <div className="text-lg flex flex-col items-center">
-            Total Price: <span className="font-bold">₹{totalPrice}/-</span>
+            Total Price: <span className="font-bold">₹{totalPrice.toFixed(2)}/-</span>
           </div>
           <button
             className="bg-green-900 text-white w-full px-6 py-2 rounded-md hover:bg-green-800 transition-colors"
-            onClick={() => console.log('Adding to cart:', Array.from(selectedProducts))}
+            onClick={handleAddToCart}
+            disabled={isLoading}
           >
-            Add All {selectedProducts.size} To Cart
+            Add {selectedProducts.size} To Cart
           </button>
         </div>
       </div>
-
     </div>
   );
 }
+
 export function ProductCardWithcheckbox({ product, isSelected, onToggle }) {
   return (
     <div className="relative">
@@ -114,8 +164,6 @@ export function ProductCardWithcheckbox({ product, isSelected, onToggle }) {
               {product.oldPrice}
             </span>
           </div>
-
-
         </div>
       </div>
     </div>
