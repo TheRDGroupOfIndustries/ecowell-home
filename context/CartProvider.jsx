@@ -47,7 +47,7 @@ export const CartProvider = ({ children }) => {
   }, [userId]);
 
   const addToCart = async (product, quantity, variant) => {
-    console.log("add to cart variant", product, quantity, variant);
+    // console.log("add to cart variant", product, quantity, variant);
     if (!userId) {
       router.push("/auth/sign-in");
       return;

@@ -3,7 +3,7 @@ import connectToMongoDB from "@/utils/db";
 import User from "@/models/User";
 import Order from "@/models/Order";
 import Cart from "@/models/Cart";
-import Products from "@/models/Products";
+import Product from "@/models/Products";
 
 export async function POST(request) {
   const {
@@ -122,7 +122,7 @@ export async function POST(request) {
 
     // Validate product availability and get product details
     // for (const product of products) {
-    //   const dbProduct = await Products.findById(product.product_id);
+    //   const dbProduct = await Product.findById(product.product_id);
     //   if (!dbProduct) {
     //     return NextResponse.json({
     //       status: 404,
@@ -202,7 +202,7 @@ export async function POST(request) {
 
     // Update product quantities
     for (const product of products) {
-      await Products.findByIdAndUpdate(product.product_id, {
+      await Product.findByIdAndUpdate(product.product_id, {
         $inc: { quantity: -product.quantity },
       });
     }
@@ -234,7 +234,7 @@ export async function POST(request) {
     // Rollback product quantities if error occurs after quantity update
     if (products) {
       for (const product of products) {
-        await Products.findByIdAndUpdate(product.product_id, {
+        await Product.findByIdAndUpdate(product.product_id, {
           $inc: { quantity: product.quantity },
         });
       }

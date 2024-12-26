@@ -6,7 +6,6 @@ import Product from "@/models/Products";
 export async function POST(request) {
   try {
     const { userId, productId, variant, quantity } = await request.json();
-    // console.log(userId, productId, variant, quantity);
 
     if (!userId || !productId || !quantity) {
       return NextResponse.json({
@@ -26,7 +25,6 @@ export async function POST(request) {
 
     await connectToMongoDB();
 
-    // // Verify product exists
     const product = await Product.findById(productId);
     if (!product) {
       return NextResponse.json({
@@ -46,41 +44,39 @@ export async function POST(request) {
         userId,
         items: [{ productId, quantity, variant }],
         totalQuantity: quantity,
-        totalPrice: 0, // this will be calculated later
+        totalPrice: 0,
       });
     } else {
-      // checking if the product already exists in the cart
       const existingItemIndex = cart.items.findIndex(
         (item) => item.productId.toString() === productId
       );
 
       if (existingItemIndex > -1) {
-        // product exists, update the quantity
         cart.items[existingItemIndex].quantity += quantity;
       } else {
-        // product does not exist, add to cart
         cart.items.push({ productId, quantity, variant });
       }
     }
 
-    // console.log("cart.items: ", cart.items);
-
-    // calculating total quantity and total price
+    // calculating total quantity
     cart.totalQuantity = cart.items.reduce(
       (total, item) => total + item.quantity,
       0
     );
-    // console.log("cart.items: ", cart.items);
-    cart.totalPrice = await calculateTotalPrice(cart.items); // calling the function to calculate total price
+
+    await cart.save();
+
+    // calculating total price
+    const newTotalPrice =
+      product.salePrice * quantity || product.price * quantity || 0;
+    cart.totalPrice += newTotalPrice;
 
     await cart.save();
 
     const updatedCart = await Cart.findOne({ userId }).populate(
       "items.productId",
-      "_id title salePrice price sku variants"
+      "_id title salePrice price"
     );
-
-    console.log("updatedCart: ", updatedCart);
 
     return NextResponse.json({
       success: true,
@@ -97,52 +93,3 @@ export async function POST(request) {
     });
   }
 }
-
-const calculateTotalPrice = async (items) => {
-  try {
-    if (!items || !Array.isArray(items)) {
-      throw new Error("Invalid items format");
-    }
-
-    let total = 0;
-    for (const item of items) {
-      let product;
-
-      // Check if productId is already populated
-      if (typeof item.productId === "object" && item.productId._id) {
-        product = item.productId;
-      } else {
-        // Fetch product if not populated
-        product = await Product.findById(item.productId);
-        if (!product) {
-          throw new Error(`Product not found: ${item.productId}`);
-        }
-      }
-
-      // Ensure we have valid price values
-      const price = Number(product.salePrice || product.price || 0);
-      const quantity = Number(item.quantity || 0);
-
-      if (isNaN(price) || isNaN(quantity)) {
-        console.error("Invalid price or quantity:", {
-          price,
-          quantity,
-          product,
-        });
-        throw new Error("Invalid price or quantity values");
-      }
-
-      total += price * quantity;
-    }
-
-    // Ensure the final total is a valid number
-    if (isNaN(total) || !isFinite(total)) {
-      throw new Error("Invalid total price calculation");
-    }
-
-    return Number(total.toFixed(2)); // Round to 2 decimal places
-  } catch (error) {
-    console.error("Error calculating total price:", error);
-    throw error;
-  }
-};
