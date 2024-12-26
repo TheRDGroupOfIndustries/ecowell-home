@@ -57,6 +57,7 @@ const ProductDetail = ({ productSku }) => {
         <ProductDiscover/>
         <TheStories/>
         <PurposeAndTrust/>
+        <Image src={"/banner1.png"} alt="Banner" width={1000} height={1000} className='w-full h-[900px]' />
         <FrequentlyAskedQuestions faqs={product.faqs}/>
         <CustomerReviews/>
       </section>
