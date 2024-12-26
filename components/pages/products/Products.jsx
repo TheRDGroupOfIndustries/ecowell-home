@@ -6,13 +6,16 @@ import { CiFilter } from "react-icons/ci";
 import { CgSortAz } from "react-icons/cg";
 import ProductCard from "../../ui/productCard";
 import { useNotification } from "@/context/NotificationProvider";
+import { reverseSlug } from "@/lib/utils";
 
-const Products = () => {
+const Products = ({ category }) => {
   const { pt } = useNotification();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState(["All Products"]); // Update 1
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState("");
+  const [activeCategory, setActiveCategory] = useState(
+    category ? reverseSlug(category) : ""
+  );
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
@@ -172,6 +175,7 @@ const Products = () => {
           {[...Array(pagination.totalPages)].map((_, i) => (
             <Button
               size="icon"
+              effect={i / 2 ? "gooeyRight" : "gooeyLeft"}
               key={i}
               className={`${
                 pagination.currentPage === i + 1

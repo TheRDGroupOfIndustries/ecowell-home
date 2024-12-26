@@ -17,7 +17,7 @@ const geistMono = localFont({
 
 export const metadata = {
   title: "Ecowell",
-  description: "Ecowell",
+  description: "EcoWell - Get yourself some protiens",
 };
 
 export default async function RootLayout({ children }) {
@@ -30,7 +30,7 @@ export default async function RootLayout({ children }) {
       >
         <AuthProvider session={session}>
           {children}
-          <Toaster richColors />
+          <Toaster richColors closeButton />
         </AuthProvider>
       </body>
     </html>

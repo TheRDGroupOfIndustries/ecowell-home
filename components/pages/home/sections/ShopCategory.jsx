@@ -9,6 +9,7 @@ import { fadeIn, staggerContainer } from "@/lib/utils";
 
 const ShopCategory = () => {
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -20,13 +21,13 @@ const ShopCategory = () => {
         setCategories(data);
       } catch (error) {
         console.error(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCategories();
   }, []);
-
-  // console.log(categories);
 
   return (
     <motion.div
@@ -44,25 +45,53 @@ const ShopCategory = () => {
       </motion.h2>
 
       <div className="w-fit grid grid-cols-3 md:grid-cols-4 items-center justify-center gap-4">
-        {categories.slice(0, 4).map((category, index) => (
-          <motion.div key={index} variants={fadeIn("up", 0.3 + index * 0.1)}>
-            <Link href={`/products/${category.slug}`}>
-              <div className="w-[250px] h-[250px] group bg-gradient-to-t from-secondary-clr to-white hover:to-50% hover:translate-x-1 hover:translate-y-2 rounded-lg shadow-lg flex flex-col items-center justify-center p-4 ease-in-out duration-300 overflow-hidden">
-                <Image
-                  src={category.image_link}
-                  alt={category.title}
-                  width={400}
-                  height={400}
-                  className="w-full h-full object-contain mb-4 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300"
-                />
-                <p className="relative z-10 text-md font-semibold mb-4">{category.title}</p>
-              </div>
-            </Link>
-          </motion.div>
-        ))}
+        {loading
+          ? Array(4)
+              .fill(0)
+              .map((_, index) => (
+                <motion.div
+                  key={index}
+                  variants={fadeIn("up", 0.3 + index * 0.1)}
+                >
+                  <SkeletonCard />
+                </motion.div>
+              ))
+          : categories.slice(0, 4).map((category, index) => (
+              <motion.div
+                key={index}
+                variants={fadeIn("up", 0.3 + index * 0.1)}
+              >
+                {/* <Link href={`/products?category=${category.slug}`}> */}
+                <Link
+                  href={{
+                    pathname: "/products",
+                    query: { category: category.slug },
+                  }}
+                >
+                  <div className="w-[250px] h-[250px] group bg-gradient-to-t from-secondary-clr to-white hover:to-50% hover:translate-x-1 hover:translate-y-2 rounded-lg shadow-lg flex flex-col items-center justify-center p-4 ease-in-out duration-300 overflow-hidden">
+                    <Image
+                      src={category.image_link}
+                      alt={category.title}
+                      width={400}
+                      height={400}
+                      className="w-full h-full object-contain mb-4 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300"
+                    />
+                    <p className="relative z-10 text-md font-semibold mb-4">
+                      {category.title}
+                    </p>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
       </div>
     </motion.div>
   );
 };
-
 export default ShopCategory;
+
+const SkeletonCard = () => (
+  <div className="w-[250px] h-[250px] bg-gray-200 animate-pulse rounded-lg shadow-lg flex flex-col items-center justify-center p-4">
+    <div className="w-full h-[180px] bg-gray-300 rounded-md mb-4"></div>
+    <div className="w-24 h-4 bg-gray-300 rounded"></div>
+  </div>
+);

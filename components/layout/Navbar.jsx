@@ -8,13 +8,15 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeIn, staggerContainer } from "@/lib/utils";
 import { links } from "@/constants/data";
+import { useCart } from "@/context/CartProvider";
+import { useNotification } from "@/context/NotificationProvider";
 import { CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import Notification from "./Notification";
-import { useNotification } from "@/context/NotificationProvider";
 
 const Navbar = ({ companyName }) => {
   const pathname = usePathname();
   const { data: session } = useSession(); // console.log(session);
+  const { noOfCartItems } = useCart();
   const { isNotificationOpen } = useNotification();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -78,12 +80,19 @@ const Navbar = ({ companyName }) => {
             } ease-in-out duration-300`}
           />
           <Link href="/account/cart">
-            <CiShoppingCart
-              size={20}
-              className={`hover:text-gray-700 ${
-                isHomeScrolled ? "text-black" : "text-white"
-              } ease-in-out duration-300`}
-            />
+            <div className="relative">
+              {noOfCartItems > 0 && (
+                <div className="absolute -top-2.5 -right-2.5 text-xs text-white bg-[red] rounded-full px-1">
+                  {noOfCartItems}
+                </div>
+              )}
+              <CiShoppingCart
+                size={20}
+                className={`hover:text-gray-700 ${
+                  isHomeScrolled ? "text-black" : "text-white"
+                } ease-in-out duration-300`}
+              />
+            </div>
           </Link>
           <Link href="/account">
             <CiUser

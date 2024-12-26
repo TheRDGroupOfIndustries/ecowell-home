@@ -8,6 +8,7 @@ import { RxCross1 } from "react-icons/rx";
 import { ImageOff } from "lucide-react";
 import { TfiPlus, TfiMinus } from "react-icons/tfi";
 import { Button } from "@/components/ui/button";
+import ReactCountUp from "@/components/ui/countUp";
 
 const Cart = () => {
   const { cartItems, totalPrice } = useCart();
@@ -22,41 +23,42 @@ const Cart = () => {
             <div className="bg-white shadow-md rounded-md overflow-hidden">
               <CartTable />
             </div>
-
-            {/* Total and Actions */}
-            <div className="mt-8 flex flex-col lg:flex-row items-center justify-between">
-              <Link href="/products">
-                <Button
-                  effect="gooeyRight"
-                  className="bg-secondary-clr text-white py-2 px-6 rounded-md hover:bg-[#b28714] transition"
-                >
-                  CONTINUE SHOPPING
-                </Button>
-              </Link>
-              <div className="text-xl font-semibold mt-4 lg:mt-0">
-                Total Price:{" "}
-                <span className="text-secondary-clr">
-                  ₹
-                  <span className="text-2xl">
-                    {totalPrice.toLocaleString()}
-                  </span>
-                </span>
-              </div>
-              <Link href="/account/checkout">
-                <Button
-                  variant="custom"
-                  // className="bg-[#d7a11b] text-white py-2 px-6 rounded-md hover:bg-[#b28714] transition"
-                >
-                  CHECK OUT
-                </Button>
-              </Link>
-            </div>
           </>
         ) : (
           <div className="text-center text-lg">
             <p>Your cart is empty.</p>
           </div>
         )}
+        {/* Total and Actions */}
+        <div className="mt-8 flex flex-col lg:flex-row items-center justify-between">
+          <Link href="/products">
+            <Button
+              effect="gooeyRight"
+              className="bg-secondary-clr text-white py-2 px-6 rounded-md hover:bg-[#b28714] transition"
+            >
+              CONTINUE SHOPPING
+            </Button>
+          </Link>
+          {totalPrice > 0 && (
+            <div className="text-xl font-semibold mt-4 lg:mt-0">
+              Total Price:{" "}
+              <ReactCountUp
+                amt={totalPrice}
+                duration={1.5}
+                prefix="₹"
+                className="text-2xl text-secondary-clr"
+              />
+            </div>
+          )}
+          <Link href="/account/cart/checkout">
+            <Button
+              effect="gooeyRight"
+              className="bg-secondary-clr text-white py-2 px-6 rounded-md hover:bg-[#b28714] transition"
+            >
+              CHECK OUT
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -101,7 +103,14 @@ const CartTable = () => {
               </td>
               <td className="py-4 px-6 text-sm">{item?.productId?.title}</td>
               <td className="py-4 px-6">
-                ₹{item?.productId?.price.toLocaleString()}
+                <ReactCountUp
+                  amt={
+                    item?.productId?.salePrice
+                      ? item?.productId?.salePrice
+                      : item?.productId?.price
+                  }
+                  prefix="₹"
+                />
               </td>
               <td className="py-4 px-6 flex items-center">
                 <Button
@@ -131,7 +140,14 @@ const CartTable = () => {
                 />
               </td>
               <td className="py-4 px-6">
-                ₹{(item?.productId?.price * item?.quantity).toLocaleString()}
+                <ReactCountUp
+                  amt={
+                    item?.productId?.salePrice
+                      ? item?.productId?.salePrice * item?.quantity
+                      : item?.productId?.price * item?.quantity
+                  }
+                  prefix="₹"
+                />
               </td>
             </tr>
           ))}

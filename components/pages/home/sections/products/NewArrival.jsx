@@ -47,7 +47,7 @@ const NewArrival = () => {
       </motion.h2>
       <div className="w-full flex flex-wrap items-center justify-center gap-6">
         {!loading
-          ? products.map((product, index) => (
+          ? products?.map((product, index) => (
               <motion.div
                 key={index}
                 variants={fadeIn("up", 0.3 + index * 0.1)}

@@ -28,5 +28,5 @@ const couponSchema = new Schema(
   { timestamps: true }
 );
 
-const Coupnon = models.Coupon || model("Coupon", couponSchema);
-export default Coupnon;
+const Coupon = models.Coupon || model("Coupon", couponSchema);
+export default Coupon;

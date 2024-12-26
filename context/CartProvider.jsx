@@ -22,6 +22,8 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [orderList, setOrderList] = useState([]);
+  const [placingOrder, setPlacingOrder] = useState(false);
 
   const fetchCart = useCallback(async () => {
     if (!userId) return;
@@ -201,15 +203,58 @@ export const CartProvider = ({ children }) => {
     fetchCart();
   }, [fetchCart]);
 
+  const placeOrder = async (order_info, products) => {
+    if (!userId) {
+      router.push("/auth/sign-in");
+      return;
+    }
+    try {
+      setPlacingOrder(true);
+      const orderResponse = await fetch("/api/order/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId, order_info, products }),
+      });
+
+      const orderResult = await orderResponse.json();
+
+      if (!orderResult.success) {
+        toast.error(orderResult.error || "Failed to create order");
+        return false;
+      }
+
+      if (orderResult.status === 200) {
+        setOrderList(orderResult?.updatedOrders || []);
+        router.push(`/page/order-success?orderId=${orderResult?.orderId}`);
+        toast.success(orderResult?.message || "Order placed successfully!");
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error("Error creating order:", error);
+      toast.error("Something went wrong while placing your order");
+      return false;
+    } finally {
+      setPlacingOrder(false);
+    }
+  };
+
+  const noOfCartItems = cartItems.length;
+
   return (
     <CartContext.Provider
       value={{
         cartItems,
+        noOfCartItems,
         totalQuantity,
         totalPrice,
         addToCart,
         removeCartItem,
         updateCartItem,
+        placeOrder,
+        placingOrder,
+        orderList,
       }}
     >
       {children}
