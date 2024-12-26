@@ -1,10 +1,12 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
+import { useCart } from '@/context/CartProvider';
 import React, { useState } from 'react';
 
 export default function AddToCartBtn() {
     const [quantity, setQuantity] = useState(1);
+      const { addToCart } = useCart();
 
     const decreaseQuantity = () => {
         setQuantity(prev => Math.max(1, prev - 1));
