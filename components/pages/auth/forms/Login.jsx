@@ -189,7 +189,7 @@ const Login = () => {
                     className="w-full border border-gray-300 px-3 py-1 text-gray-800 focus:ring-2 focus:ring-primary-clr focus:outline-none"
                     id="password"
                     placeholder="Enter your password"
-                    required
+                    required={isEmail}
                   />
                 </div>
               )}

@@ -33,8 +33,9 @@ const Cart = () => {
         <div className="mt-8 flex flex-col lg:flex-row items-center justify-between">
           <Link href="/products">
             <Button
+              size="sm"
               effect="gooeyRight"
-              className="bg-secondary-clr text-white py-2 px-6 rounded-md hover:bg-[#b28714] transition"
+              className="mt-4 w-full bg-primary-clr text-white py-2 rounded-md hover:bg-green-700 transition"
             >
               CONTINUE SHOPPING
             </Button>
@@ -50,14 +51,17 @@ const Cart = () => {
               />
             </div>
           )}
-          <Link href="/account/cart/checkout">
-            <Button
-              effect="gooeyRight"
-              className="bg-secondary-clr text-white py-2 px-6 rounded-md hover:bg-[#b28714] transition"
-            >
-              CHECK OUT
-            </Button>
-          </Link>
+          {cartItems.length > 0 && (
+            <Link href="/account/cart/checkout">
+              <Button
+                size="sm"
+                effect="gooeyRight"
+                className="mt-4 w-full bg-primary-clr text-white py-2 rounded-md hover:bg-green-700 transition"
+              >
+                CHECK OUT
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>

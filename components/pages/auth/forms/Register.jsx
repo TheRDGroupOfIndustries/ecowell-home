@@ -101,13 +101,13 @@ const Register = () => {
     e.preventDefault();
 
     if (!first_name || !last_name || !emailOrPhone) {
-      if (isEmail) {
-        if (!email || !password) {
-          return toast.error("Please enter your email and password!");
-        }
-      } else {
-        return toast.error("Please enter your phone number!");
+      return toast.error("Please fill all the fields!");
+    } else if (isEmail) {
+      if (!email || !password || password.trim() == "" || !emailOrPhone) {
+        return toast.error("Please enter your email and password!");
       }
+    } else {
+      return toast.error("Please enter your phone number!");
     }
     // if (!termsChecked) {
     //   return toast.error("Terms & Conditions should be checked!");
@@ -315,7 +315,7 @@ const Register = () => {
                     type="password"
                     id="password"
                     name="password"
-                    required
+                    required={isEmail}
                     value={password}
                     onChange={handlePassword}
                     placeholder="Enter your password"

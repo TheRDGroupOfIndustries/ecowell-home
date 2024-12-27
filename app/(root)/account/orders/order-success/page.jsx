@@ -1,7 +1,11 @@
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 import OrderSuccess from "@/components/pages/account/OrderSuccessPage";
-import React from "react";
 
-export default function OrderSuccessPage({ searchParams }) {
+export default async function OrderSuccessPage({ searchParams }) {
+  const session = await getServerSession();
+  if (!session) redirect("/auth/sign-in");
+
   const params = searchParams;
   return <OrderSuccess orderId={params.orderId} />;
 }
