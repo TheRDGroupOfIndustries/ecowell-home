@@ -45,23 +45,6 @@ const Login = () => {
     }
   };
 
-  // const handleEmail = (e) => {
-  //   const inputValue = e.target.value;
-  //   setEmail(inputValue);
-
-  //   if (inputValue.trim() === "") {
-  //     setDisableBtn(true);
-  //   } else {
-  //     if (!emailPattern.test(inputValue)) {
-  //       toast.error("Invalid email");
-  //       setDisableBtn(true);
-  //     } else {
-  //       toast.success("Valid email");
-  //       setDisableBtn(false);
-  //     }
-  //   }
-  // };
-
   const handlePassword = (e) => {
     const inputValue = e.target.value;
     setPassword(inputValue);
@@ -115,9 +98,9 @@ const Login = () => {
         return toast.error("Please enter your email and password!");
       }
     }
-    // return toast.error("Please provide credentials!");
 
     setSubmitting(true);
+
     const login = async () => {
       try {
         const res = await signIn("credentials", {
@@ -143,37 +126,30 @@ const Login = () => {
 
         if (res?.url) {
           console.log(res?.url);
-
-          // setSubmitting(true);
           setSuccess(true);
-
           router.replace("/");
           router.refresh();
           return "Logged in successfully!";
         }
       } catch (error) {
-        // console.error("Something went wrong, please try again!");
-        console.log("error:", error.message);
-
-        throw new Error(error.message + "");
+        console.error("Something went wrong, please try again!");
+        console.log("error:", error);
+        throw error; // Throw the original error for `toast.promise`
       } finally {
         setSubmitting(false);
       }
     };
+
     toast.promise(login(), {
       pending: "Logging in...",
       success: "Logged in successfully!",
-      error: {
-        render({ data }) {
-          // `data` contains the error object
-          return data.message || "Something went wrong, please try again!";
-        },
-      },
+      error: (error) =>
+        error?.message || "Something went wrong, please try again!",
     });
   };
 
   return (
-    <section className="w-full h-full md:max-h-screen flex-center container mx-auto py-10 md:py-20 lg:py-32 overflow-hidden">
+    <section className="w-full h-full md:max-h-fit flex-center container mx-auto pt-10 md:pt-20 lg:pt-32 overflow-hidden">
       <div className="w-full grid md:grid-cols-2 gap-8">
         <div className="w-full h-full animate-slide-down">
           <h3 className="text-3xl font-bold text-gray-800 mb-6">
