@@ -37,12 +37,16 @@ export const POST = async (request) => {
   if (isEmail) {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return new NextResponse("User already exists!", { status: 400 });
+      return new NextResponse("User already exists with this email!", {
+        status: 400,
+      });
     }
   } else {
     const existingUser = await User.findOne({ phone_number });
     if (existingUser) {
-      return new NextResponse("User already exists!", { status: 400 });
+      return new NextResponse("User already exists with this phone number!", {
+        status: 400,
+      });
     }
   }
 
@@ -121,7 +125,7 @@ export const POST = async (request) => {
 
       if (isOtpValid) {
         // send admin credentials through SmS
-        
+
         newUser = new User({
           first_name,
           last_name,

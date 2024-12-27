@@ -103,15 +103,15 @@ const Register = () => {
     if (!first_name || !last_name || !emailOrPhone) {
       return toast.error("Please fill all the fields!");
     } else if (isEmail) {
-      if (!email || !password || password.trim() == "" || !emailOrPhone) {
+      if (!email || !password || password.trim() === "") {
         return toast.error("Please enter your email and password!");
       }
     } else {
-      return toast.error("Please enter your phone number!");
+      const phoneNumber = emailOrPhone.replace(/[^\d]/g, "");
+      if (phoneNumber.length !== 10) {
+        return toast.error("Please enter a valid 10-digit phone number!");
+      }
     }
-    // if (!termsChecked) {
-    //   return toast.error("Terms & Conditions should be checked!");
-    // }
 
     setSendingOtp(true);
 
@@ -149,6 +149,8 @@ const Register = () => {
             `OTP has been sent to your ${emailOrPhone}, check your phone!`
           );
         }
+      } else if (res.status === 500) {
+        toast.error("An error occurred while sending OTP.");
       }
     } catch (error) {
       console.error("Error sending OTP:", error);

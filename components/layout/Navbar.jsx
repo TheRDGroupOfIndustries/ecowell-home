@@ -23,7 +23,7 @@ import { useNotification } from "@/context/NotificationProvider";
 import { useDebounce } from "@/hooks/debounce";
 import { cn, fadeIn, staggerContainer } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Heart, ImageIcon } from 'lucide-react';
+import { Heart, ImageIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,6 +36,7 @@ import ReactCountUp from "../ui/countUp";
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
 import { useWishlist } from "@/context/WishlistContext";
+import Notification from "./Notification";
 
 const Navbar = ({ companyName }) => {
   const pathname = usePathname();
@@ -73,9 +74,9 @@ const Navbar = ({ companyName }) => {
 
   const handleUserIconClick = () => {
     if (session) {
-      router.push('/account');
+      router.push("/account");
     } else {
-      router.push('/auth/sign-in');
+      router.push("/auth/sign-in");
     }
   };
 
@@ -106,8 +107,9 @@ const Navbar = ({ companyName }) => {
             <Link
               key={index}
               href={link.herf}
-              className={`hover:text-gray-700 text-lg text-bold ${isHomeScrolled ? "text-black" : "text-white"
-                } ease-in-out duration-300`}
+              className={`hover:text-gray-700 text-lg text-bold ${
+                isHomeScrolled ? "text-black" : "text-white"
+              } ease-in-out duration-300`}
             >
               {link.head}
             </Link>
@@ -255,8 +257,9 @@ export function Search({
       <DialogTrigger asChild className="cursor-default">
         <CiSearch
           size={20}
-          className={`hover:text-gray-700 cursor-default ${isHomeScrolled ? "text-black" : "text-white"
-            } ease-in-out duration-300`}
+          className={`hover:text-gray-700 cursor-default ${
+            isHomeScrolled ? "text-black" : "text-white"
+          } ease-in-out duration-300`}
           onClick={() => setOpen(true)}
         />
       </DialogTrigger>
@@ -302,8 +305,6 @@ export function Search({
     </Dialog>
   );
 }
-
-
 
 export const ProductNode = ({ productDetails, onClose }) => {
   const chosedVariant = productDetails?.variants[0];
