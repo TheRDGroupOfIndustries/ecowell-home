@@ -58,18 +58,19 @@ export async function POST(request) {
       }
     }
 
-    // calculating total quantity
+    // Calculate both totalQuantity and totalPrice in one go
     cart.totalQuantity = cart.items.reduce(
       (total, item) => total + item.quantity,
       0
     );
 
-    await cart.save();
+    // recalculating entire cart total price
+    cart.totalPrice = cart.items.reduce((total, item) => {
+      const itemProduct = item.productId._id ? item.productId : product;
 
-    // calculating total price
-    const newTotalPrice =
-      product.salePrice * quantity || product.price * quantity || 0;
-    cart.totalPrice += newTotalPrice;
+      const itemPrice = itemProduct.salePrice || itemProduct.price || 0;
+      return total + itemPrice * item.quantity;
+    }, 0);
 
     await cart.save();
 

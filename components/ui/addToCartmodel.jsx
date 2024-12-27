@@ -5,12 +5,13 @@ import Image from "next/image";
 import { useCart } from "@/context/CartProvider";
 import { Button } from "./button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import ReactCountUp from "./countUp";
 
 export default function AddToCartmodel({ loading, product }) {
   //   console.log("product", product);
   return (
-    <Dialog>
-      <DialogTrigger className="w-full">
+    <>
+      {loading ? (
         <Button
           disabled={loading}
           effect="gooeyLeft"
@@ -24,11 +25,29 @@ export default function AddToCartmodel({ loading, product }) {
             "Add To Cart"
           )}
         </Button>
-      </DialogTrigger>
-      <DialogContent className="z-50 mt-10  ">
-        <Modal product={product} />
-      </DialogContent>
-    </Dialog>
+      ) : (
+        <Dialog>
+          <DialogTrigger className="w-full">
+            <Button
+              disabled={loading}
+              effect="gooeyLeft"
+              className={`mt-2 w-full ${
+                loading ? "bg-gray-300" : "bg-primary-clr"
+              } text-white py-2 rounded-md hover:bg-green-700 transition`}
+            >
+              {loading ? (
+                <div className="h-4 w-3/4 bg-gray-400"></div>
+              ) : (
+                "Add To Cart"
+              )}
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="z-50 mt-10  ">
+            <Modal product={product} />
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
   );
 }
 
@@ -75,17 +94,25 @@ const Modal = ({ product }) => {
           <h2 className="text-xl font-bold mb-2">{product?.title}</h2>
 
           <div className="flex items-center gap-2">
-            <span className={`text-lg text-primary-clr font-bold `}>
-              {product?.salePrice
-                ? `₹${product?.salePrice?.toLocaleString()}/-`
-                : `₹${product?.price?.toLocaleString()}/-`}
+            <span>
+              <ReactCountUp
+                amt={product?.salePrice || product?.price}
+                prefix="₹"
+                className="text-lg text-primary-clr font-bold"
+              />
+              /-
             </span>
 
-            {product?.price && product?.price !== product?.salePrice && (
-              <span className="text-sm line-through text-gray-500">
-                ₹{product?.price?.toLocaleString()}/-
-              </span>
-            )}
+            <span>
+              {product?.price && product?.price !== product?.salePrice && (
+                <ReactCountUp
+                  amt={product?.price}
+                  prefix="₹"
+                  className="text-sm line-through text-gray-500"
+                />
+              )}
+              /-
+            </span>
           </div>
 
           {/* Product Details Section */}
@@ -121,26 +148,33 @@ const Modal = ({ product }) => {
 
           <div className="mb-4 flex flex-col gap-2">
             <h3 className="font-semibold mb-2">Quantity</h3>
-            <div className="flex max-w-[200px] items-center border border-gray-400 h-9 ">
-              <Button
-                variant="ghost"
-                onClick={decreaseQuantity}
-                className="px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600  focus:outline-none"
-                aria-label="Decrease quantity"
-              >
-                −
-              </Button>
-              <span className="flex-1 px-4 py-2 text-center border-x">
-                {quantity}
-              </span>
-              <Button
-                variant="ghost"
-                onClick={increaseQuantity}
-                className="px-4 py-2 text-xl font-medium text-gray-600 hover:bg-transparent focus:outline-none"
-                aria-label="Increase quantity"
-              >
-                +
-              </Button>
+            <div className="w-fit flex-between gap-5">
+              <div className="flex-1 flex max-w-[200px] items-center border border-gray-400 h-9">
+                <Button
+                  variant="ghost"
+                  onClick={decreaseQuantity}
+                  className="px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600  focus:outline-none"
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </Button>
+                <span className="flex-1 px-4 py-2 text-center border-x">
+                  {quantity}
+                </span>
+                <Button
+                  variant="ghost"
+                  onClick={increaseQuantity}
+                  className="px-4 py-2 text-xl font-medium text-gray-600 hover:bg-transparent focus:outline-none"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </Button>
+              </div>
+              <ReactCountUp
+                amt={product?.salePrice * quantity || product?.price * quantity}
+                prefix="₹"
+                className=" text-xl font-semibold"
+              />
             </div>
             <div className=" flex flex-row items-center gap-2">
               <Button
