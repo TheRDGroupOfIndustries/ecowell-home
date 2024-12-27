@@ -35,10 +35,6 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import ReactCountUp from "../ui/countUp";
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
-import { Badge } from "../ui/badge";
-import { useDebounce } from "@/hooks/debounce";
-import { cn } from "@/lib/utils";
-import ReactCountUp from "../ui/countUp";
 import { useWishlist } from "@/context/WishlistContext";
 
 const Navbar = ({ companyName }) => {
