@@ -139,7 +139,7 @@ const Register = () => {
         const otpCheck = await res.json();
         // console.log(otpCheck, otpCheck.otpCode);
 
-        setCheckOtpCode(otpCheck.otpCode);
+        setCheckOtpCode(otpCheck);
         setOtpBtn(true);
         setOtpSuccess(true);
         if (isEmail) {
@@ -164,9 +164,6 @@ const Register = () => {
     if (!first_name || !last_name || !emailOrPhone || !otp || !checkOtpCode) {
       return toast.error("Please fill all the fields!");
     }
-    // if (password !== confirmPassword) {
-    //   return toast.error("Passwords does not match!");
-    // }
 
     setSubmitting(true);
 
@@ -187,13 +184,28 @@ const Register = () => {
           }),
         });
 
+        const contentType = res.headers.get("Content-Type");
+        let result;
+
+        // parsing response based on Content-Type
+        if (contentType && contentType.includes("application/json")) {
+          result = await res.json();
+        } else {
+          result = await res.text();
+        }
+
+        console.log("result:", result);
+
         if (res.status === 400) {
-          setSubmitting(false);
           if (isEmail) {
-            toast.error(`${email} is already registered!`);
+            throw new Error(`${email} is already registered!`);
           } else {
-            toast.error(`${emailOrPhone} is already registered!`);
+            throw new Error(`${emailOrPhone} is already registered!`);
           }
+        }
+
+        if (res.status === 401) {
+          throw new Error("Invalid OTP!");
         }
 
         if (res.status === 200) {
@@ -201,20 +213,25 @@ const Register = () => {
           router.push("/auth/sign-in");
           return "Registered successfully!";
         } else {
-          setSubmitting(false);
-          throw new Error("Something went wrong, please try again!");
+          throw new Error(
+            (result && result.message) ||
+              result ||
+              "Something went wrong, please try again!"
+          );
         }
       } catch (error) {
-        setSubmitting(false);
+        console.error("Registration error:", error);
         throw error;
+      } finally {
+        setSubmitting(false);
       }
     };
 
     toast.promise(register(), {
       pending: "Registering...",
       success: "Registered successfully!",
-      error: "Something went wrong, please try again!",
-      // error: (error: any) => error.message || 'An error occurred.',
+      error: (error) =>
+        error?.message || "Something went wrong, please try again!",
     });
   };
 

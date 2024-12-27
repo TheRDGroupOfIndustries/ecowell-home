@@ -21,7 +21,16 @@ export const POST = async (request) => {
     checkOtpCode,
   } = await request.json();
 
-  // console.log(first_name, last_name, email, phone_number, isEmail, password, otp, checkOtpCode);
+  console.log(
+    first_name,
+    last_name,
+    email,
+    phone_number,
+    isEmail,
+    password,
+    otp,
+    checkOtpCode
+  );
 
   await connectToMongoDB();
 
@@ -43,7 +52,7 @@ export const POST = async (request) => {
     console.log("sending otp");
 
     if (isEmail) {
-      otpCode = Math.floor(1000 + Math.random() * 9000);
+      otpCode = Math.floor(100000 + Math.random() * 9000);
       const body = `<h1 style="color: #333; font-family: 'Arial', sans-serif;">Heya ${first_name}!!</h1>
       <span style="color: #ccc; font-size: 18px; font-family: 'Arial', sans-serif;">Here's an OTP for your email verification <b style="color: #2fff00;">${otpCode}</b><br /></span>`;
 
@@ -81,34 +90,38 @@ export const POST = async (request) => {
 
   if (otp) {
     let newUser;
-    if (isEmail && otp == checkOtpCode) {
-      const body = `<h1 style="color: #333; font-family: 'Arial', sans-serif;">Heya ${first_name}!!</h1>
+    if (isEmail) {
+      if (otp == checkOtpCode) {
+        const body = `<h1 style="color: #333; font-family: 'Arial', sans-serif;">Heya ${first_name}!!</h1>
       <span style="color: #ccc; font-size: 18px; font-family: 'Arial', sans-serif;">Here's your credentials to login as User:</span>
       <p style="color: #2fff00; font-size: 18px; font-family: 'Arial', sans-serif;">Email: <b style="color: #333;">${email}</b></p>
       <p style="color: #2fff00; font-size: 18px; font-family: 'Arial', sans-serif;'>Password: <b style="color: #333;">${password}</b></p>`;
 
-      await transporter.sendMail({
-        from: process.env.GMAIL_USER,
-        to: email,
-        subject: "EcoWell - User credentials",
-        text: "User login credentials",
-        html: body,
-      });
+        await transporter.sendMail({
+          from: process.env.GMAIL_USER,
+          to: email,
+          subject: "EcoWell - User credentials",
+          text: "User login credentials",
+          html: body,
+        });
 
-      const hashPassword = await bcrypt.hash(password, 5); // converting password into hash-code
+        const hashPassword = await bcrypt.hash(password, 5); // converting password into hash-code
 
-      newUser = new User({
-        first_name,
-        last_name,
-        email,
-        password: hashPassword,
-      });
+        newUser = new User({
+          first_name,
+          last_name,
+          email,
+          password: hashPassword,
+        });
+      } else {
+        return new NextResponse("Invalid Otp!", { status: 405 });
+      }
     } else {
       const isOtpValid = await verifyOtpFromPhone(phone_number, otp);
 
       if (isOtpValid) {
         // send admin credentials through SmS
-
+        
         newUser = new User({
           first_name,
           last_name,
