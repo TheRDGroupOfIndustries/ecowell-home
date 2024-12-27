@@ -7,26 +7,36 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu";
 import { links } from "@/constants/data";
 import { useCart } from "@/context/CartProvider";
 import { useNotification } from "@/context/NotificationProvider";
-import { fadeIn, staggerContainer } from "@/lib/utils";
+import { useDebounce } from "@/hooks/debounce";
+import { cn, fadeIn, staggerContainer } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Heart, ImageIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
-import Notification from "./Notification";
-import { Input } from "../ui/input";
-import { Card, CardContent, CardFooter } from "../ui/card";
-import { ScrollArea } from "../ui/scroll-area";
 import { Badge } from "../ui/badge";
-import { useDebounce } from "@/hooks/debounce";
-import { cn } from "@/lib/utils";
+import { Card, CardContent, CardFooter } from "../ui/card";
 import ReactCountUp from "../ui/countUp";
+import { Input } from "../ui/input";
+import { ScrollArea } from "../ui/scroll-area";
+import Notification from "./Notification";
+
 
 const Navbar = ({ companyName }) => {
   const pathname = usePathname();
@@ -51,7 +61,7 @@ const Navbar = ({ companyName }) => {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [pathname]);
 
   const handleTrendingItemClick = useCallback((text) => {
     setSearchOpen(true);
@@ -65,7 +75,7 @@ const Navbar = ({ companyName }) => {
       variants={staggerContainer()}
       initial="hidden"
       animate="show"
-      className="fixed top-0 left-0 w-full z-40 backdrop-blur-md overflow-hidden"
+      className="fixed top-0 left-0 w-full z-40 backdrop-blur-md "
     >
       {isNotificationOpen && <Notification />}
       <div className="w-full flex justify-between items-center p-4 px-8">
@@ -87,55 +97,72 @@ const Navbar = ({ companyName }) => {
             <Link
               key={index}
               href={link.herf}
-              className={`hover:text-gray-700 text-lg text-bold ${
-                isHomeScrolled ? "text-black" : "text-white"
-              } ease-in-out duration-300`}
+              className={`hover:text-gray-700 text-lg text-bold ${isHomeScrolled ? "text-black" : "text-white"
+                } ease-in-out duration-300`}
             >
               {link.head}
             </Link>
           ))}
         </motion.div>
         <motion.div variants={fadeIn("down", 0.4)} className="flex space-x-4">
-          <Search
-            isHomeScrolled={isHomeScrolled}
-            open={searchOpen}
-            setOpen={setSearchOpen}
-            initialQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
-          <Link href="/account/wishlist">
-            <div className="relative">
-              <CiHeart
-                size={20}
-                className={`hover:text-gray-700 ${
-                  isHomeScrolled ? "text-black" : "text-white"
-                } ease-in-out duration-300`}
+          <NavigationMenu>
+            <NavigationMenuList>
+              <Search
+                isHomeScrolled={isHomeScrolled}
+                open={searchOpen}
+                setOpen={setSearchOpen}
+                initialQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
               />
-            </div>
-          </Link>
-          <Link href="/account/cart">
-            <div className="relative">
-              {noOfCartItems > 0 && (
-                <div className="absolute -top-2.5 -right-2.5 text-xs text-white bg-[red] rounded-full px-1">
-                  {noOfCartItems}
+              <Link href="/account/wishlist">
+                <div className="relative">
+                  <CiHeart
+                    size={20}
+                    className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
+                      } ease-in-out duration-300`}
+                  />
                 </div>
-              )}
-              <CiShoppingCart
-                size={20}
-                className={`hover:text-gray-700 ${
-                  isHomeScrolled ? "text-black" : "text-white"
-                } ease-in-out duration-300`}
-              />
-            </div>
-          </Link>
-          <Link href="/account">
-            <CiUser
-              size={20}
-              className={`hover:text-gray-700 ${
-                isHomeScrolled ? "text-black" : "text-white"
-              } ease-in-out duration-300`}
-            />
-          </Link>
+              </Link>
+              <Link href="/account/cart">
+                <div className="relative">
+                  {noOfCartItems > 0 && (
+                    <div className="absolute -top-2.5 -right-2.5 text-xs text-white bg-[red] rounded-full px-1">
+                      {noOfCartItems}
+                    </div>
+                  )}
+                  <CiShoppingCart
+                    size={20}
+                    className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
+                      } ease-in-out duration-300`}
+                  />
+                </div>
+              </Link>
+
+
+
+              <Link href="/account">
+                <CiUser
+                  size={20}
+                  className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
+                    } ease-in-out duration-300`}
+                />
+              </Link>
+
+              <NavigationMenuItem>
+                <NavigationMenuTrigger><Link href="/account">
+                  <CiUser
+                    size={20}
+                    className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
+                      } ease-in-out duration-300`}
+                  />
+                </Link></NavigationMenuTrigger>
+                <NavigationMenuContent className="z-50">
+                  <NavigationMenuLink>Link</NavigationMenuLink>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+
+            </NavigationMenuList>
+          </NavigationMenu>
         </motion.div>
       </div>
     </motion.div>
@@ -233,9 +260,8 @@ export function Search({
       <DialogTrigger asChild className="cursor-default">
         <CiSearch
           size={20}
-          className={`hover:text-gray-700 cursor-default ${
-            isHomeScrolled ? "text-black" : "text-white"
-          } ease-in-out duration-300`}
+          className={`hover:text-gray-700 cursor-default ${isHomeScrolled ? "text-black" : "text-white"
+            } ease-in-out duration-300`}
           onClick={() => setOpen(true)}
         />
       </DialogTrigger>
@@ -282,6 +308,8 @@ export function Search({
   );
 }
 
+
+
 export const ProductNode = ({ productDetails, onClose }) => {
   const chosedVariant = productDetails?.variants[0];
 
@@ -300,7 +328,7 @@ export const ProductNode = ({ productDetails, onClose }) => {
                 alt={chosedVariant?.flavor}
                 width={150}
                 height={150}
-                // className="w-full h-full animate-fade-in overflow-hidden"
+              // className="w-full h-full animate-fade-in overflow-hidden"
               />
               {/* <Image
               src={
