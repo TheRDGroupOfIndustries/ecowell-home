@@ -7,6 +7,7 @@ import { signIn } from "next-auth/react";
 import { emailPattern, passwordPattern } from "@/constants/data";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "sonner";
 
 const Register = () => {
   const router = useRouter();
@@ -197,7 +198,7 @@ const Register = () => {
 
         if (res.status === 200) {
           setSuccess(true);
-          router.push("/page/account/login");
+          router.push("/auth/sign-in");
           return "Registered successfully!";
         } else {
           setSubmitting(false);
@@ -218,7 +219,7 @@ const Register = () => {
   };
 
   return (
-    <section className="w-full h-full md:max-h-screen flex-center container mx-auto py-10 md:py-20 lg:py-32 overflow-hidden">
+    <section className="w-full h-full md:max-h-screen flex-center container mx-auto pt-10 md:pt-20 lg:pt-32 overflow-hidden">
       <div className="w-full grid md:grid-cols-2 gap-8">
         <div className="w-full h-full animate-slide-down">
           <h3 className="text-3xl font-bold text-gray-800 mb-6">

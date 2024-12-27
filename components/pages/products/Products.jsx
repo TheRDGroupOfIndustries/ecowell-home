@@ -87,20 +87,21 @@ const Products = ({ category }) => {
         </Button>
       </div>
       <div className="flex-between space-x-4 overflow-x-auto mt-4 text-lg text-primary-clr border-b-2 border-primary-clr pb-4">
-        {categories.map((category) => (
-          <button
-            key={category}
-            className={`whitespace-nowrap ${
-              (category === "All Products" && activeCategory === "") ||
-              activeCategory === category // Update 3
-                ? "text-secondary-clr"
-                : "hover:text-secondary-clr"
-            }`}
-            onClick={() => handleCategoryClick(category)}
-          >
-            {category}
-          </button>
-        ))}
+        {Array.isArray(categories) &&
+          categories.map((category) => (
+            <button
+              key={category}
+              className={`whitespace-nowrap ${
+                (category === "All Products" && activeCategory === "") ||
+                activeCategory === category // Update 3
+                  ? "text-secondary-clr"
+                  : "hover:text-secondary-clr"
+              }`}
+              onClick={() => handleCategoryClick(category)}
+            >
+              {category}
+            </button>
+          ))}
       </div>
       <div className="flex justify-between items-center mt-6">
         <h1 className="text-xl font-medium">
@@ -164,9 +165,10 @@ const Products = ({ category }) => {
           ))
         ) : (
           <>
-            {products.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+            {Array.isArray(products) &&
+              products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
           </>
         )}
       </div>
