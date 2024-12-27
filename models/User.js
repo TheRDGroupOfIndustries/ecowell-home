@@ -11,7 +11,6 @@ const UserSchema = new Schema(
       type: String,
       required: false,
       trim: true,
-      // unique: true,
       lowercase: true,
       match: [/.+\@.+\..+/, "Please fill a valid email address"],
     },
@@ -23,7 +22,10 @@ const UserSchema = new Schema(
       type: String,
       maxLength: 10,
       required: false,
-      // unique: true,
+    },
+    is_phone_verified: {
+      type: Boolean,
+      default: false,
     },
     first_name: {
       type: String,
@@ -65,7 +67,6 @@ const UserSchema = new Schema(
     region_state: {
       type: String,
       required: false,
-      // default: "Delhi",
     },
     city: {
       type: String,
