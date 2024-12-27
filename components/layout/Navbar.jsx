@@ -7,10 +7,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu";
 import { links } from "@/constants/data";
 import { useCart } from "@/context/CartProvider";
 import { useNotification } from "@/context/NotificationProvider";
-import { fadeIn, staggerContainer } from "@/lib/utils";
+import { useDebounce } from "@/hooks/debounce";
+import { cn, fadeIn, staggerContainer } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Heart, ImageIcon } from 'lucide-react';
 import { useSession } from "next-auth/react";
@@ -19,9 +30,10 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
-import Notification from "./Notification";
-import { Input } from "../ui/input";
+import { Badge } from "../ui/badge";
 import { Card, CardContent, CardFooter } from "../ui/card";
+import ReactCountUp from "../ui/countUp";
+import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
 import { Badge } from "../ui/badge";
 import { useDebounce } from "@/hooks/debounce";
@@ -54,7 +66,7 @@ const Navbar = ({ companyName }) => {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [pathname]);
 
   const handleTrendingItemClick = useCallback((text) => {
     setSearchOpen(true);
@@ -76,7 +88,7 @@ const Navbar = ({ companyName }) => {
       variants={staggerContainer()}
       initial="hidden"
       animate="show"
-      className="fixed top-0 left-0 w-full z-40 backdrop-blur-md overflow-hidden"
+      className="fixed top-0 left-0 w-full z-40 backdrop-blur-md "
     >
       {isNotificationOpen && <Notification />}
       <div className="w-full flex justify-between items-center p-4 px-8">
@@ -98,9 +110,8 @@ const Navbar = ({ companyName }) => {
             <Link
               key={index}
               href={link.herf}
-              className={`hover:text-gray-700 text-lg text-bold ${
-                isHomeScrolled ? "text-black" : "text-white"
-              } ease-in-out duration-300`}
+              className={`hover:text-gray-700 text-lg text-bold ${isHomeScrolled ? "text-black" : "text-white"
+                } ease-in-out duration-300`}
             >
               {link.head}
             </Link>
@@ -248,9 +259,8 @@ export function Search({
       <DialogTrigger asChild className="cursor-default">
         <CiSearch
           size={20}
-          className={`hover:text-gray-700 cursor-default ${
-            isHomeScrolled ? "text-black" : "text-white"
-          } ease-in-out duration-300`}
+          className={`hover:text-gray-700 cursor-default ${isHomeScrolled ? "text-black" : "text-white"
+            } ease-in-out duration-300`}
           onClick={() => setOpen(true)}
         />
       </DialogTrigger>
@@ -296,6 +306,8 @@ export function Search({
     </Dialog>
   );
 }
+
+
 
 export const ProductNode = ({ productDetails, onClose }) => {
   const chosedVariant = productDetails?.variants[0];
