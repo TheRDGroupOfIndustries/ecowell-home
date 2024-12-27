@@ -9,18 +9,25 @@ import ReactCountUp from "./countUp";
 
 export default function AddToCartmodel({ loading, product }) {
   //   console.log("product", product);
+  const { productExistsInCart } = useCart();
   return (
     <>
-      {loading ? (
+      {loading || productExistsInCart(product?._id) ? (
         <Button
-          disabled={loading}
+          disabled={loading || productExistsInCart(product?._id)}
           effect="gooeyLeft"
           className={`mt-2 w-full ${
-            loading ? "bg-gray-300" : "bg-primary-clr"
+            loading
+              ? "bg-gray-300"
+              : productExistsInCart(product?._id)
+              ? "bg-secondary-clr"
+              : "bg-primary-clr"
           } text-white py-2 rounded-md hover:bg-green-700 transition`}
         >
           {loading ? (
             <div className="h-4 w-3/4 bg-gray-400"></div>
+          ) : productExistsInCart(product?._id) ? (
+            "Already in cart"
           ) : (
             "Add To Cart"
           )}

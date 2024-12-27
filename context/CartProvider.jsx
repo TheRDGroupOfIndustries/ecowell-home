@@ -279,6 +279,10 @@ export const CartProvider = ({ children }) => {
 
   const noOfCartItems = cartItems.length;
 
+  const productExistsInCart = (productId) => {
+    return cartItems.some((item) => item.productId._id === productId);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -288,10 +292,12 @@ export const CartProvider = ({ children }) => {
         totalPrice,
         addToCart,
         removeCartItem,
+        productExistsInCart,
         updateCartItem,
-        cancelPlacedOrder,
+
         placeOrder,
         placingOrder,
+        cancelPlacedOrder,
         userOrderList,
         setUserOrderList,
       }}
