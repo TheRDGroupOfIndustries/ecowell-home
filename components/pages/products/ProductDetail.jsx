@@ -12,6 +12,7 @@ import FrequentlyAskedQuestions from "./components/FrequentlyAskedQuestions";
 import CustomerReviews from "./components/CustomerReviews";
 import SkeletonLoader from "./components/SkeletonLoader";
 import AddToCartBtn from "./components/AddToCartBtn";
+import Ingredient from "./components/Ingredient";
 
 const ProductDetail = ({ productSku }) => {
   const [product, setProduct] = useState(null);
@@ -62,8 +63,12 @@ const ProductDetail = ({ productSku }) => {
         <FrequentlyBoughtTogether />
         <RelatedProduct category={product.category.title} />
         <ProductDiscover />
-        <TheStories />
+        <Ingredient/>
+        <Image src={"/banner3.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
+        <Image src={"/banner2.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
+        <TheStories />  
         <PurposeAndTrust />
+        <Image src={"/banner1.png"} alt="Banner" width={1000} height={540} className='w-full ' />
         <FrequentlyAskedQuestions faqs={product.faqs} />
         <CustomerReviews productId={product._id} />
       </section>
