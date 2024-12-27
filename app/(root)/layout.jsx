@@ -4,6 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { NotificationProvider } from "@/context/NotificationProvider";
 import { CartProvider } from "@/context/CartProvider";
+import { WishlistProvider } from "@/context/WishlistContext";
 
 export default async function RootLayout({ children }) {
   const session = await getServerSession();
@@ -11,11 +12,13 @@ export default async function RootLayout({ children }) {
   return (
     <>
       <CartProvider>
-        <NotificationProvider>
-          <Navbar companyName="Ecowell" />
-          {children}
-          <Footer />
-        </NotificationProvider>
+        <WishlistProvider>
+          <NotificationProvider>
+            <Navbar companyName="Ecowell" />
+            {children}
+            <Footer />
+          </NotificationProvider>
+        </WishlistProvider>
       </CartProvider>
     </>
   );

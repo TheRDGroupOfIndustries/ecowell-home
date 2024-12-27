@@ -2,19 +2,33 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Star } from "lucide-react";
+import { Star } from 'lucide-react';
 import { Button } from "./button";
 import { useCart } from "@/context/CartProvider";
 import Link from "next/link";
 import AddToCartmodel from "./addToCartmodel";
+import { CiHeart } from "react-icons/ci";
+import { useWishlist } from "@/context/WishlistContext";
+import { AiFillHeart } from "react-icons/ai";
 
 const ProductCard = ({ product, loading = false }) => {
-  // console.log("product", product);
-
   const { addToCart } = useCart();
+  const { wishlistProducts, addToWishlist, removeFromWishlist } = useWishlist();
 
   const [imageError, setImageError] = useState(false);
   const [imageTwoError, setImageTwoError] = useState(false);
+
+  const isInWishlist = wishlistProducts.some(item => item._id === product?._id);
+
+  const handleWishlistToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isInWishlist) {
+      removeFromWishlist(product._id);
+    } else {
+      addToWishlist(product._id);
+    }
+  };
 
   return (
     <div
@@ -69,6 +83,16 @@ const ProductCard = ({ product, loading = false }) => {
                   className="w-full h-full object-contain"
                 />
               </div>
+              <button
+                onClick={handleWishlistToggle}
+                className="absolute top-2 right-2 z-10 bg-white rounded-full p-1"
+              >
+                {isInWishlist ? (
+                  <AiFillHeart size={24} className="text-red-500" />
+                ) : (
+                  <CiHeart size={24} className="text-gray-500 hover:scale-110 transition-all duration-200" />
+                )}
+              </button>
             </>
           ) : (
             <div className="w-full h-full bg-gray-300"></div>

@@ -12,11 +12,11 @@ import { useCart } from "@/context/CartProvider";
 import { useNotification } from "@/context/NotificationProvider";
 import { fadeIn, staggerContainer } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Heart, ImageIcon } from "lucide-react";
+import { Heart, ImageIcon } from 'lucide-react';
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import Notification from "./Notification";
@@ -27,15 +27,18 @@ import { Badge } from "../ui/badge";
 import { useDebounce } from "@/hooks/debounce";
 import { cn } from "@/lib/utils";
 import ReactCountUp from "../ui/countUp";
+import { useWishlist } from "@/context/WishlistContext";
 
 const Navbar = ({ companyName }) => {
   const pathname = usePathname();
+  const router = useRouter();
   const { data: session } = useSession();
   const { noOfCartItems } = useCart();
   const { isNotificationOpen } = useNotification();
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const { wishlistProducts } = useWishlist();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -59,6 +62,14 @@ const Navbar = ({ companyName }) => {
   }, []);
 
   const isHomeScrolled = pathname === "/" ? isScrolled : true;
+
+  const handleUserIconClick = () => {
+    if (session) {
+      router.push('/account');
+    } else {
+      router.push('/auth/sign-in');
+    }
+  };
 
   return (
     <motion.div
@@ -111,6 +122,11 @@ const Navbar = ({ companyName }) => {
                   isHomeScrolled ? "text-black" : "text-white"
                 } ease-in-out duration-300`}
               />
+              {wishlistProducts.length > 0 && (
+                <div className="absolute -top-2.5 -right-2.5 text-xs text-white bg-[red] rounded-full px-1">
+                  {wishlistProducts.length}
+                </div>
+              )}
             </div>
           </Link>
           <Link href="/account/cart">
@@ -128,14 +144,13 @@ const Navbar = ({ companyName }) => {
               />
             </div>
           </Link>
-          <Link href="/account">
-            <CiUser
-              size={20}
-              className={`hover:text-gray-700 ${
-                isHomeScrolled ? "text-black" : "text-white"
-              } ease-in-out duration-300`}
-            />
-          </Link>
+          <CiUser
+            size={20}
+            className={`hover:text-gray-700 ${
+              isHomeScrolled ? "text-black" : "text-white"
+            } ease-in-out duration-300 cursor-pointer`}
+            onClick={handleUserIconClick}
+          />
         </motion.div>
       </div>
     </motion.div>
@@ -258,7 +273,7 @@ export function Search({
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
             </div>
           ) : results && results.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2">
+            <div className="grid grid-cols-1 sm:grid-cols-1 gap-4 p-2">
               {results.map((product) => (
                 <ProductNode
                   key={product._id}
@@ -300,19 +315,7 @@ export const ProductNode = ({ productDetails, onClose }) => {
                 alt={chosedVariant?.flavor}
                 width={150}
                 height={150}
-                // className="w-full h-full animate-fade-in overflow-hidden"
               />
-              {/* <Image
-              src={
-                chosedVariant?.images[1]
-                  ? chosedVariant?.images[1]
-                  : chosedVariant?.images[0]
-              }
-              alt={chosedVariant?.flavor}
-              width={100}
-              height={150}
-              className="animate-fade-in hidden group-hover:block transition-transform"
-            /> */}
             </div>
           ) : (
             <ImageIcon src={""} alt={""} width={100} height={150} />
