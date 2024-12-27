@@ -1,16 +1,32 @@
 import Image from "next/image";
 import { Button } from "./button";
 import { useCart } from "@/context/CartProvider";
+import { CiHeart } from "react-icons/ci";
+import { AiFillHeart } from "react-icons/ai";
+import { useWishlist } from "@/context/WishlistContext";
 
 const ProductCardVertical = ({ product }) => {
   const { addToCart } = useCart();
+  const { wishlistProducts, addToWishlist, removeFromWishlist } = useWishlist();
+
+  const isInWishlist = wishlistProducts.some(item => item._id === product._id);
 
   const handleAddToCart = () => {
     addToCart(product, 1, product.variants[0]);
   };
 
+  const handleWishlistToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isInWishlist) {
+      removeFromWishlist(product._id);
+    } else {
+      addToWishlist(product._id);
+    }
+  };
+
   return (
-    <div className="  group grid grid-cols-2 gap-2 bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden">
+    <div className="group grid grid-cols-2 gap-2 bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden">
       <div className="absolute z-50 bg-primary-clr text-white text-xs font-bold px-2 py-1 rounded-tr-lg">
         {Math.round(product.discount)}% OFF
       </div>
@@ -34,6 +50,16 @@ const ProductCardVertical = ({ product }) => {
             className="w-full h-full object-contain"
           />
         </div>
+        <button
+          onClick={handleWishlistToggle}
+          className="absolute top-2 right-2 z-10 bg-white rounded-full p-1"
+        >
+          {isInWishlist ? (
+            <AiFillHeart size={24} className="text-red-500" />
+          ) : (
+            <CiHeart size={24} className="text-gray-500 hover:scale-110 transition-all duration-200" />
+          )}
+        </button>
       </div>
 
       <div className="mt-1 w-full">
