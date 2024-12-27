@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartProvider";
+import { X } from "lucide-react";
+import Image from "next/image";
 import React, { useState } from "react";
 
 export default function AddToCartBtn() {
@@ -21,35 +23,56 @@ export default function AddToCartBtn() {
     console.log(`Adding ${quantity} items to cart`);
   };
   return (
-    <div className="animate-slide-up bg-gray-200 fixed z-10 bottom-3 right-3 flex flex-row items-center p-2 border border-gray-400 ">
-      <div className="flex items-center border border-gray-400 h-9 ">
+
+    <div className=" fixed z-10 bottom-3 right-3 flex flex-col gap-2">
+      <div className="self-end animate-slide-up h-[64px] w-[283px] bg-dark_jungle_green text-white rounded-full flex flex-row items-center px-[5px] gap-2   ">
+      <div className="mx-auto text-white text-end flex flex-col ">
+          <X color="white" />
+        </div>
+        <div className="ml-auto text-white text-end flex flex-col ">
+          <p>Get in touch</p>
+          <p>+91 9876345621</p>
+        </div>
+        <div className=" w-[55px] h-[55px] overflow-hidden  bg-white rounded-full">
+          <Image
+            src="/whatsapp.png"
+            width={55}
+            height={55}
+            alt="whatsapp"
+          />
+        </div>
+
+      </div>
+      <div className="animate-slide-up bg-gray-200  flex flex-row items-center p-2 border border-gray-400 ">
+        <div className="flex items-center border border-gray-400 h-9 ">
+          <Button
+            variant="ghost"
+            onClick={decreaseQuantity}
+            className="px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600  focus:outline-none"
+            aria-label="Decrease quantity"
+          >
+            −
+          </Button>
+          <span className="flex-1 px-4 py-2 text-center border-x">
+            {quantity}
+          </span>
+          <Button
+            variant="ghost"
+            onClick={increaseQuantity}
+            className="px-4 py-2 text-xl font-medium text-gray-600 hover:bg-transparent focus:outline-none"
+            aria-label="Increase quantity"
+          >
+            +
+          </Button>
+        </div>
         <Button
-          variant="ghost"
-          onClick={decreaseQuantity}
-          className="px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600  focus:outline-none"
-          aria-label="Decrease quantity"
+          onClick={handleAddToCart}
+          size="sm"
+          className=" rounded-none w-[200px] bg-primary-clr text-white py-2  hover:bg-green-700 transition"
         >
-          −
-        </Button>
-        <span className="flex-1 px-4 py-2 text-center border-x">
-          {quantity}
-        </span>
-        <Button
-          variant="ghost"
-          onClick={increaseQuantity}
-          className="px-4 py-2 text-xl font-medium text-gray-600 hover:bg-transparent focus:outline-none"
-          aria-label="Increase quantity"
-        >
-          +
+          Add To Cart
         </Button>
       </div>
-      <Button
-        onClick={handleAddToCart}
-        size="sm"
-        className=" rounded-none w-[200px] bg-primary-clr text-white py-2  hover:bg-green-700 transition"
-      >
-        Add To Cart
-      </Button>
     </div>
   );
 }
