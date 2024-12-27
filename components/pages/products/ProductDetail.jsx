@@ -50,7 +50,7 @@ const ProductDetail = ({ productSku }) => {
   return (
     <>
       <section className="w-full h-full space-y-8 p-4 md:px-8 lg:px-10 xl:px-14 md:pt-28">
-        <AddToCartBtn />
+        <AddToCartBtn product={product} selectedVariant={selectedVariant} />
 
         <div className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8">
           <ImageGallery images={selectedVariant.images} />

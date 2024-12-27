@@ -19,6 +19,9 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [registrationMethod, setRegistrationMethod] = useState('');
+  const [showOtpInput, setShowOtpInput] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -58,6 +61,7 @@ export default function ProfilePage() {
           profile_image: userData.profile_image || DEFAULT_AVATAR,
         });
         setOriginalData({ ...userData });
+        setIsPhoneVerified(userData.is_phone_verified || false);
         if (userData.phone_number) {
           setRegistrationMethod('phone');
         } else if (session?.user?.authUser?.provider === 'google' || userData.googleId) {
@@ -99,8 +103,7 @@ export default function ProfilePage() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if ((registrationMethod === 'phone' && name === 'phone_number') ||
-        (registrationMethod === 'email' && name === 'email') ||
+    if ((registrationMethod === 'email' && name === 'email') ||
         (registrationMethod === 'google' && name === 'email')) {
       return; // Do not update locked fields
     }
@@ -113,9 +116,54 @@ export default function ProfilePage() {
   const handleCancel = () => {
     setFormData({ ...originalData });
     setIsEditing(false);
+    setShowOtpInput(false);
+    setOtp('');
+  };
+
+  const handleSendOtp = async () => {
+    try {
+      const response = await fetch("/api/account/send-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phone_number: formData.phone_number }),
+      });
+
+      if (!response.ok) throw new Error("Failed to send OTP");
+
+      setShowOtpInput(true);
+      toast.success("OTP sent successfully");
+    } catch (error) {
+      toast.error("Failed to send OTP");
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    try {
+      const response = await fetch("/api/account/verify-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phone_number: formData.phone_number, otp }),
+      });
+
+      if (!response.ok) throw new Error("Failed to verify OTP");
+
+      setIsPhoneVerified(true);
+      toast.success("Phone number verified successfully");
+    } catch (error) {
+      toast.error("Failed to verify OTP");
+    }
   };
 
   const handleSubmit = async () => {
+    if (formData.phone_number !== originalData.phone_number && !isPhoneVerified) {
+      toast.error("Please verify your new phone number before saving");
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await fetch("/api/account/update", {
@@ -131,6 +179,8 @@ export default function ProfilePage() {
       const updatedUser = await response.json();
       setOriginalData({ ...formData });
       setIsEditing(false);
+      setShowOtpInput(false);
+      setOtp('');
       toast.success("Profile updated successfully");
 
       // Update the session with new user data
@@ -285,11 +335,33 @@ export default function ProfilePage() {
                 name="phone_number"
                 value={formData.phone_number}
                 onChange={handleInputChange}
-                disabled={registrationMethod === 'phone' || !isEditing}
                 placeholder="Add your phone number to receive call on delivery"
               />
+              {isEditing && formData.phone_number !== originalData.phone_number && !isPhoneVerified && (
+                <Button onClick={handleSendOtp} className="mt-2">
+                  Verify Phone Number
+                </Button>
+              )}
             </div>
           </div>
+
+          {showOtpInput && (
+            <div className="space-y-2">
+              <Label htmlFor="otp" className="text-lg">
+                OTP
+              </Label>
+              <Input
+                id="otp"
+                name="otp"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                placeholder="Enter OTP"
+              />
+              <Button onClick={handleVerifyOtp} className="mt-2">
+                Verify OTP
+              </Button>
+            </div>
+          )}
 
           <CardTitle className="pt-4">Shipping Address</CardTitle>
 
