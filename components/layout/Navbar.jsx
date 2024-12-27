@@ -257,8 +257,8 @@ export function Search({
             <div className="flex items-center justify-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
             </div>
-          ) : results.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-1 gap-4 p-2">
+          ) : results && results.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2">
               {results.map((product) => (
                 <ProductNode
                   key={product._id}

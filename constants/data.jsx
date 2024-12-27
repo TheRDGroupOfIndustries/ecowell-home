@@ -19,7 +19,7 @@ export const DEFAULT_AVATAR = "/public/pfp.png";
 export const links = [
   { id: 1, head: "Home", herf: "/" },
   { id: 1, head: "Products", herf: "/products" },
-  { id: 1, head: "About Us", herf: "/#about-us" },
+  { id: 1, head: "About Us", herf: "/about-us" },
   { id: 1, head: "Contact", herf: "/#contact" },
 ];
 
