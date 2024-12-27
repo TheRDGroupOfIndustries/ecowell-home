@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { DEFAULT_AVATAR } from "@/constants/data";
 
 export default function ProfilePage() {
@@ -16,6 +17,8 @@ export default function ProfilePage() {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [registrationMethod, setRegistrationMethod] = useState('');
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -35,6 +38,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const fetchUserData = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch("/api/account");
         if (!response.ok) throw new Error("Failed to fetch user data");
@@ -54,14 +58,23 @@ export default function ProfilePage() {
           profile_image: userData.profile_image || DEFAULT_AVATAR,
         });
         setOriginalData({ ...userData });
+        if (userData.phone_number) {
+          setRegistrationMethod('phone');
+        } else if (session?.user?.authUser?.provider === 'google' || userData.googleId) {
+          setRegistrationMethod('google');
+        } else {
+          setRegistrationMethod('email');
+        }
       } catch (error) {
         toast.error("Failed to load user data");
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchUserData();
-  }, []);
+  }, [session]);
 
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -86,6 +99,11 @@ export default function ProfilePage() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if ((registrationMethod === 'phone' && name === 'phone_number') ||
+        (registrationMethod === 'email' && name === 'email') ||
+        (registrationMethod === 'google' && name === 'email')) {
+      return; // Do not update locked fields
+    }
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -126,6 +144,54 @@ export default function ProfilePage() {
       setLoading(false);
     }
   };
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: false });
+    router.push('/auth/sign-in');
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen mt-[120px] bg-white p-4 md:p-6">
+        <Card className="max-w-full mx-auto text-2xl">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <Skeleton className="h-8 w-[200px]" />
+            <Skeleton className="h-10 w-[120px]" />
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="flex justify-center mb-6">
+              <Skeleton className="w-[200px] h-[200px] rounded-full" />
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <Skeleton className="h-8 w-[150px]" />
+            <div className="grid md:grid-cols-2 gap-4">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="flex justify-end gap-4">
+              <Skeleton className="h-10 w-[100px]" />
+              <Skeleton className="h-10 w-[100px]" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen mt-[120px] bg-white p-4 md:p-6">
@@ -207,7 +273,7 @@ export default function ProfilePage() {
                 type="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                disabled={true}
+                disabled={registrationMethod === 'email' || registrationMethod === 'google' || !isEditing}
               />
             </div>
             <div className="space-y-2">
@@ -219,7 +285,7 @@ export default function ProfilePage() {
                 name="phone_number"
                 value={formData.phone_number}
                 onChange={handleInputChange}
-                disabled={!isEditing}
+                disabled={registrationMethod === 'phone' || !isEditing}
                 placeholder="Add your phone number to receive call on delivery"
               />
             </div>
@@ -311,12 +377,20 @@ export default function ProfilePage() {
 
           <div className="flex justify-end gap-4">
             {!isEditing ? (
-              <Button
-                onClick={() => setIsEditing(true)}
-                className="bg-primary-clr hover:bg-green-700 text-white transition-colors text-lg"
-              >
-                Edit
-              </Button>
+              <>
+                <Button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-primary-clr hover:bg-green-700 text-white transition-colors text-lg"
+                >
+                  Edit
+                </Button>
+                <Button
+                  onClick={handleSignOut}
+                  className="bg-red-500 hover:bg-red-700 text-white transition-colors text-lg"
+                >
+                  Sign Out
+                </Button>
+              </>
             ) : (
               <>
                 <Button
