@@ -64,8 +64,11 @@ const ProductDetail = ({ productSku }) => {
         <RelatedProduct category={product.category.title} />
         <ProductDiscover />
         <Ingredient/>
-        <TheStories />
+        <Image src={"/banner3.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
+        <Image src={"/banner2.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
+        <TheStories />  
         <PurposeAndTrust />
+        <Image src={"/banner1.png"} alt="Banner" width={1000} height={540} className='w-full ' />
         <FrequentlyAskedQuestions faqs={product.faqs} />
         <CustomerReviews productId={product._id} />
       </section>
