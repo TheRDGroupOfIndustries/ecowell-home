@@ -68,10 +68,10 @@ const ProductSchema = new Schema(
     reviews_number: { type: Number, default: 0 },
 
     // New fields based on the images
-    productFeatures: [{
-      title: { type: String, required: true },
-      icon: { type: String, required: true }
-    }],
+    // productFeatures: [{
+    //   title: { type: String, required: true },
+    //   icon: { type: String, required: true }
+    // }],
     heroBanner: HeroBannerSchema,
     dailyRitual: DailyRitualSchema,
     ingredientHighlights: [IngredientHighlightSchema],

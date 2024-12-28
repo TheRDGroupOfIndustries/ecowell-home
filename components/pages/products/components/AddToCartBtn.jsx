@@ -2,13 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartProvider";
-import { X } from "lucide-react";
+import { X } from 'lucide-react';
 import Image from "next/image";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function AddToCartBtn({ product, selectedVariant }) {
   const [quantity, setQuantity] = useState(1);
+  const [showWhatsApp, setShowWhatsApp] = useState(true);
   const { addToCart, productExistsInCart } = useCart();
   const router = useRouter();
 
@@ -34,28 +35,36 @@ export default function AddToCartBtn({ product, selectedVariant }) {
   };
 
   return (
-    <div className=" fixed z-10 bottom-3 right-3 flex flex-col gap-2">
-      <div
-        className="self-end animate-slide-up h-[64px] w-[283px] bg-dark_jungle_green text-white rounded-full flex flex-row items-center px-[5px] gap-2 cursor-pointer"
-        onClick={handleWhatsAppRedirect}
-      >
-        <div className="mx-auto text-white text-end flex flex-col ">
-          <X color="white" />
+    <div className="fixed z-10 bottom-3 right-3 flex flex-col gap-2">
+      {showWhatsApp && (
+        <div
+          className="self-end animate-slide-up h-[64px] w-[283px] bg-dark_jungle_green text-white rounded-full flex flex-row items-center px-[5px] gap-2 cursor-pointer"
+          onClick={handleWhatsAppRedirect}
+        >
+          <button 
+            className="mx-auto text-white text-end flex flex-col"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowWhatsApp(false);
+            }}
+          >
+            <X color="white" />
+          </button>
+          <div className="ml-auto text-white text-end flex flex-col ">
+            <p>Get in touch</p>
+            <p>+91 9876345621</p>
+          </div>
+          <div className="w-[55px] h-[55px] overflow-hidden bg-white rounded-full">
+            <Image src="/whatsapp.png" width={55} height={55} alt="whatsapp" />
+          </div>
         </div>
-        <div className="ml-auto text-white text-end flex flex-col ">
-          <p>Get in touch</p>
-          <p>+91 9876345621</p>
-        </div>
-        <div className=" w-[55px] h-[55px] overflow-hidden  bg-white rounded-full">
-          <Image src="/whatsapp.png" width={55} height={55} alt="whatsapp" />
-        </div>
-      </div>
-      <div className="animate-slide-up bg-gray-200  flex flex-row items-center p-2 border border-gray-400 ">
-        <div className="flex items-center border border-gray-400 h-9 ">
+      )}
+      <div className="animate-slide-up bg-gray-200 flex flex-row items-center p-2 border border-gray-400">
+        <div className="flex items-center border border-gray-400 h-9">
           <Button
             variant="ghost"
             onClick={decreaseQuantity}
-            className="px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600  focus:outline-none"
+            className="px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600 focus:outline-none"
             aria-label="Decrease quantity"
           >
             −
@@ -75,7 +84,7 @@ export default function AddToCartBtn({ product, selectedVariant }) {
         <Button
           onClick={handleAddToCart}
           size="sm"
-          className=" rounded-none w-[200px] bg-primary-clr text-white py-2  hover:bg-green-700 transition"
+          className="rounded-none w-[200px] bg-primary-clr text-white py-2 hover:bg-green-700 transition"
         >
           {productExistsInCart(product._id) ? "Go to Cart" : "Add To Cart"}
         </Button>

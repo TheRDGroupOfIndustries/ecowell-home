@@ -102,7 +102,7 @@ const MyOrders = () => {
             <Link href="/products">
               <Button
                 effect="gooeyRight"
-                className="mt-4 bg-secondary-clr text-white py-2 px-6 rounded-md hover:bg-[#b28714] transition"
+                className="mt-4 bg-primary-clr text-white py-2 px-6 rounded-md hover:bg-green-700 transition"
               >
                 CONTINUE SHOPPING
               </Button>
