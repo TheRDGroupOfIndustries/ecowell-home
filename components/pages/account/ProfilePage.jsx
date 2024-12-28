@@ -58,7 +58,7 @@ export default function ProfilePage() {
           region_state: userData.region_state || "",
           city: userData.city || "",
           zip_code: userData.zip_code || "",
-          profile_image: userData.profile_image || DEFAULT_AVATAR,
+          profile_image: userData.profile_image || "https://i.pinimg.com/1200x/b5/12/68/b5126803cf115b044849b64ca565a4a7.jpg",
         });
         setOriginalData({ ...userData });
         setIsPhoneVerified(userData.is_phone_verified || false);
@@ -260,7 +260,7 @@ export default function ProfilePage() {
           <div className="flex justify-center mb-6">
             <div className="relative">
               <Image
-                src={formData.profile_image || DEFAULT_AVATAR}
+                src={formData.profile_image || "https://i.pinimg.com/1200x/b5/12/68/b5126803cf115b044849b64ca565a4a7.jpg"}
                 alt="Profile"
                 width={200}
                 height={200}
