@@ -34,7 +34,7 @@ export default function RelatedProduct({ category }) {
     }
 
     return (
-        <section className="max-w-4xl mx-auto p-6">
+        <section className="max-w-5xl mx-auto p-2 sm:p-4 md:p-6">
             <h2 className="text-2xl text-center font-bold mb-6">Related Products</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 {loading ? (

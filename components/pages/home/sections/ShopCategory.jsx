@@ -35,7 +35,7 @@ const ShopCategory = () => {
       initial="hidden"
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
-      className="w-full h-fit flex flex-col items-center justify-center gap-6 p-8"
+      className="w-full h-fit flex flex-col items-center justify-center gap-4 md:gap-6 p-4 sm:p-6 md:p-8"
     >
       <motion.h2
         variants={fadeIn("down", 0.2)}
@@ -44,7 +44,7 @@ const ShopCategory = () => {
         Shop by Category
       </motion.h2>
 
-      <div className="w-fit grid grid-cols-3 md:grid-cols-4 items-center justify-center gap-4">
+      <div className="w-fit grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3  lg:grid-cols-4 items-center justify-center gap-4">
         {loading
           ? Array(4)
               .fill(0)
@@ -68,7 +68,7 @@ const ShopCategory = () => {
                     query: { category: category.slug },
                   }}
                 >
-                  <div className="w-[250px] h-[250px] group bg-gradient-to-t from-secondary-clr to-white hover:to-50% hover:translate-x-1 hover:translate-y-2 rounded-lg shadow-lg flex flex-col items-center justify-center p-4 ease-in-out duration-300 overflow-hidden">
+                  <div className="w-[180px]   md:w-[250px] h-[250px] group bg-gradient-to-t from-secondary-clr to-white hover:to-50% hover:translate-x-1 hover:translate-y-2 rounded-lg shadow-lg flex flex-col items-center justify-center p-4 ease-in-out duration-300 overflow-hidden">
                     <Image
                       src={category.image_link}
                       alt={category.title}
@@ -90,7 +90,7 @@ const ShopCategory = () => {
 export default ShopCategory;
 
 const SkeletonCard = () => (
-  <div className="w-[250px] h-[250px] bg-gray-200 animate-pulse rounded-lg shadow-lg flex flex-col items-center justify-center p-4">
+  <div className="w-[180px]   md:w-[250px] h-[250px]  bg-gray-200 animate-pulse rounded-lg shadow-lg flex flex-col items-center justify-center p-4">
     <div className="w-full h-[180px] bg-gray-300 rounded-md mb-4"></div>
     <div className="w-24 h-4 bg-gray-300 rounded"></div>
   </div>

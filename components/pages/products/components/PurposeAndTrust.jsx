@@ -61,12 +61,12 @@ export default function PurposeAndTrust() {
                   width={162}
                   height={168}
                   alt={feature.alt}
-                  className="h-[110px] w-[16%] object-contain sm:w-full"
+                  className="h-[90px] w-[90px] object-contain sm:w-full"
                 />
               <h3 className="text-xl font-semibold text-gray-800 text-center mb-1">
                 {feature.title}
               </h3>
-              <p className="text-xl line-clamp-2 text-gray-600 text-center max-w-[220px]">
+              <p className="text-xl line-clamp-2 text-gray-600 text-center max-w-[170px]  md:max-w-[220px]">
                 {feature.description}
               </p>
             </div>

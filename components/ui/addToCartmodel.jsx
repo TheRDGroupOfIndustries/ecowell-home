@@ -49,7 +49,7 @@ export default function AddToCartmodel({ loading, product }) {
               )}
             </Button>
           </DialogTrigger>
-          <DialogContent className="z-50 mt-10  ">
+          <DialogContent className="z-50 mt-10 sm:max-w-[600px] h-[100vh] sm:h-fit  ">
             <Modal product={product} />
           </DialogContent>
         </Dialog>
@@ -75,7 +75,7 @@ const Modal = ({ product }) => {
   };
 
   return (
-    <div className="bg-white max-h-[80vh] p-6 rounded-lg w-full mx-4 relative">
+    <div className="bg-white max-h-[100vh] sm:max-h-[80vh] p-6 rounded-lg w-full mx-4 relative overflow-y-scroll">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Product Image */}
         <div className="w-full md:w-1/3">

@@ -1,21 +1,21 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { useCart } from "@/context/CartProvider";
-import { useNotification } from "@/context/NotificationProvider";
-import { RxCross1 } from "react-icons/rx";
-import { ImageOff } from "lucide-react";
-import { TfiPlus, TfiMinus } from "react-icons/tfi";
 import { Button } from "@/components/ui/button";
 import ReactCountUp from "@/components/ui/countUp";
+import { useCart } from "@/context/CartProvider";
+import { useNotification } from "@/context/NotificationProvider";
+import { ImageOff } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { RxCross1 } from "react-icons/rx";
+import { TfiMinus, TfiPlus } from "react-icons/tfi";
 
 const Cart = () => {
   const { cartItems, totalPrice } = useCart();
   const { pt } = useNotification();
 
   return (
-    <div className={`w-full h-fit p-8 mt-28 ${pt} bg-[#f8f1e9]`}>
+    <div className={`w-full h-fit md:p-8 mt-28 ${pt} bg-[#f8f1e9]`}>
       <div className="container mx-auto">
         {cartItems.length > 0 ? (
           <>
@@ -82,7 +82,7 @@ const CartTable = () => {
         <thead className="bg-[#f8f1e9] border-b border-gray-300">
           <tr>
             <th className="py-4 px-6">Image</th>
-            <th className="py-4 px-6">Product Name</th>
+            <th className="py-4 px-6 text-nowrap ">Product Name</th>
             <th className="py-4 px-6">Price</th>
             <th className="py-4 px-6">Quantity</th>
             <th className="py-4 px-6">Action</th>
@@ -105,7 +105,7 @@ const CartTable = () => {
                   <ImageOff className="w-16 h-16 object-cover" />
                 )}
               </td>
-              <td className="py-4 px-6 text-sm">{item?.productId?.title}</td>
+              <td className="py-4 px-6 text-sm min-w-[400px]  sm:w-full">{item?.productId?.title}</td>
               <td className="py-4 px-6">
                 <ReactCountUp
                   amt={
@@ -116,26 +116,29 @@ const CartTable = () => {
                   prefix="₹"
                 />
               </td>
-              <td className="py-4 px-6 flex items-center">
-                <Button
-                  variant="outline"
-                  className="border-gray-400 text-gray-600"
-                  onClick={() =>
-                    handleQuantityChange(item?._id, "decrement-quantity")
-                  }
-                >
-                  <TfiMinus />
-                </Button>
-                <span className="mx-2 w-10 text-center">{item?.quantity}</span>
-                <Button
-                  variant="outline"
-                  className="border-gray-400 text-gray-600"
-                  onClick={() =>
-                    handleQuantityChange(item?._id, "increment-quantity")
-                  }
-                >
-                  <TfiPlus />
-                </Button>
+              <td className="py-4 px-6  ">
+                <div className="flex flex-row items-center  my-auto">
+                  <Button
+                    variant="outline"
+                    className="border-gray-400 text-gray-600"
+                    onClick={() =>
+                      handleQuantityChange(item?._id, "decrement-quantity")
+                    }
+                  >
+                    <TfiMinus />
+                  </Button>
+                  <span className="mx-2 w-10 text-center">{item?.quantity}</span>
+                  <Button
+                    variant="outline"
+                    className="border-gray-400 text-gray-600"
+                    onClick={() =>
+                      handleQuantityChange(item?._id, "increment-quantity")
+                    }
+                  >
+                    <TfiPlus />
+                  </Button>
+                </div>
+
               </td>
               <td className="py-4 px-6 text-center">
                 <RxCross1

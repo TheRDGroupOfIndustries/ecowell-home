@@ -31,7 +31,7 @@ const ProductCardVertical = ({ product }) => {
         {Math.round(product.discount)}% OFF
       </div>
 
-      <div className="w-full h-[140px] relative bg-gray-100 overflow-hidden">
+      <div className="w-full h-[140px] md:h-[180px] lg:h-[210px] relative bg-gray-100 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center group-hover:opacity-0 ease-in-out duration-300 overflow-hidden">
           <Image
             src={product.variants[0].images[0]}

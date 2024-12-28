@@ -48,7 +48,7 @@ const Trending = () => {
         >
           Trending searches
         </motion.h2>
-        <div className="w-full h-fit flex items-center justify-center gap-4">
+        <div className="w-full h-fit flex items-center justify-center flex-wrap gap-4">
           {trendingData.map((item, index) => (
             <motion.div
               key={index}
