@@ -90,13 +90,10 @@ export const authOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
-    // ...add more providers here
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ user, account }) {
-      // console.log("user:", user);
-      // console.log("account:", account);
       await connectToMongoDB();
 
       if (account?.provider === "credentials") return true;
@@ -110,7 +107,9 @@ export const authOptions = {
               first_name: capitalizeFirstLetter(user?.name.split(" ")[0]),
               last_name: capitalizeFirstLetter(user?.name.split(" ")[1]),
               email: user?.email,
-              profile_image: user?.image,
+              profile_image:
+                user?.image ||
+                "https://i.pinimg.com/1200x/b5/12/68/b5126803cf115b044849b64ca565a4a7.jpg",
             });
             const savedUser = await newUser.save();
             return savedUser;

@@ -7,7 +7,6 @@ import {
   transporter,
   verifyOtpFromPhone,
 } from "@/app/api/core";
-// import { capitalizeFirstLetter } from "@/lib/utils";
 
 export const POST = async (request) => {
   const {
@@ -70,7 +69,6 @@ export const POST = async (request) => {
 
       return new NextResponse(JSON.stringify(otpCode), {
         status: 201,
-        //   message: "Otp has been sent to your email for verification.",
       });
     } else {
       try {
@@ -90,8 +88,6 @@ export const POST = async (request) => {
     }
   }
 
-  // console.log(otp, " -> ", checkOtpCode);
-
   if (otp) {
     let newUser;
     if (isEmail) {
@@ -109,13 +105,14 @@ export const POST = async (request) => {
           html: body,
         });
 
-        const hashPassword = await bcrypt.hash(password, 5); // converting password into hash-code
+        const hashPassword = await bcrypt.hash(password, 5);
 
         newUser = new User({
           first_name,
           last_name,
           email,
           password: hashPassword,
+          profile_image: "https://i.pinimg.com/1200x/b5/12/68/b5126803cf115b044849b64ca565a4a7.jpg"
         });
       } else {
         return new NextResponse("Invalid Otp!", { status: 405 });
@@ -124,12 +121,11 @@ export const POST = async (request) => {
       const isOtpValid = await verifyOtpFromPhone(phone_number, otp);
 
       if (isOtpValid) {
-        // send admin credentials through SmS
-
         newUser = new User({
           first_name,
           last_name,
           phone_number,
+          profile_image: "https://i.pinimg.com/1200x/b5/12/68/b5126803cf115b044849b64ca565a4a7.jpg"
         });
       }
     }
