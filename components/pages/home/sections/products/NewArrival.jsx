@@ -37,7 +37,7 @@ const NewArrival = () => {
       initial="hidden"
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
-      className="w-full h-fit flex flex-col items-center justify-center gap-6 p-8"
+      className="w-full h-fit flex flex-col items-center justify-center gap-4 md:gap-6 p-4 sm:p-6 md:p-8"
     >
       <motion.h2
         variants={fadeIn("down", 0.2)}
@@ -45,7 +45,7 @@ const NewArrival = () => {
       >
         New Arrival
       </motion.h2>
-      <div className="w-full flex flex-wrap items-center justify-center gap-6">
+      <div className="w-full flex flex-wrap items-center justify-center gap-4 md:gap-6">
         {!loading
           ? products?.map((product, index) => (
               <motion.div

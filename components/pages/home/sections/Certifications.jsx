@@ -9,7 +9,7 @@ import { certificationsData } from "@/constants/data";
 const Certifications = () => {
   return (
     <motion.div
-      className="bg-[#E7F4F2] py-8"
+      className="bg-[#E7F4F2] py-6 md:py-8 "
       variants={staggerContainer(0.1, 0.1)}
       initial="hidden"
       whileInView="show"
@@ -20,7 +20,7 @@ const Certifications = () => {
         CERTIFICATIONS
       </motion.div>
 
-      <div className="flex justify-between px-20 2xl:px-40">
+      <div className="flex justify-between flex-wrap px-10 md:px-14 lg:px-20 2xl:px-40">
         {certificationsData.map((c, index) => (
           <motion.div
             key={index}

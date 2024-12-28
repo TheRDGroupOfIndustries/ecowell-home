@@ -37,7 +37,7 @@ function WishlistPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Image</TableHead>
-                  <TableHead>Product Name</TableHead>
+                  <TableHead className="text-nowrap">Product Name</TableHead>
                   <TableHead>Price</TableHead>
                   <TableHead>Availability</TableHead>
                   <TableHead>Action</TableHead>
@@ -51,7 +51,7 @@ function WishlistPage() {
                         <Image src={item.variants[0].images[0]} alt={item.title} width={64} height={64} className="w-16 h-16 object-cover" />
                       </Link>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className='min-w-[200px]'>
                       <Link href={`/page/product/${item.sku}`} className="font-medium">
                         {item.title}
                       </Link>

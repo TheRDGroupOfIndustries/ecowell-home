@@ -42,17 +42,17 @@ const OrderSuccess = ({ orderId }) => {
               color="white"
             />
             <h2 className="text-3xl font-black">THANK YOU</h2>
-            <p className="text-gray-400">
+            <p className="text-gray-400 w-[90%] sm:w-full">
               Payment is successfully processed and your order is on the way
             </p>
-            <p className="text-gray-400 font-semibold">Order ID: {orderId}</p>
+            <p className="text-gray-400 text-nowrap font-semibold">Order ID: {orderId}</p>
           </div>
         </div>
         {!orderDetails ? (
           <Loader className="h-50" />
         ) : (
-          <div className="h-fit bg-gray-50 p-16">
-            <div className="w-full grid grid-cols-2 gap-4">
+          <div className="h-fit bg-[#f4ede3] p-3 sm:p-6 md:p-10 lg:p-16">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <h2 className="text-xl font-semibold">YOUR ORDER DETAILS</h2>
                 {/* product listing */}
@@ -147,7 +147,7 @@ const ProductNode = (productDetails) => {
   return (
     <>
       <Link href={`/products/${productDetail?.product_id?.sku}`}>
-        <div className="group grid grid-cols-4 gap-3 items-center hover:shadow-md transition-transform duration-300">
+        <div className="group grid grid-cols-[1fr_2fr_1fr_1fr] gap-3 items-center hover:shadow-md transition-transform duration-300">
           {chosedVariant ? (
             <div className="group-hover:scale-105 transition-transform duration-300 overflow-hidden">
               <Image

@@ -1,19 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { FrequentlyBoughtTogether } from "./components/BroughtTogether";
-import RelatedProduct from "./components/RelatedProduct";
-import ProductDiscover from "./components/ProductDiscover";
-import TheStories from "./components/TheStories";
-import PurposeAndTrust from "./components/PurposeAndTrust";
-import FrequentlyAskedQuestions from "./components/FrequentlyAskedQuestions";
-import CustomerReviews from "./components/CustomerReviews";
-import SkeletonLoader from "./components/SkeletonLoader";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import AddToCartBtn from "./components/AddToCartBtn";
+import { FrequentlyBoughtTogether } from "./components/BroughtTogether";
+import CustomerReviews from "./components/CustomerReviews";
+import FrequentlyAskedQuestions from "./components/FrequentlyAskedQuestions";
 import Ingredient from "./components/Ingredient";
+import ProductDiscover from "./components/ProductDiscover";
+import PurposeAndTrust from "./components/PurposeAndTrust";
+import RelatedProduct from "./components/RelatedProduct";
+import SkeletonLoader from "./components/SkeletonLoader";
+import TheStories from "./components/TheStories";
 import WriteReview from "./components/WriteReview";
 
 const ProductDetail = ({ productSku }) => {
@@ -75,10 +75,10 @@ const ProductDetail = ({ productSku }) => {
 
   return (
     <>
-      <section className="w-full h-full space-y-8 p-4 md:px-8 lg:px-10 xl:px-14 md:pt-28">
+      <section className="w-full h-full space-y-8  md:pt-28">
         <AddToCartBtn product={product} selectedVariant={selectedVariant} />
 
-        <div className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8">
+        <div className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8 p-4 md:px-8 lg:px-10 xl:px-14">
           <ImageGallery images={selectedVariant.images} />
           <Details
             product={product}
@@ -89,10 +89,10 @@ const ProductDetail = ({ productSku }) => {
         <FrequentlyBoughtTogether />
         <RelatedProduct category={product.category.title} />
         <ProductDiscover />
-        <Ingredient/>
+        {/* <Ingredient/> */}
         <Image src={"/banner3.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
         <Image src={"/banner2.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
-        <TheStories />  
+        <TheStories />
         <PurposeAndTrust />
         <Image src={"/banner1.png"} alt="Banner" width={1000} height={540} className='w-full ' />
         <FrequentlyAskedQuestions faqs={product.faqs} />
@@ -147,11 +147,10 @@ export const ImageGallery = ({ images }) => {
                   alt={`image ${index + 1}`}
                   width={200}
                   height={200}
-                  className={`w-full h-auto cursor-pointer transition-all mb-2 ${
-                    activeImage === image
+                  className={`w-full h-auto cursor-pointer transition-all mb-2 ${activeImage === image
                       ? "border-2 border-primary-clr shadow-xl"
                       : ""
-                  }`}
+                    }`}
                   onClick={() => setActiveImage(image)}
                   style={{ transform: `translateY(-${scrollPosition * 100}%)` }}
                 />
@@ -186,7 +185,12 @@ export const ImageGallery = ({ images }) => {
           <i className="w-fit font-semibold font-serif text-primary-clr overflow-hidden">
             Certified By
           </i>
-          <div className="w-full h-full flex-1 flex gap-6 overflow-x-scroll overflow-y-hidden">
+          <div className="w-full h-full flex-1 flex gap-6 overflow-x-scroll no-scrollbar overflow-y-hidden"
+            style={{
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none',
+            }}
+          >
             {["/c1.png", "/c2.png", "/c3.png", "/c4.png", "/c5.png"].map(
               (c, index) => (
                 <Image
@@ -266,11 +270,10 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
           {product.variants.map((variant, index) => (
             <div
               key={index}
-              className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer ${
-                selectedVariant.flavor === variant.flavor
+              className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer ${selectedVariant.flavor === variant.flavor
                   ? "bg-primary-clr text-white"
                   : ""
-              }`}
+                }`}
               onClick={() => handleVariantChange(variant)}
             >
               {variant.flavor.toUpperCase()}
@@ -307,7 +310,7 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
             {product.benefits.map((benefit, index) => (
               <div
                 key={index}
-                className="flex-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 overflow-hidden"
+                className="flex-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 overflow-hidden line-clamp-2"
               >
                 <Image
                   src="/assets/biceps.png"

@@ -17,7 +17,7 @@ const ProductCardSelect = ({ product, isSelected, onToggle }) => {
   return (
     <div
       onClick={onToggle}
-      className="relative w-[280px] cursor-pointer group bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden"
+      className="relative w-[120px]  md:w-[180px] lg:w-[240px] cursor-pointer group bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden"
     >
       <div className="absolute top-1.5 right-2.5 z-50">
         <input
@@ -29,13 +29,12 @@ const ProductCardSelect = ({ product, isSelected, onToggle }) => {
         />
       </div>
 
-      <div className="w-full h-[200px] relative bg-gray-100 overflow-hidden">
+      <div className="w-full h-[100px] md:h-[200px] relative bg-gray-100 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center group-hover:opacity-0 ease-in-out duration-300 overflow-hidden">
           <Image
             src={product.image}
             alt={product.title}
-            width={400}
-            height={400}
+            fill
             className="w-full h-full object-contain"
           />
         </div>
