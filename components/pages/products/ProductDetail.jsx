@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { FrequentlyBoughtTogether } from "./components/BroughtTogether";
 import RelatedProduct from "./components/RelatedProduct";
@@ -13,11 +14,14 @@ import CustomerReviews from "./components/CustomerReviews";
 import SkeletonLoader from "./components/SkeletonLoader";
 import AddToCartBtn from "./components/AddToCartBtn";
 import Ingredient from "./components/Ingredient";
+import WriteReview from "./components/WriteReview";
 
 const ProductDetail = ({ productSku }) => {
+  const { data: session } = useSession();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedVariant, setSelectedVariant] = useState(null);
+  const [hasOrdered, setHasOrdered] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -38,6 +42,28 @@ const ProductDetail = ({ productSku }) => {
 
     fetchProduct();
   }, [productSku]);
+
+  useEffect(() => {
+    const checkOrderHistory = async () => {
+      if (!session?.user?._id || !product?._id) return;
+      
+      try {
+        const response = await fetch(`/api/order/get/${session.user._id}`);
+        const data = await response.json();
+        
+        if (response.ok) {
+          const hasOrderedProduct = data.orders?.some(order => 
+            order.products.some(p => p.product_id._id === product._id)
+          );
+          setHasOrdered(hasOrderedProduct);
+        }
+      } catch (error) {
+        console.error('Error checking order history:', error);
+      }
+    };
+
+    checkOrderHistory();
+  }, [session?.user?._id, product?._id]);
 
   if (loading) {
     return <SkeletonLoader />;
@@ -70,6 +96,7 @@ const ProductDetail = ({ productSku }) => {
         <PurposeAndTrust />
         <Image src={"/banner1.png"} alt="Banner" width={1000} height={540} className='w-full ' />
         <FrequentlyAskedQuestions faqs={product.faqs} />
+        {hasOrdered && <WriteReview productId={product._id} />}
         <CustomerReviews productId={product._id} />
       </section>
     </>
@@ -137,14 +164,19 @@ export const ImageGallery = ({ images }) => {
               ▼
             </button>
           </div>
-          <div id="active-image" className="w-[80%] h-full">
-            <Image
-              src={activeImage}
-              alt="Active product image"
-              width={1000}
-              height={1000}
-              className="w-full h-full object-contain"
-            />
+          <div id="active-image" className="w-[80%] h-full relative">
+            {images.map((image, index) => (
+              <Image
+                key={index}
+                src={image}
+                alt={`Active product image ${index + 1}`}
+                width={1000}
+                height={1000}
+                className={`w-full h-full object-contain absolute top-0 left-0 transition-opacity duration-500 ease-in-out ${
+                  activeImage === image ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            ))}
           </div>
         </div>
         <div

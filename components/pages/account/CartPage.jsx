@@ -15,7 +15,7 @@ const Cart = () => {
   const { pt } = useNotification();
 
   return (
-    <div className={`w-full h-fit p-8 mt-28 ${pt} bg-[#f8f1e9]`}>
+    <div className={`w-full h-fit p-8 mt-28 ${pt}`}>
       <div className="container mx-auto">
         {cartItems.length > 0 ? (
           <>
@@ -47,7 +47,7 @@ const Cart = () => {
                 amt={totalPrice}
                 duration={1.5}
                 prefix="₹"
-                className="text-2xl text-secondary-clr"
+                className="text-2xl text-primary-clr"
               />
             </div>
           )}
@@ -79,7 +79,7 @@ const CartTable = () => {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left border-collapse">
-        <thead className="bg-[#f8f1e9] border-b border-gray-300">
+        <thead className="border-b border-gray-300">
           <tr>
             <th className="py-4 px-6">Image</th>
             <th className="py-4 px-6">Product Name</th>

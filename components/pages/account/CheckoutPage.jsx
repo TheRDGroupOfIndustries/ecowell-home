@@ -104,7 +104,7 @@ const Checkout = () => {
   };
 
   return (
-    <div className="h-fit mt-32 bg-yellow-100/70 py-12 select-none overflow-hidden">
+    <div className="h-fit mt-32 bg-gray-50 py-12 select-none overflow-hidden">
       <div className="container mx-auto px-4">
         <form
           onSubmit={onSubmit}
@@ -376,7 +376,7 @@ const Checkout = () => {
                 <Button
                   type="submit"
                   disabled={placingOrder}
-                  className="bg-secondary-clr text-white py-2 px-6 rounded-md hover:bg-[#b28714] transition"
+                  className="bg-primary-clr text-white py-2 px-6 rounded-md hover:bg-green-700 transition"
                 >
                   {placingOrder ? "Placing Order" : "Place Order"}
                 </Button>

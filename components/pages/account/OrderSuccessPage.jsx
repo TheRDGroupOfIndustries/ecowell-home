@@ -51,7 +51,7 @@ const OrderSuccess = ({ orderId }) => {
         {!orderDetails ? (
           <Loader className="h-50" />
         ) : (
-          <div className="h-fit bg-[#f4ede3] p-16">
+          <div className="h-fit bg-gray-50 p-16">
             <div className="w-full grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <h2 className="text-xl font-semibold">YOUR ORDER DETAILS</h2>
