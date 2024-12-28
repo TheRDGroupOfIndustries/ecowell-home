@@ -47,7 +47,6 @@ import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
 import Notification from "./Notification";
 
-
 const Navbar = ({ companyName }) => {
   const pathname = usePathname();
   const router = useRouter();
@@ -112,7 +111,10 @@ const Navbar = ({ companyName }) => {
             />
           </Link>
         </motion.div>
-        <motion.div variants={fadeIn("down", 0.3)} className=" space-x-4 hidden md:flex">
+        <motion.div
+          variants={fadeIn("down", 0.3)}
+          className=" space-x-4 hidden md:flex"
+        >
           {links.map((link, index) => (
             <Link
               key={index}
@@ -139,8 +141,9 @@ const Navbar = ({ companyName }) => {
                 <div className="relative hidden sm:block">
                   <CiHeart
                     size={20}
-                    className={`hover:text-gray-700 size-[30px] md:size-[20px] ${isHomeScrolled ? "text-black" : "text-white"
-                      } ease-in-out duration-300`}
+                    className={`hover:text-gray-700 size-[30px] md:size-[20px] ${
+                      isHomeScrolled ? "text-black" : "text-white"
+                    } ease-in-out duration-300`}
                   />
                   {wishlistProducts.length > 0 && (
                     <div className="absolute -top-2.5 -right-2.5 text-xs text-white bg-[red] rounded-full px-1">
@@ -149,10 +152,6 @@ const Navbar = ({ companyName }) => {
                   )}
                 </div>
               </Link>
-
-
-
-
 
               <NavigationMenuItem>
                 <NavigationMenuTrigger>
@@ -165,8 +164,9 @@ const Navbar = ({ companyName }) => {
                       )}
                       <CiShoppingCart
                         size={20}
-                        className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
-                          } ease-in-out duration-300 size-[30px] md:size-[20px]`}
+                        className={`hover:text-gray-700 ${
+                          isHomeScrolled ? "text-black" : "text-white"
+                        } ease-in-out duration-300 size-[30px] md:size-[20px]`}
                       />
                     </div>
                   </Link>
@@ -182,16 +182,15 @@ const Navbar = ({ companyName }) => {
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
-
-
               {/* user */}
 
               <NavigationMenuItem>
                 <NavigationMenuTrigger>
                   <CiUser
                     size={20}
-                    className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
-                      } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px] hidden sm:block`}
+                    className={`hover:text-gray-700 ${
+                      isHomeScrolled ? "text-black" : "text-white"
+                    } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px] hidden sm:block`}
                     onClick={handleUserIconClick}
                   />
                 </NavigationMenuTrigger>
@@ -201,19 +200,18 @@ const Navbar = ({ companyName }) => {
                       <NavigationMenuLink asChild>
                         <a
                           className="flex w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted hover:bg-gray-200 hover:from-muted/50 hover:to-muted  px-4 py-[8px]"
-                          href={session ? '/account' : '/auth/sign-in'}
+                          href={session ? "/account" : "/auth/sign-in"}
                         >
-
-                          <p className="text-sm leading-tight ">
-                            Profile
-                          </p>
+                          <p className="text-sm leading-tight ">Profile</p>
                         </a>
                       </NavigationMenuLink>
-
                     </li>
                     <li>
-
-                      <Button onClick={() => signOut()} variant="default" className="w-full justify-start gap-2">
+                      <Button
+                        onClick={() => signOut()}
+                        variant="default"
+                        className="w-full justify-start gap-2"
+                      >
                         <LogOut size={20} />
                         Logout
                       </Button>
@@ -222,58 +220,68 @@ const Navbar = ({ companyName }) => {
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
-
-
-
               {/* Mobile */}
 
-
-
-
               <Sheet>
-                <SheetTrigger>
+                <SheetTrigger className="md:hidden">
                   <List
                     size={20}
-                    className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
-                      } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px]`}
+                    className={`hover:text-gray-700 ${
+                      isHomeScrolled ? "text-black" : "text-white"
+                    } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px]`}
                   />
                 </SheetTrigger>
-                <SheetContent className='h-full'>
-                    <SheetTitle className="">Menu</SheetTitle>
-                    <SheetDescription className="h-full p-4">
-                      <motion.div variants={fadeIn("down", 0.3)} className=" h-full space-x-4 flex flex-col gap-4 items-center justify-center  ">
-                        {links.map((link, index) => (
-                          <Link
-                            key={index}
-                            href={link.herf}
-                            className={`hover:text-gray-700 text-lg text-bold text-black ease-in-out duration-300`}
-                          >
-                            {link.head}
-                          </Link>
-                        ))}
-                        <div className="h-[1px] w-full bg-gray-300 "></div>
-                        <Button onClick={() => handleUserIconClick()} variant="outline" className="w-full justify-center gap-2 ">
-                          <CiUser size={20} color="black" />
-                          User
-                        </Button>
-                        <Button onClick={() => session ? router.push('/account/wishlist') : router.push('/auth/sign-in')} variant="outline" className="w-full justify-center gap-2 ">
-                          <CiHeart size={20} color="black" />
-                          Wishlist
-                        </Button>
-              
+                <SheetContent className="h-full">
+                  <SheetTitle className="">Menu</SheetTitle>
+                  <SheetDescription className="h-full p-4">
+                    <motion.div
+                      variants={fadeIn("down", 0.3)}
+                      className=" h-full space-x-4 flex flex-col gap-4 items-center justify-center  "
+                    >
+                      {links.map((link, index) => (
+                        <Link
+                          key={index}
+                          href={link.herf}
+                          className={`hover:text-gray-700 text-lg text-bold text-black ease-in-out duration-300`}
+                        >
+                          {link.head}
+                        </Link>
+                      ))}
+                      <div className="h-[1px] w-full bg-gray-300 "></div>
+                      <Button
+                        onClick={() => handleUserIconClick()}
+                        variant="outline"
+                        className="w-full justify-center gap-2 "
+                      >
+                        <CiUser size={20} color="black" />
+                        User
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          session
+                            ? router.push("/account/wishlist")
+                            : router.push("/auth/sign-in")
+                        }
+                        variant="outline"
+                        className="w-full justify-center gap-2 "
+                      >
+                        <CiHeart size={20} color="black" />
+                        Wishlist
+                      </Button>
 
-                        <div className="h-[1px] w-full bg-gray-300 mt-auto"></div>
-                        <Button onClick={() => signOut()} variant="default" className="w-full justify-center gap-2">
-                          <LogOut size={20} />
-                          Logout
-                        </Button>
-                      </motion.div>
-                    </SheetDescription>
+                      <div className="h-[1px] w-full bg-gray-300 mt-auto"></div>
+                      <Button
+                        onClick={() => signOut()}
+                        variant="default"
+                        className="w-full justify-center gap-2"
+                      >
+                        <LogOut size={20} />
+                        Logout
+                      </Button>
+                    </motion.div>
+                  </SheetDescription>
                 </SheetContent>
               </Sheet>
-
-
-
             </NavigationMenuList>
           </NavigationMenu>
         </motion.div>
@@ -379,7 +387,10 @@ export function Search({
           onClick={() => setOpen(true)}
         />
       </DialogTrigger>
-      <DialogContent className=" w-full h-full md:max-w-[600px] z-50" ref={dialogRef}>
+      <DialogContent
+        className=" w-full h-full md:max-w-[600px] z-50"
+        ref={dialogRef}
+      >
         <DialogHeader>
           <DialogTitle className="text-left mb-4">Search Products</DialogTitle>
           <div className="relative">
@@ -423,31 +434,21 @@ export function Search({
 }
 
 function HoverCartProductCard() {
-  const chosedVariant = []
+  const chosedVariant = [];
 
   return (
     <div className="w-full h-fit">
-      <Link
-        href={""}
-        className="w-full"
-      >
+      <Link href={""} className="w-full">
         <div className="w-full h-fit group flex justify-between gap-7 hover:shadow-sm transition-transform duration-300 px-3">
           {chosedVariant ? (
             <div className="w-20 h-20 group-hover:scale-105 transition-transform duration-300 overflow-hidden">
-              <Image
-                src={"/p1.png"}
-                alt={""}
-                width={150}
-                height={150}
-              />
+              <Image src={"/p1.png"} alt={""} width={150} height={150} />
             </div>
           ) : (
             <ImageIcon src={""} alt={""} width={100} height={150} />
           )}
 
-
           <div className="w-full flex-1 flex flex-col gap-1">
-
             <div className="w-full flex-1 flex flex-col gap-1">
               <h5 className="text-base font-semibold">title of product</h5>
               <p className="text-base">chosedVariant</p>
@@ -458,26 +459,18 @@ function HoverCartProductCard() {
               <div className="flex flex-row gap-4 w-full items-center ">
                 <p>1 X</p>
                 <p className="text-base">
-                  <ReactCountUp
-                    amt={899}
-                    prefix="₹"
-                  />
+                  <ReactCountUp amt={899} prefix="₹" />
                 </p>
               </div>
-
             </div>
           </div>
 
           <X className="w-5 h-5 hover:text-red-500 cursor-pointer ease-in-out duration-500       " />
-
-
         </div>
       </Link>
     </div>
-  )
+  );
 }
-
-
 
 export const ProductNode = ({ productDetails, onClose }) => {
   const chosedVariant = productDetails?.variants[0];

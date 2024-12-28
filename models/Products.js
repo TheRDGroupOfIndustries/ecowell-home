@@ -23,23 +23,24 @@ const AdditionalInfoSchema = new Schema({
   email: { type: String, required: true },
 });
 
+// new feilds schema
 const HeroBannerSchema = new Schema({
-  title: { type: String, required: true },
-  subtitle: { type: String, required: true },
-  description: { type: String, required: true },
-  backgroundImage: { type: String, required: true },
+  title: { type: String, required: false },
+  subtitle: { type: String, required: false },
+  description: { type: String, required: false },
+  backgroundImage: { type: String, required: false },
 });
 
 const DailyRitualSchema = new Schema({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  lifestyleImage: { type: String, required: true },
+  title: { type: String, required: false },
+  description: { type: String, required: false },
+  lifestyleImage: { type: String, required: false },
 });
 
 const IngredientHighlightSchema = new Schema({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  image: { type: String, required: true },
+  name: { type: String, required: false },
+  description: { type: String, required: false },
+  image: { type: String, required: false },
 });
 
 const ProductSchema = new Schema(
