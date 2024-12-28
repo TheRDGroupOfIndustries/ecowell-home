@@ -11,18 +11,23 @@ import Image from 'next/image';
 import { toast } from 'sonner';
 
 function WishlistPage() {
-  const { wishlistProducts, removeFromWishlist } = useWishlist();
-  const { addToCart } = useCart();
+  const { wishlistProducts, removeFromWishlist, addAllToCart, cartAddToCart } = useWishlist();
+  const { productExistsInCart } = useCart();
+
+  const handleAddToCart = (product) => {
+    cartAddToCart(product, 1, product.variants[0]);
+    removeFromWishlist(product._id);
+    toast.success('Product added to cart and removed from wishlist!');
+  };
 
   const handleAddAllToCart = () => {
-    wishlistProducts.forEach(product => {
-      addToCart(product, 1, product.variants[0]);
-    });
-    toast.success('All items added to cart!');
+    const productsToAdd = wishlistProducts.filter(product => !productExistsInCart(product._id));
+    addAllToCart(productsToAdd);
+    productsToAdd.forEach(product => removeFromWishlist(product._id));
   };
 
   return (
-    <div className="bg-[#f8f1e9] py-10 mt-[130px]">
+    <div className="bg-white py-10 mt-[130px]">
       <div className="container mx-auto">
         <h1 className="text-3xl font-bold mb-6">Your Wishlist</h1>
         {wishlistProducts.length > 0 ? (
@@ -68,15 +73,19 @@ function WishlistPage() {
                       >
                         <X className="h-4 w-4" />
                       </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => addToCart(item, 1, item.variants[0])}
-                        className="text-base bg-secondary-clr text-white hover:bg-[#b28714] transition-colors"
-                      >
-                        <ShoppingCart className="h-4 w-4 mr-2" />
-                        Add to Cart
-                      </Button>
+                      {productExistsInCart(item._id) ? (
+                        <span className="text-green-600">Already in cart</span>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleAddToCart(item)}
+                          className="text-base bg-primary-clr text-white hover:bg-green-700 transition"
+                        >
+                          <ShoppingCart className="h-4 w-4 mr-2" />
+                          Add to Cart
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -85,12 +94,12 @@ function WishlistPage() {
             <div className="mt-6 flex justify-between">
               <Button 
                 onClick={handleAddAllToCart} 
-                className="text-base bg-secondary-clr text-white hover:bg-[#b28714] transition-colors"
+                className="text-base bg-primary-clr text-white hover:bg-green-700 transition"
               >
                 Add All to Cart
               </Button>
               <Link href="/products" passHref>
-                <Button variant="outline" className='text-base bg-secondary-clr text-white hover:bg-[#b28714] transition-colors'>Continue Shopping</Button>
+                <Button variant="outline" className='text-base bg-primary-clr text-white hover:bg-green-700 transition'>Continue Shopping</Button>
               </Link>
             </div>
           </>
