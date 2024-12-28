@@ -6,6 +6,7 @@ import Product from "@/models/Products";
 export async function POST(request) {
   try {
     const { userId, productId, variant, quantity } = await request.json();
+    // console.log("userId", userId, productId, variant, quantity);
 
     if (!userId || !productId || !quantity) {
       return NextResponse.json({
@@ -64,19 +65,49 @@ export async function POST(request) {
       0
     );
 
-    // recalculating entire cart total price
-    cart.totalPrice = cart.items.reduce((total, item) => {
-      const itemProduct = item.productId._id ? item.productId : product;
+    await cart.save();
 
-      const itemPrice = itemProduct.salePrice || itemProduct.price || 0;
-      return total + itemPrice * item.quantity;
-    }, 0);
+    // recalculating entire cart total price
+    cart.totalPrice +=
+      product?.salePrice * quantity || product?.price * quantity || 0;
+
+    // cart.totalPrice = cart.items.reduce((total, item) => {
+    //   const itemProduct = item.productId._id ? item.productId : product;
+
+    //   // Get variant price if applicable
+    //   let itemPrice = itemProduct.price || 0;
+    //   if (item.variant && itemProduct.variants) {
+    //     const variantData = itemProduct.variants.find(
+    //       (v) => v.name === item.variant
+    //     );
+    //     if (variantData && variantData.price) {
+    //       itemPrice = variantData.price;
+    //     }
+    //   }
+
+    //   // Apply sale price if available
+    //   if (itemProduct.salePrice && itemProduct.salePrice < itemPrice) {
+    //     itemPrice = itemProduct.salePrice;
+    //   }
+
+    //   // Round to 2 decimal places to avoid floating-point issues
+    //   return total + Number((itemPrice * item.quantity).toFixed(2));
+    // }, 0);
+
+    await cart.save();
+
+    // cart.totalPrice = cart.items.reduce((total, item) => {
+    //   const itemProduct = item.productId._id ? item.productId : product;
+
+    //   const itemPrice = itemProduct.salePrice || itemProduct.price || 0;
+    //   return total + itemPrice * item.quantity;
+    // }, 0);
 
     await cart.save();
 
     const updatedCart = await Cart.findOne({ userId }).populate(
       "items.productId",
-      "_id title salePrice price"
+      "_id title sku salePrice price variants"
     );
 
     return NextResponse.json({
