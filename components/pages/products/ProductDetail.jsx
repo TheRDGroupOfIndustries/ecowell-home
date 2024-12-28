@@ -163,14 +163,13 @@ export const ImageGallery = ({ images }) => {
               ▼
             </button>
           </div>
-          <div id="active-image" className="w-[80%] h-full relative">
+          <div id="active-image" className="w-[80%] h-[400px] relative">
             {images.map((image, index) => (
               <Image
                 key={index}
                 src={image}
                 alt={`Active product image ${index + 1}`}
-                width={1000}
-                height={1000}
+                fill
                 className={`w-full h-full object-contain absolute top-0 left-0 transition-opacity duration-500 ease-in-out ${
                   activeImage === image ? "opacity-100" : "opacity-0"
                 }`}
