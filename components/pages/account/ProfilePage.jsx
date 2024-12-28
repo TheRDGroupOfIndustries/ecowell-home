@@ -336,6 +336,7 @@ export default function ProfilePage() {
                 value={formData.phone_number}
                 onChange={handleInputChange}
                 placeholder="Add your phone number to receive call on delivery"
+                disabled={!isEditing}
               />
               {isEditing && formData.phone_number !== originalData.phone_number && !isPhoneVerified && (
                 <Button onClick={handleSendOtp} className="mt-2">
