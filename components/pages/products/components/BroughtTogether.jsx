@@ -8,7 +8,7 @@ import { Check } from 'lucide-react';
 // New Skeleton component
 const SkeletonCard = () => (
   <div className="animate-pulse">
-    <div className="bg-gray-300 h-[200px] w-full rounded-lg mb-2"></div>
+    <div className="bg-gray-300 h-[100px] md:h-[200px] w-full rounded-lg mb-2"></div>
     <div className="bg-gray-300 h-4 w-3/4 rounded mb-2"></div>
     <div className="bg-gray-300 h-4 w-1/2 rounded"></div>
   </div>
@@ -62,9 +62,9 @@ export function FrequentlyBoughtTogether() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-2 md:p-6">
       <h2 className="text-2xl font-bold mb-6">Frequently bought together</h2>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      <div className="grid grid-cols-3 gap-4 md:grid-cols-4 md:gap-8 mb-8">
         {isLoading ? (
           <>
             <SkeletonCard />
@@ -74,11 +74,11 @@ export function FrequentlyBoughtTogether() {
         ) : (
           randomProducts.map((product, index) => (
             <div key={product._id} className="relative">
-              {index > 0 && (
-                <div className="absolute -left-6 top-1/2 -translate-y-1/2 text-2xl font-light text-gray-400 hidden md:block">
+              {/* {index > 0 && (
+                <div className="absolute -left-[60px] top-1/2 -translate-y-1/2 text-2xl font-light text-gray-400 hidden md:block">
                   +
                 </div>
-              )}
+              )} */}
               <ProductCardSelect 
                 product={{
                   id: product._id,
@@ -94,12 +94,12 @@ export function FrequentlyBoughtTogether() {
             </div>
           ))
         )}
-        <div className="flex flex-col ml-auto items-center justify-center p-4 rounded-lg w-full">
-          <div className="text-lg flex flex-col items-center">
+        <div className="flex flex-col md:ml-auto items-center justify-evenly md:p-4 rounded-lg w-full col-span-3 md:col-span-1">
+          <div className="text-lg flex md:flex-col gap-2 items-center mt-">
             Total Price: <span className="font-bold">₹{totalPrice.toFixed(2)}/-</span>
           </div>
           <button
-            className="bg-green-900 text-white w-full px-6 py-2 rounded-md hover:bg-green-800 transition-colors"
+            className="bg-green-900 text-white w-full px-6 py-2 rounded-md hover:bg-green-800 transition-colors "
             onClick={handleAddToCart}
             disabled={isLoading}
           >

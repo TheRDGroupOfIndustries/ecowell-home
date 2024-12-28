@@ -11,35 +11,35 @@ export default function Footer() {
   return (
     <footer className="w-full flex-center flex-col overflow-hidden">
       {/* Newsletter Section */}
-      <div className="w-full container px-4 py-12 grid items-center justify-center text-center">
-        <h2 className="text-4xl 2xl:text-5xl mb-4">
+      <div className="w-full   py-12 flex flex-col items-center justify-center text-center">
+        <h2 className="text-4xl 2xl:text-5xl mb-4 ">
           {footerData.newsletter.title}
         </h2>
-        <p className="text-xl mb-8">{footerData.newsletter.description}</p>
+        <p className="text-xl mb-8 mx-4">{footerData.newsletter.description}</p>
         <Newsletter />
       </div>
 
       {/* Links, Help, and Contact Sections */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
+      <div className=" mx-auto px-4 py-12">
+        <div className="grid grid-cols-1  lg:grid-cols-12 gap-8">
           {/* Dynamic Sections (About, Help, Contact) */}
-          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 sm:gap-4 md:gap-6 lg:gap-8 overflow-hidden">
             {footerData.links.sections.map((section, index) => (
               <div
                 key={index}
                 className={`${
-                  index === 2 ? "border-r-2 border-[#333333] pr-8" : ""
+                  index === 2 ? "lg:border-r-2 border-[#333333] lg:pr-8" : ""
                 }`}
               >
-                <h3 className="font-semibold mb-4 border-b-2 border-[#333333] pb-2">
+                <h3 className="font-semibold text-center sm:text-start mb-4 border-b-2 border-[#333333] pb-2">
                   {section.title}
                 </h3>
-                <ul className="space-y-2">
+                <ul className="space-y-2 flex flex-row gap-4 sm:gap-0 flex-wrap  sm:flex-col justify-evenly items-center sm:items-start mb-5 sm:mb-0">
                   {section.items.map((item, idx) => (
-                    <li key={idx}>
+                    <li className="mt-2" key={idx}>
                       <Link
                         href={item.href || "#"}
-                        className="w-fit flex items-start gap-2 group"
+                        className="w-fit flex items-start gap-2 group h-6 "
                       >
                         {item.icon}
                         <span className="text-md group-hover:underline">
@@ -140,7 +140,7 @@ const Newsletter = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-xl mx-auto">
+    <form onSubmit={handleSubmit} className="w-[95%]  md:w-full max-w-xl mx-2 px-0 sm:mx-auto">
       <div className="relative flex flex-col items-center">
         <div
           className={`w-full flex border-2  ${
@@ -158,7 +158,7 @@ const Newsletter = () => {
           <Button
             type="submit"
             variant="default"
-            className="w-fit h-full text-xl rounded-none bg-[#333333] hover:bg-zinc-700 py-2 px-8 xl:px-20"
+            className="w-fit h-full text-xl rounded-none bg-[#333333] hover:bg-zinc-700 py-2 px-8 xl:px-20 overflow-hidden"
             disabled={!isValidEmail || !email}
           >
             {footerData.newsletter.buttonText}

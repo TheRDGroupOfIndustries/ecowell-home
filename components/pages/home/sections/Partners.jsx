@@ -11,7 +11,7 @@ const Partners = () => {
 
   return (
     <motion.div
-      className="w-full h-fit p-10 overflow-hidden relative"
+      className=" h-fitp-4 sm:p-6  md:p-10 overflow-hidden relative"
       variants={staggerContainer(0.1, 0.1)}
       initial="hidden"
       animate="show"
@@ -53,8 +53,8 @@ const Partners = () => {
               src={logo.src}
               alt={logo.alt}
               width={400}
-              height={400}
-              className="w-fit h-fit"
+              height={90}
+              className=" max-w-[400px] h-[90px]"
             />
           </motion.div>
         ))}
@@ -64,8 +64,8 @@ const Partners = () => {
               src={logo.src}
               alt={logo.alt}
               width={400}
-              height={400}
-              className="w-fit h-fit"
+              height={90}
+              className=" max-w-[400px]  h-[90px]"
             />
           </motion.div>
         ))}

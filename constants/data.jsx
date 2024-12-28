@@ -92,7 +92,7 @@ export const footerData = {
             content:
               "19, Park Lane, Church road, Vasant Kunj, New Delhi-110070",
             icon: (
-              <CiLocationOn size={20} className="w-12 h-12 text-primary-clr" />
+              <CiLocationOn size={20} className=" w-6 h-6 text-primary-clr" />
             ),
           },
         ],

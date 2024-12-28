@@ -68,7 +68,7 @@ const VoiceOfWellness = () => {
 
   return (
     <motion.div
-      className="bg-[#E7E9EB] py-20 relative overflow-hidden"
+      className="bg-[#E7E9EB] py-20  w-full relative overflow-hidden"
       variants={staggerContainer(0.1, 0.1)}
       initial="hidden"
       whileInView="show"
@@ -76,7 +76,7 @@ const VoiceOfWellness = () => {
       
     >
       {/* Right gradient overlay */}
-      <div className="absolute right-0 top-0 w-60 h-full bg-gradient-to-l from-[#E7E9EB] to-transparent z-10" />
+      <div className="absolute right-0 top-0 w-20 md:w-60 h-full bg-gradient-to-l from-[#E7E9EB] to-transparent z-10" />
       <div className="max-w-4xl mx-auto px-4">
         {/* Header Section */}
         <motion.div
@@ -129,7 +129,7 @@ const VoiceOfWellness = () => {
           ))}
 
           {/* Navigation Buttons */}
-          <div className="absolute bottom-[-60px] -right-10 transform -translate-x-1/2 flex justify-center gap-4">
+          <div className="absolute bottom-[-60px] -right-10 transform -translate-x-1/2 flex justify-center gap-4 z-20">
             <button
               onClick={() => paginate(-1)}
               disabled={page === 0}
