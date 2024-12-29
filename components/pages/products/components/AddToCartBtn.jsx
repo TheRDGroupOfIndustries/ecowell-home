@@ -35,7 +35,7 @@ export default function AddToCartBtn({ product, selectedVariant }) {
   };
 
   return (
-    <div className="fixed z-10 bottom-3 right-3 flex flex-col gap-2">
+    <div className="fixed z-40 bottom-3 right-3 flex flex-col gap-2">
       {showWhatsApp && (
         <div
           className="self-end animate-slide-up h-[50px] md:h-[64px] w-[200px] md:w-[283px] bg-dark_jungle_green text-white rounded-full flex flex-row items-center px-[5px] gap-2 cursor-pointer"
