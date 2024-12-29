@@ -105,7 +105,9 @@ const CartTable = () => {
                   <ImageOff className="w-16 h-16 object-cover" />
                 )}
               </td>
-              <td className="py-4 px-6 text-sm min-w-[400px]  sm:w-full">{item?.productId?.title}</td>
+              <td className="py-4 px-6 text-sm min-w-[400px]  sm:w-full">
+                {item?.productId?.title}
+              </td>
               <td className="py-4 px-6">
                 <ReactCountUp
                   amt={
@@ -127,7 +129,9 @@ const CartTable = () => {
                   >
                     <TfiMinus />
                   </Button>
-                  <span className="mx-2 w-10 text-center">{item?.quantity}</span>
+                  <span className="mx-2 w-10 text-center">
+                    {item?.quantity}
+                  </span>
                   <Button
                     variant="outline"
                     className="border-gray-400 text-gray-600"
@@ -138,11 +142,11 @@ const CartTable = () => {
                     <TfiPlus />
                   </Button>
                 </div>
-
               </td>
               <td className="py-4 px-6 text-center">
                 <RxCross1
                   onClick={() => removeCartItem(item?._id)}
+                  title="Remove from cart"
                   className="text-red-600 cursor-pointer"
                 />
               </td>

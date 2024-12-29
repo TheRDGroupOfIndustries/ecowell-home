@@ -79,7 +79,7 @@ export const CartProvider = ({ children }) => {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("cartTotal: ", data?.updatedCart, data?.updatedCart?.items);
+        // console.log("cartTotal: ", data?.updatedCart, data?.updatedCart?.items);
 
         if (data.status === 200) {
           setCartItems(data?.updatedCart?.items || []);
@@ -133,7 +133,7 @@ export const CartProvider = ({ children }) => {
 
       const data = await response.json();
 
-      console.log("cartTotal: ", data);
+      // console.log("cartTotal: ", data);
       if (response.ok) {
         if (data?.status === 400) {
           return toast.error(
@@ -185,7 +185,7 @@ export const CartProvider = ({ children }) => {
         setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
         setTotalPrice(data?.updatedCart?.totalPrice || 0);
 
-        console.log("cartTotal: ", data?.updatedCart?.items || []);
+        // console.log("cartTotal: ", data?.updatedCart?.items || []);
         toast.success(data?.message || "Removed Product from your cart!");
       } else {
         // Handle error response
@@ -198,6 +198,12 @@ export const CartProvider = ({ children }) => {
       console.log("error:", error);
       toast.error("Something went wrong, please try again later.");
     }
+  };
+
+  const noOfCartItems = cartItems.length;
+
+  const productExistsInCart = (productId) => {
+    return cartItems.some((item) => item.productId._id === productId);
   };
 
   useEffect(() => {
@@ -275,12 +281,6 @@ export const CartProvider = ({ children }) => {
       console.log("error:", error);
       toast.error("Something went wrong, please try again later.");
     }
-  };
-
-  const noOfCartItems = cartItems.length;
-
-  const productExistsInCart = (productId) => {
-    return cartItems.some((item) => item.productId._id === productId);
   };
 
   return (

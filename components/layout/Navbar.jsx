@@ -1,5 +1,20 @@
 "use client";
 
+import { signOut, useSession } from "next-auth/react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { useCart } from "@/context/CartProvider";
+import { useWishlist } from "@/context/WishlistContext";
+import { useNotification } from "@/context/NotificationProvider";
+import { useDebounce } from "@/hooks/debounce";
+import { fadeIn, staggerContainer } from "@/lib/utils";
+import { links } from "@/constants/data";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Dialog,
   DialogContent,
@@ -10,53 +25,35 @@ import {
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
-  SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { links } from "@/constants/data";
-import { useCart } from "@/context/CartProvider";
-import { useNotification } from "@/context/NotificationProvider";
-import { useWishlist } from "@/context/WishlistContext";
-import { useDebounce } from "@/hooks/debounce";
-import { cn, fadeIn, staggerContainer } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { Heart, ImageIcon, List, LogOut, X } from "lucide-react";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { Card, CardContent, CardFooter } from "../ui/card";
-import ReactCountUp from "../ui/countUp";
-import { Input } from "../ui/input";
-import { ScrollArea } from "../ui/scroll-area";
+import ReactCountUp from "@/components/ui/countUp";
 import Notification from "./Notification";
+import { ImageIcon, List, LogOut, X } from "lucide-react";
+import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
+import { RxCross1 } from "react-icons/rx";
 
 const Navbar = ({ companyName }) => {
+  const { data: session } = useSession();
   const pathname = usePathname();
   const router = useRouter();
-  const { data: session } = useSession();
-  const { noOfCartItems } = useCart();
+  const { cartItems, noOfCartItems, totalPrice } = useCart();
   const { isNotificationOpen } = useNotification();
+  const { wishlistProducts } = useWishlist();
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { wishlistProducts } = useWishlist();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -82,7 +79,7 @@ const Navbar = ({ companyName }) => {
   const isHomeScrolled = pathname === "/" ? isScrolled : true;
 
   const handleUserIconClick = () => {
-    if (session) {
+    if (session && session?.user) {
       router.push("/account");
     } else {
       router.push("/auth/sign-in");
@@ -129,91 +126,142 @@ const Navbar = ({ companyName }) => {
         </motion.div>
         <motion.div variants={fadeIn("down", 0.4)} className="flex space-x-4">
           <NavigationMenu>
-            <NavigationMenuList>
-              <Search
-                isHomeScrolled={isHomeScrolled}
-                open={searchOpen}
-                setOpen={setSearchOpen}
-                initialQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-              />
-              <Link href="/account/wishlist">
-                <div className="relative hidden sm:block">
-                  <CiHeart
-                    size={20}
-                    className={`hover:text-gray-700 size-[30px] md:size-[20px] ${
-                      isHomeScrolled ? "text-black" : "text-white"
-                    } ease-in-out duration-300`}
-                  />
-                  {wishlistProducts.length > 0 && (
-                    <div className="absolute -top-2.5 -right-2.5 text-xs text-white bg-[red] rounded-full px-1">
-                      {wishlistProducts.length}
-                    </div>
-                  )}
-                </div>
-              </Link>
+            <NavigationMenuList className="flex gap-2">
+              <NavigationMenuItem className="hidden md:block cursor-pointer">
+                <Search
+                  isHomeScrolled={isHomeScrolled}
+                  open={searchOpen}
+                  setOpen={setSearchOpen}
+                  initialQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                />
+              </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger>
-                  <Link href="/account/cart">
-                    <div className="relative">
-                      {noOfCartItems > 0 && (
-                        <div className="absolute -top-2.5 -right-2.5 text-xs text-white bg-[red] rounded-full px-1">
-                          {noOfCartItems}
-                        </div>
-                      )}
-                      <CiShoppingCart
-                        size={20}
-                        className={`hover:text-gray-700 ${
-                          isHomeScrolled ? "text-black" : "text-white"
-                        } ease-in-out duration-300 size-[30px] md:size-[20px]`}
-                      />
+                <Link href="/account/wishlist">
+                  <div className="relative hidden sm:block">
+                    <CiHeart
+                      size={20}
+                      className={`hover:text-gray-700 size-[30px] md:size-[20px] ${
+                        isHomeScrolled ? "text-black" : "text-white"
+                      } ease-in-out duration-300`}
+                    />
+                    {wishlistProducts.length > 0 && (
+                      <div className="absolute -top-2.5 -right-2.5 text-xs text-white bg-[red] rounded-full px-1">
+                        {wishlistProducts.length}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              </NavigationMenuItem>
+              {session && session?.user && (
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>
+                    <Link href="/account/cart">
+                      <div className="relative">
+                        {noOfCartItems > 0 && (
+                          <div className="absolute -top-2.5 -right-2.5 text-xs text-white bg-[red] rounded-full px-1">
+                            {noOfCartItems}
+                          </div>
+                        )}
+                        <CiShoppingCart
+                          size={20}
+                          className={`hover:text-gray-700 ${
+                            isHomeScrolled ? "text-black" : "text-white"
+                          } ease-in-out duration-300 size-[30px] md:size-[20px]`}
+                        />
+                      </div>
+                    </Link>
+                  </NavigationMenuTrigger>
+
+                  <NavigationMenuContent>
+                    <div className="grid gap-3 p-4 md:w-[400px] h-[250px] max-h-[280px] overflow-x-hidden overflow-y-scroll">
+                      {cartItems &&
+                        Array.isArray(cartItems) &&
+                        cartItems.length > 0 &&
+                        cartItems.map((item, index) => (
+                          <HoverCartProductCard
+                            key={index}
+                            productDetails={item}
+                          />
+                        ))}
                     </div>
+                    <hr />
+                    <div className="space-y-2 p-4">
+                      <div className="flex-between gap-4 font-semibold">
+                        <span>Sub Total: </span>
+                        <ReactCountUp
+                          amt={totalPrice}
+                          prefix="₹"
+                          className="text-xl text-primary-clr"
+                        />
+                      </div>
+
+                      <div className="flex-between gap-4 border-t pt-4">
+                        <Link href="/account/cart">
+                          <Button
+                            size="sm"
+                            effect="gooeyLeft"
+                            className="bg-primary-clr text-white py-2 rounded-md hover:bg-green-700 transition"
+                          >
+                            View in Cart
+                          </Button>
+                        </Link>
+                        <Link href="/account/cart/checkout">
+                          <Button
+                            size="sm"
+                            effect="gooeyRight"
+                            className="bg-primary-clr text-white py-2 rounded-md hover:bg-green-700 transition"
+                          >
+                            CHECK OUT
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              )}
+
+              {/* user */}
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>
+                  <Link href="/account">
+                    <CiUser
+                      size={20}
+                      className={`hover:text-gray-700 ${
+                        isHomeScrolled ? "text-black" : "text-white"
+                      } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px] hidden sm:block`}
+                      onClick={handleUserIconClick}
+                    />
                   </Link>
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="grid gap-3 p-4 md:w-[400px] h-[300px] max-h-[300px] overflow-y-auto  ">
-                    <HoverCartProductCard />
-                    <HoverCartProductCard />
-                    <HoverCartProductCard />
-                    <HoverCartProductCard />
-                    <HoverCartProductCard />
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              {/* user */}
-
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>
-                  <CiUser
-                    size={20}
-                    className={`hover:text-gray-700 ${
-                      isHomeScrolled ? "text-black" : "text-white"
-                    } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px] hidden sm:block`}
-                    onClick={handleUserIconClick}
-                  />
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid gap-3 p-4 md:w-[200px]  ">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <a
-                          className="flex w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted hover:bg-gray-200 hover:from-muted/50 hover:to-muted  px-4 py-[8px]"
-                          href={session ? "/account" : "/auth/sign-in"}
-                        >
-                          <p className="text-sm leading-tight ">Profile</p>
-                        </a>
-                      </NavigationMenuLink>
-                    </li>
+                  <ul className="grid gap-3 p-2 md:w-[200px]">
+                    {session && session?.user && (
+                      <li className="row-span-3">
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href="/account"
+                            className="flex w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted hover:bg-gray-200 hover:from-muted/50 hover:to-muted  px-4 py-[8px]"
+                          >
+                            <p className="text-sm leading-tight">Profile</p>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    )}
                     <li>
                       <Button
-                        onClick={() => signOut()}
-                        variant="default"
-                        className="w-full justify-start gap-2"
+                        onClick={() => {
+                          if (session && session?.user) signOut();
+                          else router.push("/auth/sign-in");
+                        }}
+                        effect={
+                          session && session?.user ? "shineHover" : "shine"
+                        }
+                        className="w-full bg-primary-clr hover:bg-green-700"
                       >
                         <LogOut size={20} />
-                        Logout
+                        {session && session?.user ? "Logout" : "Login"}
                       </Button>
                     </li>
                   </ul>
@@ -221,7 +269,6 @@ const Navbar = ({ companyName }) => {
               </NavigationMenuItem>
 
               {/* Mobile */}
-
               <Sheet>
                 <SheetTrigger className="md:hidden">
                   <List
@@ -433,44 +480,65 @@ export function Search({
   );
 }
 
-function HoverCartProductCard() {
-  const chosedVariant = [];
-
+const HoverCartProductCard = ({ productDetails }) => {
+  const { removeCartItem } = useCart();
   return (
     <div className="w-full h-fit">
-      <Link href={""} className="w-full">
-        <div className="w-full h-fit group flex justify-between gap-7 hover:shadow-sm transition-transform duration-300 px-3">
-          {chosedVariant ? (
+      <Link
+        href={`/prodcuts/${productDetails?.productId?.sku}`}
+        className="w-full"
+      >
+        <div className="w-full h-fit group flex justify-between gap-7 rounded-md hover:shadow-sm hover:bg-gray-200 transition-transform duration-300 px-3">
+          {productDetails?.variant && productDetails?.variant?.image_link ? (
             <div className="w-20 h-20 group-hover:scale-105 transition-transform duration-300 overflow-hidden">
-              <Image src={"/p1.png"} alt={""} width={150} height={150} />
+              <Image
+                src={productDetails?.variant?.image_link}
+                alt={productDetails?.productId?.title}
+                width={150}
+                height={150}
+              />
             </div>
           ) : (
-            <ImageIcon src={""} alt={""} width={100} height={150} />
+            <ImageIcon width={100} height={150} />
           )}
 
           <div className="w-full flex-1 flex flex-col gap-1">
             <div className="w-full flex-1 flex flex-col gap-1">
-              <h5 className="text-base font-semibold">title of product</h5>
-              <p className="text-base">chosedVariant</p>
+              <h5 className="text-base font-semibold">
+                {productDetails?.productId?.title}
+              </h5>
+              {/* <p className="text-base">chosedVariant</p> */}
             </div>
 
             <div className="w-fit flex flex-col gap-1">
               <h5 className="text-base font-semibold">Price</h5>
-              <div className="flex flex-row gap-4 w-full items-center ">
-                <p>1 X</p>
-                <p className="text-base">
-                  <ReactCountUp amt={899} prefix="₹" />
+              <div className="flex flex-row gap-4 w-full items-center">
+                <p className="flex-center gap-1">
+                  <ReactCountUp
+                    amt={
+                      productDetails?.productId?.salePrice ||
+                      productDetails?.productId?.price
+                    }
+                    prefix="₹"
+                  />
+                  X
+                  <ReactCountUp amt={productDetails?.quantity} />
                 </p>
               </div>
             </div>
           </div>
 
-          <X className="w-5 h-5 hover:text-red-500 cursor-pointer ease-in-out duration-500       " />
+          <RxCross1
+            onClick={() => removeCartItem(productDetails?.productId?._id)}
+            title="Remove from cart"
+            size={15}
+            className="cursor-pointer hover:text-[red] mt-1.5 -mr-1.5 ease-in-out duration-500"
+          />
         </div>
       </Link>
     </div>
   );
-}
+};
 
 export const ProductNode = ({ productDetails, onClose }) => {
   const chosedVariant = productDetails?.variants[0];

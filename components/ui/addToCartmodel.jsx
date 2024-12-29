@@ -4,8 +4,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { useCart } from "@/context/CartProvider";
 import { Button } from "./button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "./dialog";
 import ReactCountUp from "./countUp";
+import Link from "next/link";
 
 export default function AddToCartmodel({ loading, product }) {
   //   console.log("product", product);
@@ -135,6 +136,7 @@ const Modal = ({ product }) => {
             <div className="flex max-w-[200px] items-center  h-9 ">
               {product.variants.map((variant, index) => (
                 <Button
+                  type="button"
                   key={index}
                   variant="ghost"
                   onClick={() => setVariantCheck(variant.flavor)}
@@ -158,6 +160,7 @@ const Modal = ({ product }) => {
             <div className="w-fit flex-between gap-5">
               <div className="flex-1 flex max-w-[200px] items-center border border-gray-400 h-9">
                 <Button
+                  type="button"
                   variant="ghost"
                   onClick={decreaseQuantity}
                   className="px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600  focus:outline-none"
@@ -169,6 +172,7 @@ const Modal = ({ product }) => {
                   {quantity}
                 </span>
                 <Button
+                  type="button"
                   variant="ghost"
                   onClick={increaseQuantity}
                   className="px-4 py-2 text-xl font-medium text-gray-600 hover:bg-transparent focus:outline-none"
@@ -185,20 +189,26 @@ const Modal = ({ product }) => {
             </div>
             <div className=" flex flex-row items-center gap-2">
               <Button
+                type="button"
                 onClick={() =>
                   addToCart(product, quantity, product.variants[0])
                 }
                 size="sm"
-                className=" rounded-none w-[200px] bg-primary-clr text-white py-2  hover:bg-green-700 transition"
+                effect="shine"
+                className="rounded-none w-[200px] bg-primary-clr text-white py-2  hover:bg-green-700 transition"
               >
                 Add To Cart
               </Button>
-              <Button
-                size="sm"
-                className=" rounded-none w-[200px] bg-primary-clr text-white py-2  hover:bg-green-700 transition"
-              >
-                Details
-              </Button>
+              <Link href={`/product/${product?.sku}`}>
+                <Button
+                  type="button"
+                  size="sm"
+                  effect="gooeyRight"
+                  className="rounded-none w-[200px] bg-primary-clr text-white py-2  hover:bg-green-700 transition"
+                >
+                  Details
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
