@@ -59,6 +59,7 @@ const Button = React.forwardRef(
       icon: Icon,
       iconPlacement,
       asChild = false,
+      type = "button",
       ...props
     },
     ref
@@ -68,6 +69,7 @@ const Button = React.forwardRef(
       <Comp
         className={cn(buttonVariants({ variant, effect, size, className }))}
         ref={ref}
+        type={type}
         {...props}
       >
         {Icon &&
