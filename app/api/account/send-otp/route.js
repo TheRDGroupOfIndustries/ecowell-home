@@ -6,7 +6,7 @@ import { sendOtpToPhone } from "@/app/api/core";
 export async function POST(req) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    if (!session?.user?._id) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }

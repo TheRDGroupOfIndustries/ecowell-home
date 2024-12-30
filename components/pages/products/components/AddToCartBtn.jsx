@@ -43,20 +43,22 @@ export default function AddToCartBtn({ product, selectedVariant }) {
           className="self-end animate-slide-up h-[50px] md:h-[64px] w-[200px] md:w-[283px] bg-dark_jungle_green text-white rounded-full flex flex-row items-center px-[5px] gap-2 cursor-pointer"
           onClick={handleWhatsAppRedirect}
         >
-          <button
-            className="mx-auto text-sm md:text-base text-white text-end flex flex-col"
+          <div
+            className="h-full flex items-center hover:opacity-50 cursor-pointer p-3"
             onClick={(e) => {
               e.stopPropagation();
               setShowWhatsApp(false);
             }}
           >
-            <X color="white" />
-          </button>
-          <div className="ml-auto text-sm md:text-base text-white text-end flex flex-col ">
+            <button className="mx-auto text-sm md:text-base text-white text-end flex flex-col">
+              <X color="white" />
+            </button>
+          </div>
+          <div className="ml-auto text-sm md:text-base text-white text-end flex flex-col">
             <p>Get in touch</p>
             <p>+91 9876345621</p>
           </div>
-          <div className="w-[40px] h-[40px] md:w-[55px] md:h-[55px] overflow-hidden  bg-white rounded-full relative">
+          <div className="w-[40px] h-[40px] md:w-[55px] md:h-[55px] overflow-hidden bg-white rounded-full relative">
             <Image src="/whatsapp.png" fill alt="whatsapp" className="" />
           </div>
         </div>

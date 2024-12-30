@@ -7,7 +7,7 @@ import { NextResponse } from "next/server"
 export async function PUT(req) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session?.user?.email) {
+    if (!session?.user?._id) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
@@ -17,8 +17,8 @@ export async function PUT(req) {
     const body = await req.json()
     await connectToMongoDB()
 
-    const updatedUser = await User.findOneAndUpdate(
-      { email: session.user.email },
+    const updatedUser = await User.findByIdAndUpdate(
+      session.user._id,
       { $set: body },
       { new: true }
     ).select("-password")

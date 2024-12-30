@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DEFAULT_AVATAR } from "@/constants/data";
 
 export default function ProfilePage() {
   const { data: session, update } = useSession();
@@ -58,7 +57,7 @@ export default function ProfilePage() {
           region_state: userData.region_state || "",
           city: userData.city || "",
           zip_code: userData.zip_code || "",
-          profile_image: userData.profile_image || "https://i.pinimg.com/1200x/b5/12/68/b5126803cf115b044849b64ca565a4a7.jpg",
+          profile_image: userData.profile_image || "/assets/user.png",
         });
         setOriginalData({ ...userData });
         setIsPhoneVerified(userData.is_phone_verified || false);
@@ -159,7 +158,7 @@ export default function ProfilePage() {
   };
 
   const handleSubmit = async () => {
-    if (formData.phone_number !== originalData.phone_number && !isPhoneVerified) {
+    if (formData.phone_number && formData.phone_number !== originalData.phone_number && !isPhoneVerified) {
       toast.error("Please verify your new phone number before saving");
       return;
     }
@@ -260,7 +259,7 @@ export default function ProfilePage() {
           <div className="flex justify-center mb-6">
             <div className="relative">
               <Image
-                src={formData.profile_image || "https://i.pinimg.com/1200x/b5/12/68/b5126803cf115b044849b64ca565a4a7.jpg"}
+                src={formData.profile_image || "/assets/user.png"}
                 alt="Profile"
                 width={200}
                 height={200}
@@ -339,7 +338,7 @@ export default function ProfilePage() {
                 disabled={!isEditing}
               />
               {isEditing && formData.phone_number !== originalData.phone_number && !isPhoneVerified && (
-                <Button onClick={handleSendOtp} className="mt-2">
+                <Button onClick={handleSendOtp} className="mt-2 bg-primary-clr hover:bg-green-700 text-white transition-colors text-lg">
                   Verify Phone Number
                 </Button>
               )}
@@ -358,7 +357,7 @@ export default function ProfilePage() {
                 onChange={(e) => setOtp(e.target.value)}
                 placeholder="Enter OTP"
               />
-              <Button onClick={handleVerifyOtp} className="mt-2">
+              <Button onClick={handleVerifyOtp} className="mt-2 bg-primary-clr hover:bg-green-700 text-white transition-colors text-lg">
                 Verify OTP
               </Button>
             </div>

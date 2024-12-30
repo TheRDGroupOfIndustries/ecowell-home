@@ -3,17 +3,18 @@ import { getServerSession } from "next-auth/next";
 import connectToMongoDB from "@/utils/db";
 import User from "@/models/User";
 import Product from "@/models/Products";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 export async function GET(request) {
   try {
-    const session = await getServerSession();
-    if (!session) {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?._id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await connectToMongoDB();
 
-    const user = await User.findOne({ email: session.user.email }).populate('wishlist_products');
+    const user = await User.findById(session.user._id).populate('wishlist_products');
 
     return NextResponse.json({ wishlist: user.wishlist_products });
   } catch (error) {
@@ -24,8 +25,8 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
-    const session = await getServerSession();
-    if (!session) {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?._id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -33,7 +34,7 @@ export async function POST(request) {
 
     await connectToMongoDB();
 
-    const user = await User.findOne({ email: session.user.email });
+    const user = await User.findById(session.user._id);
     const product = await Product.findById(productId);
 
     if (!product) {
@@ -54,8 +55,8 @@ export async function POST(request) {
 
 export async function DELETE(request) {
   try {
-    const session = await getServerSession();
-    if (!session) {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?._id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -63,7 +64,7 @@ export async function DELETE(request) {
 
     await connectToMongoDB();
 
-    const user = await User.findOne({ email: session.user.email });
+    const user = await User.findById(session.user._id);
 
     user.wishlist_products = user.wishlist_products.filter(id => id.toString() !== productId);
     await user.save();

@@ -493,7 +493,7 @@ const HoverCartProductCard = ({ productDetails }) => {
   return (
     <div className="relative w-full h-fit">
       <Link
-        href={`/prodcuts/${productDetails?.productId?.sku}`}
+        href={`/products/${productDetails?.productId?.sku}`}
         className="w-full"
       >
         <div className="w-full h-fit group flex justify-between gap-7 rounded-md hover:shadow-sm hover:bg-gray-200 transition-transform duration-300 px-3">

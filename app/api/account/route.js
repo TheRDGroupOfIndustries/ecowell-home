@@ -7,7 +7,7 @@ import { NextResponse } from "next/server"
 export async function GET() {
   try {
     const session = await getServerSession(authOptions)
-    if (!session?.user?.email) {
+    if (!session?.user?._id) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
@@ -16,7 +16,7 @@ export async function GET() {
 
     await connectToMongoDB()
 
-    const user = await User.findOne({ email: session.user.email })
+    const user = await User.findById(session.user._id)
       .select("-password")
 
     if (!user) {
