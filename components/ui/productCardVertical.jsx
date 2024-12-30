@@ -6,6 +6,7 @@ import { useCart } from "@/context/CartProvider";
 import { CiHeart } from "react-icons/ci";
 import { AiFillHeart } from "react-icons/ai";
 import { useWishlist } from "@/context/WishlistContext";
+import { useState } from "react";
 
 const ProductCardVertical = ({ product }) => {
   const { addToCart } = useCart();
