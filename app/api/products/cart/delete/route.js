@@ -45,7 +45,12 @@ export async function DELETE(request) {
     cart.totalQuantity = totals.totalQuantity;
     cart.totalPrice = totals.totalPrice;
 
-    const updatedCart = await cart.save();
+    await cart.save();
+
+    const updatedCart = await Cart.findOne({ userId }).populate({
+      path: "items.productId",
+      select: "_id title sku salePrice price variants",
+    });
 
     // console.log(updatedCart);
 
