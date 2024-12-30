@@ -55,7 +55,7 @@ const Trending = () => {
               variants={fadeIn("right", 0.2 * index, 1)}
               onClick={() => handleTrendingItemClick(item.text)}
             >
-              <div className="hover-fill border border-gray-950 hover:text-white hover:border-secondary-clr w-fit h-fit p-2 px-4 flex items-center justify-center gap-2 text-lg 2xl:text-xl cursor-pointer">
+              <div className="hover-fill border border-gray-950 hover:text-white hover:border-secondary-clr w-full sm:w-fit h-fit p-2 px-4 flex items-center justify-center gap-2 text-lg 2xl:text-xl cursor-pointer">
                 {item.icon}
                 <span>{item.text}</span>
               </div>

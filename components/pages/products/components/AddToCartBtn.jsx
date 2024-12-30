@@ -40,7 +40,7 @@ export default function AddToCartBtn({ product, selectedVariant }) {
     <div className="fixed z-40 bottom-3 right-3 flex flex-col gap-2">
       {showWhatsApp && (
         <div
-          className="self-end animate-slide-up h-[50px] md:h-[64px] w-[200px] md:w-[283px] bg-dark_jungle_green text-white rounded-full flex flex-row items-center px-[5px] gap-2 cursor-pointer"
+          className="self-end animate-slide-up h-[50px] md:h-[64px] w-[200px] md:w-[283px] bg-dark_jungle_green text-white rounded-full flex flex-row items-center px-[5px] md:gap-2 cursor-pointer"
           onClick={handleWhatsAppRedirect}
         >
           <div
@@ -54,12 +54,12 @@ export default function AddToCartBtn({ product, selectedVariant }) {
               <X color="white" />
             </button>
           </div>
-          <div className="ml-auto text-sm md:text-base text-white text-end flex flex-col">
+          <div className="ml-auto text-xs md:text-base text-white text-end flex flex-col text-nowrap">
             <p>Get in touch</p>
             <p>+91 9876345621</p>
           </div>
-          <div className="w-[40px] h-[40px] md:w-[55px] md:h-[55px] overflow-hidden bg-white rounded-full relative">
-            <Image src="/whatsapp.png" fill alt="whatsapp" className="" />
+          <div className="w-[40px] h-[40px] md:w-[55px] md:h-[55px] overflow-hidden ml-1 rounded-full relative">
+            <Image src="/whatsapp.png" fill alt="whatsapp" className="rounded-full min-w-[40px] min-h-[40px] md:w-[55px] md:h-[55px]" />
           </div>
         </div>
       )}

@@ -20,7 +20,7 @@ const Certifications = () => {
         CERTIFICATIONS
       </motion.div>
 
-      <div className="flex justify-between flex-wrap px-10 md:px-14 lg:px-20 2xl:px-40">
+      <div className="flex justify-between flex-wrap px-12 md:px-14 lg:px-20 2xl:px-40">
         {certificationsData.map((c, index) => (
           <motion.div
             key={index}

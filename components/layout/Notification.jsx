@@ -6,7 +6,7 @@ import { RxCross1 } from "react-icons/rx";
 const Notification = () => {
   const { handleCloseNotification } = useNotification();
   return (
-    <div className="w-full h-fit flex-between bg-primary-clr p-2 px-8 overflow-hidden">
+    <div className="w-full h-fit flex-between bg-primary-clr p-2 px-3 md:px-8 overflow-hidden">
       <div className="text-sm text-white font-bold">Welcome to the Ecowell</div>
       <RxCross1
         // onClick={() => signOut()}

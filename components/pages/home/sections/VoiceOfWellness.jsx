@@ -83,10 +83,10 @@ const VoiceOfWellness = () => {
           variants={fadeIn("down", 0.2)}
           className="text-center mb-20"
         >
-          <h1 className="text-5xl font-bold mb-4">Voices Of Wellness</h1>
-          <p className="text-xl">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4">Voices Of Wellness</h1>
+          <p className="text-sm sm:text-xl">
             Real Stories. Genuine Transformations. See How Ecowell
-            <br />
+            <br className="hidden sm:flex" />
             Is Redefining Well-Being For Our Community.
           </p>
         </motion.div>
