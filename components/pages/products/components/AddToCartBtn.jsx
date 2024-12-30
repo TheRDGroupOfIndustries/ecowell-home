@@ -21,7 +21,8 @@ export default function AddToCartBtn({ product, selectedVariant }) {
     setQuantity((prev) => prev + 1);
   };
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
     if (productExistsInCart(product._id)) {
       router.push("/account/cart");
     } else {

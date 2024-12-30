@@ -190,9 +190,10 @@ const Modal = ({ product }) => {
             <div className=" flex flex-row items-center gap-2">
               <Button
                 type="button"
-                onClick={() =>
-                  addToCart(product, quantity, product.variants[0])
-                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  addToCart(product, quantity, product.variants[0]);
+                }}
                 size="sm"
                 effect="shine"
                 className="rounded-none w-[200px] bg-primary-clr text-white py-2  hover:bg-green-700 transition"
