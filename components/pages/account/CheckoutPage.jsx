@@ -104,14 +104,14 @@ const Checkout = () => {
   };
 
   return (
-    <div className="h-fit mt-32 bg-gray-50 py-12 select-none overflow-hidden">
-      <div className="container mx-auto px-4">
+    <div className="h-fit mt-32 bg-gray-50 md:py-12 select-none overflow-hidden">
+      <div className="md:container mx-auto px-4 py-4">
         <form
           onSubmit={onSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
           {/* Left Column - Shipping & Payment */}
-          <div className="space-y-8">
+          <div className="space-y-8 ">
             <div className="bg-white p-6 rounded-lg shadow">
               <h2 className="text-2xl font-semibold mb-6">Shipping Details</h2>
               <div className="space-y-4">

@@ -89,10 +89,10 @@ const ProductDetail = ({ productSku }) => {
         <FrequentlyBoughtTogether />
         <RelatedProduct category={product.category.title} />
         <ProductDiscover />
-        {/* <Ingredient/> */}
+        <Ingredient/>
         <Image src={"/banner3.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
         <Image src={"/banner2.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
-        <TheStories />
+        {/* <TheStories /> */}
         <PurposeAndTrust />
         <Image src={"/banner1.png"} alt="Banner" width={1000} height={540} className='w-full ' />
         <FrequentlyAskedQuestions faqs={product.faqs} />

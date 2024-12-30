@@ -46,11 +46,11 @@ const features = [
 export default function PurposeAndTrust() {
     return (
         <div className=" flex flex-col w-full gap-10 pb-14">
-            <div className=" flex flex-col justify-center items-center">
+            <div className=" flex flex-col justify-center items-center px-3">
                 <h2 className="text-4xl text-dark_jungle_green font-medium">Built with <span className='italic font-semibold'>Purpose</span>, Backed by <span className='italic font-semibold'>Trust</span></h2>
             </div>
 
-            <div className="flex items-center justify-between flex-wrap">
+            <div className="flex items-center justify-between flex-wrap px-3">
             {features.map((feature, index) => (
             <div
               key={feature.title}

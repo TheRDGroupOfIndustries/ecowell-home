@@ -39,10 +39,10 @@ export default function Footer() {
                     <li className="mt-2" key={idx}>
                       <Link
                         href={item.href || "#"}
-                        className="w-fit flex items-start gap-2 group h-6 "
+                        className="w-fit flex items-start gap-2 group  "
                       >
                         {item.icon}
-                        <span className="text-md group-hover:underline">
+                        <span className="text-md group-hover:underline h-6">
                           {item.content}
                         </span>
                       </Link>

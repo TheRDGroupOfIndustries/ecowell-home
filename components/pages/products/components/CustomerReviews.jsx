@@ -58,12 +58,12 @@ function CustomerReviews({ productId }) {
 
   return (
     <div className="min-h-screen ">
-      <div className="w-[80%] mx-auto px-4 py-12">
+      <div className="w-full md:w-[80%] mx-auto px-4 py-12">
         <h1 className="text-3xl text-center font-bold text-gray-900 mb-8">
           Customer Reviews
         </h1>
         <div className="border border-gray-100 rounded-lg p-6 ">
-          <div className="flex h-full ">
+          <div className="flex h-full text-nowrap ">
             <RatingStats
               totalRatings={totalRatings}
               averageRating={averageRating}
@@ -116,7 +116,7 @@ function RatingStats({ totalRatings, averageRating, ratingDistribution }) {
   return (
     <div className="bg-white p-6 rounded-lg w-[50%]">
       <div className="flex items-center gap-4">
-        <div className="flex justify-between w-full mr-6">
+        <div className="flex justify-between gap-3 w-full mr-6">
           <p className="text-base  mt-1">{totalRatings} ratings</p>
           <div className="flex items-center ml-auto gap-2">
             <div className="flex">
