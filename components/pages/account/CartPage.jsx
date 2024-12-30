@@ -16,7 +16,7 @@ const Cart = () => {
   const { pt } = useNotification();
 
   return (
-    <div className={`w-full h-fit md:p-8 mt-28 ${pt} bg-[#f8f1e9]`}>
+    <div className={`w-full h-fit md:p-8 mt-28 ${pt} bg-white`}>
       <div className="container mx-auto pt-10">
         {cartItems.length > 0 ? (
           <>
