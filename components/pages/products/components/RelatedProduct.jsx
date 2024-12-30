@@ -3,9 +3,11 @@ import ProductCardSkeleton from '@/components/ui/productCardSkeleton';
 import ProductCardVertical from '@/components/ui/productCardVertical';
 import { fadeIn, staggerContainer } from '@/lib/utils';
 import { motion } from "framer-motion";
+import ProductCardSkeleton from '@/components/ui/productCardSkeleton';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-export default function RelatedProduct({ category }) {
+export default function RelatedProduct({ category, currentProductId }) {
     const [relatedProducts, setRelatedProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -15,7 +17,9 @@ export default function RelatedProduct({ category }) {
                 const response = await fetch(`/api/products/related?category=${category}&limit=4`);
                 if (response.ok) {
                     const data = await response.json();
-                    setRelatedProducts(data);
+                    // Filter out the current product
+                    const filteredProducts = data.filter(product => product._id !== currentProductId);
+                    setRelatedProducts(filteredProducts);
                 }
             } catch (error) {
                 console.error('Error fetching related products:', error);
@@ -27,7 +31,7 @@ export default function RelatedProduct({ category }) {
         if (category) {
             fetchRelatedProducts();
         }
-    }, [category]);
+    }, [category, currentProductId]);
 
     if (!loading && relatedProducts.length === 0) {
         return null;
@@ -57,7 +61,9 @@ export default function RelatedProduct({ category }) {
                             key={product._id}
                             variants={fadeIn('up', 0.3 + index * 0.1)}
                         >
-                            <ProductCardVertical product={product} />
+                            <Link href={`/products/${product.sku || ''}`}>
+                                <ProductCardVertical product={product} />
+                            </Link>
                         </motion.div>
                     ))
                 )}

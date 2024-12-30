@@ -80,6 +80,17 @@ export async function POST(request, { params }) {
 
     const updatedProductReview = await reviewDoc.save();
 
+    // Calculate new average rating
+    const allReviews = updatedProductReview.reviews;
+    const totalRating = allReviews.reduce((sum, review) => sum + review.rating, 0);
+    const averageRating = totalRating / allReviews.length;
+
+    // Update product with new rating and increment reviews_number
+    await Product.findByIdAndUpdate(productId, {
+      $set: { ratings: averageRating.toFixed(1) },
+      $inc: { reviews_number: 1 }
+    });
+
     return NextResponse.json(
       {
         status: 200,
@@ -142,6 +153,16 @@ export async function PUT(request, { params }) {
       );
     }
 
+    // Recalculate average rating after update
+    const allReviews = updatedReview.reviews;
+    const totalRating = allReviews.reduce((sum, review) => sum + review.rating, 0);
+    const averageRating = totalRating / allReviews.length;
+
+    // Update product with new rating
+    await Product.findByIdAndUpdate(productId, {
+      $set: { ratings: averageRating.toFixed(1) }
+    });
+
     return NextResponse.json(
       {
         status: 200,
@@ -178,14 +199,8 @@ export async function DELETE(request, { params }) {
 
     await connectToMongoDB();
 
-    // finding the review document and pull the specific review from reviews array
-    const updatedReview = await Review.findOneAndUpdate(
-      { product_id: productId },
-      { $pull: { reviews: { _id: reviewId } } },
-      { new: true }
-    );
-
-    if (!updatedReview) {
+    const reviewDoc = await Review.findOne({ product_id: productId });
+    if (!reviewDoc) {
       return NextResponse.json(
         {
           status: 404,
@@ -196,9 +211,19 @@ export async function DELETE(request, { params }) {
       );
     }
 
-    // If no reviews left, delete the entire document
-    if (updatedReview.reviews.length === 0) {
+    // Remove the review
+    reviewDoc.reviews = reviewDoc.reviews.filter(
+      review => review._id.toString() !== reviewId
+    );
+
+    if (reviewDoc.reviews.length === 0) {
+      // If no reviews left, delete the document and update product
       await Review.findOneAndDelete({ product_id: productId });
+      await Product.findByIdAndUpdate(productId, {
+        $set: { ratings: 0 },
+        $inc: { reviews_number: -1 }
+      });
+
       return NextResponse.json(
         {
           status: 200,
@@ -209,6 +234,18 @@ export async function DELETE(request, { params }) {
         { status: 200 }
       );
     }
+
+    // Save updated reviews and recalculate average
+    const updatedReview = await reviewDoc.save();
+    const allReviews = updatedReview.reviews;
+    const totalRating = allReviews.reduce((sum, review) => sum + review.rating, 0);
+    const averageRating = totalRating / allReviews.length;
+
+    // Update product with new rating and decrement reviews_number
+    await Product.findByIdAndUpdate(productId, {
+      $set: { ratings: averageRating.toFixed(1) },
+      $inc: { reviews_number: -1 }
+    });
 
     return NextResponse.json(
       {
