@@ -109,7 +109,8 @@ export const authOptions = {
               email: user?.email,
               profile_image:
                 user?.image ||
-                "https://i.pinimg.com/1200x/b5/12/68/b5126803cf115b044849b64ca565a4a7.jpg",
+                "https://i.pinimg.com/1200x/b5/12/68/b5126803cf115b044849b64ca565a4a7.jpg" ||
+                "/assets/user.png",
             });
             const savedUser = await newUser.save();
             return savedUser;
@@ -131,7 +132,12 @@ export const authOptions = {
       await connectToMongoDB();
 
       if (typeof token?.user !== "undefined") {
-        const userExists = await User.findOne({ email: token?.user?.email });
+        let userExists;
+        if (token?.user?.email) {
+          userExists = await User.findOne({ email: token?.user?.email });
+        } else if (token?.user?.phone_number) {
+          userExists = await User.findOne({ email: token?.user?.phone_number });
+        }
         if (userExists) {
           session.user = { authUser: token?.user, user: userExists };
         } else {
