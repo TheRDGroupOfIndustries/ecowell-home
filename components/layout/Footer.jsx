@@ -9,7 +9,10 @@ import { toast } from "sonner";
 
 export default function Footer() {
   return (
-    <footer className="w-full flex-center flex-col overflow-hidden">
+    <footer
+      id="contact-us"
+      className="w-full flex-center flex-col overflow-hidden"
+    >
       {/* Newsletter Section */}
       <div className="w-full   py-12 flex flex-col items-center justify-center text-center">
         <h2 className="text-4xl 2xl:text-5xl mb-4 ">
@@ -83,12 +86,12 @@ export default function Footer() {
       {/* Copyright Section */}
       <div className="w-full bg-[#333333] text-white">
         <p className="w-full px-4 py-2 text-sm text-center">
-          © {footerData.copyright.year} {footerData.copyright.company}. All
+          © {footerData.copyright.year} {footerData.copyright.company} All
           rights reserved. |{" "}
           {footerData.copyright.links.map((link, index) => (
             <span key={index}>
-              <Link href="#" className="hover:underline">
-                {link}
+              <Link href={link.href} className="hover:underline">
+                {link.label}
               </Link>
               {index < footerData.copyright.links.length - 1 && " | "}
             </span>
@@ -140,7 +143,10 @@ const Newsletter = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit} className="w-[95%]  md:w-full max-w-xl mx-2 px-0 sm:mx-auto">
+    <form
+      onSubmit={handleSubmit}
+      className="w-[95%] md:w-full max-w-xl mx-2 px-0 sm:mx-auto"
+    >
       <div className="relative flex flex-col items-center">
         <div
           className={`w-full flex border-2  ${

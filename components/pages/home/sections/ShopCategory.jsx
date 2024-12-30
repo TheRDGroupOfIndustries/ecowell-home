@@ -31,6 +31,7 @@ const ShopCategory = () => {
 
   return (
     <motion.div
+      id="shop-categories"
       variants={staggerContainer}
       initial="hidden"
       whileInView="show"

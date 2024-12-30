@@ -20,7 +20,7 @@ export const links = [
   { id: 1, head: "Home", herf: "/" },
   { id: 1, head: "Products", herf: "/products" },
   { id: 1, head: "About Us", herf: "/about-us" },
-  { id: 1, head: "Contact", herf: "/#contact" },
+  { id: 1, head: "Contact", herf: "/#contact-us" },
 ];
 
 export const footerData = {
@@ -38,7 +38,7 @@ export const footerData = {
           {
             type: "link",
             content: "Shop All",
-            href: "/",
+            href: "/products",
           },
           {
             type: "link",
@@ -48,7 +48,7 @@ export const footerData = {
           {
             type: "link",
             content: "Category",
-            href: "/",
+            href: "/#shop-categories",
           },
         ],
       },
@@ -58,7 +58,7 @@ export const footerData = {
           {
             type: "link",
             content: "Shipping & Return",
-            href: "/#",
+            href: "/about-us",
           },
           {
             type: "link",
@@ -77,22 +77,26 @@ export const footerData = {
         items: [
           {
             type: "phone",
-            content: "+91-9355951519",
-            href: "tel:+91-9355951519",
+            content: "+91 9355951519",
+            href: "tel:+919355951519",
             icon: <CiPhone size={20} className="w-6 h-6 text-primary-clr" />,
           },
           {
             type: "email",
-            content: "ecowellonline@gmail.com",
-            href: "mailto:ecowellonline@gmail.com",
+            content: "contact@ecowellonline.com",
+            href: "mailto:contact@ecowellonline.com",
             icon: <CiMail size={20} className="w-6 h-6 text-primary-clr" />,
           },
           {
             type: "address",
             content:
               "19, Park Lane, Church road, Vasant Kunj, New Delhi-110070",
-            icon: 
-              <CiLocationOn size={30} className=" min-w-8 w-8 min-h-8 text-primary-clr" />
+            icon: (
+              <CiLocationOn
+                size={30}
+                className=" min-w-8 w-8 min-h-8 text-primary-clr"
+              />
+            ),
           },
         ],
       },
@@ -114,7 +118,10 @@ export const footerData = {
   copyright: {
     year: new Date().getFullYear(),
     company: "Ecowell, Inc.",
-    links: ["Privacy Policy", "Terms of Service"],
+    links: [
+      { label: "Privacy Policy", href: "/policies" },
+      { label: "Terms of Service", href: "/terms" },
+    ],
   },
 };
 
