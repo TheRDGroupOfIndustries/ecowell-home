@@ -92,7 +92,7 @@ const ProductDetail = ({ productSku }) => {
           />
         </motion.div>
         <FrequentlyBoughtTogether />
-        <RelatedProduct category={product.category.title} />
+        <RelatedProduct category={product.category.title} currentProductId={product._id} />
         <ProductDiscover />
         <Ingredient />
         <motion.div

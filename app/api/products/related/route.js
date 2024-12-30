@@ -16,7 +16,7 @@ export async function GET(request) {
 
     const relatedProducts = await Products.find({ 'category.title': category })
       .limit(limit)
-      .select('title variants price salePrice discount ratings reviews_number');
+      .select('sku title variants price salePrice discount ratings reviews_number');
 
     return NextResponse.json(relatedProducts);
   } catch (error) {
