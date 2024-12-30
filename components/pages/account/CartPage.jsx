@@ -17,11 +17,11 @@ const Cart = () => {
 
   return (
     <div className={`w-full h-fit md:p-8 mt-28 ${pt} bg-[#f8f1e9]`}>
-      <div className="container mx-auto">
+      <div className="container mx-auto pt-10">
         {cartItems.length > 0 ? (
           <>
             {/* Cart Table */}
-            <div className="bg-white shadow-md rounded-md overflow-hidden">
+            <div className="bg-white  shadow-md rounded-md overflow-hidden">
               <CartTable />
             </div>
           </>

@@ -10,7 +10,7 @@ export default function FrequentlyAskedQuestions() {
   return (
     <div className=" flex flex-col w-full gap-10 justify-center items-center">
       <h1 className='text-4xl text-center text-dark_jungle_green font-medium'>Frequently Asked Questions</h1>
-      <Accordion type="single" collapsible className="w-full md:w-[80%] flex flex-col gap-5 ">
+      <Accordion type="single" collapsible className="w-full md:w-[80%] px-3 flex flex-col gap-5 ">
         <AccordionItem value="item-1">
           <AccordionTrigger>Is it accessible?</AccordionTrigger>
           <AccordionContent>

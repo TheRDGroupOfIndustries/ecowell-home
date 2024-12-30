@@ -64,7 +64,7 @@ function WishlistPage() {
                         <span className="text-red-600">Out of Stock</span>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className='min-w-[200px]'>
                       <Button
                         variant="ghost"
                         size="icon"

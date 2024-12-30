@@ -303,15 +303,15 @@ const Navbar = ({ companyName }) => {
                         </Link>
                       ))}
                       <div className="h-[1px] w-full bg-gray-300 "></div>
-                      <Button
+                      { session && session?.user && <Button
                         onClick={() => handleUserIconClick()}
                         variant="outline"
                         className="w-full justify-center gap-2 "
                       >
                         <CiUser size={20} color="black" />
                         User
-                      </Button>
-                      <Button
+                      </Button>}
+                      { session && session?.user && <Button
                         onClick={() =>
                           session
                             ? router.push("/account/wishlist")
@@ -322,16 +322,21 @@ const Navbar = ({ companyName }) => {
                       >
                         <CiHeart size={20} color="black" />
                         Wishlist
-                      </Button>
+                      </Button>}
 
                       <div className="h-[1px] w-full bg-gray-300 mt-auto"></div>
                       <Button
-                        onClick={() => signOut()}
-                        variant="default"
-                        className="w-full justify-center gap-2"
+                        onClick={() => {
+                          if (session && session?.user) signOut();
+                          else router.push("/auth/sign-in");
+                        }}
+                        effect={
+                          session && session?.user ? "shineHover" : "shine"
+                        }
+                        className="w-full bg-primary-clr hover:bg-green-700"
                       >
                         <LogOut size={20} />
-                        Logout
+                        {session && session?.user ? "Logout" : "Login"}
                       </Button>
                     </motion.div>
                   </SheetDescription>

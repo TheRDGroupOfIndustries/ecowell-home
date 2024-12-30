@@ -38,17 +38,17 @@ export const footerData = {
           {
             type: "link",
             content: "Shop All",
-            href: "/#",
+            href: "/",
           },
           {
             type: "link",
             content: "About Us",
-            href: "/#",
+            href: "/about-us",
           },
           {
             type: "link",
             content: "Category",
-            href: "/#",
+            href: "/",
           },
         ],
       },
@@ -63,12 +63,12 @@ export const footerData = {
           {
             type: "link",
             content: "Term's & Condition's",
-            href: "/#",
+            href: "/terms",
           },
           {
             type: "link",
             content: "Privacy Policies",
-            href: "/#",
+            href: "/policies",
           },
         ],
       },
@@ -91,9 +91,8 @@ export const footerData = {
             type: "address",
             content:
               "19, Park Lane, Church road, Vasant Kunj, New Delhi-110070",
-            icon: (
-              <CiLocationOn size={20} className=" w-6 h-6 text-primary-clr" />
-            ),
+            icon: 
+              <CiLocationOn size={30} className=" min-w-8 w-8 min-h-8 text-primary-clr" />
           },
         ],
       },
@@ -106,11 +105,11 @@ export const footerData = {
       "At Ecowell, we blend science with the finest natural ingredients to craft premium wellness products. From muscle support to radiant skin, our range is designed to fuel your body, mind, and soul.",
   },
   socialMedia: [
-    { icon: Facebook, href: "#" },
-    { icon: Instagram, href: "#" },
-    { icon: Twitter, href: "#" },
-    { icon: Youtube, href: "#" },
-    { icon: Pinterest, href: "#" },
+    { icon: Facebook, href: "https://www.facebook.com" },
+    { icon: Instagram, href: "https://www.instagram.com" },
+    { icon: Twitter, href: "https://www.twitter.com" },
+    { icon: Youtube, href: "https://www.youtube.com" },
+    { icon: Pinterest, href: "https://www.pinterest.com" },
   ],
   copyright: {
     year: new Date().getFullYear(),
