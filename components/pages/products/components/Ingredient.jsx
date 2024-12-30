@@ -1,9 +1,16 @@
-import Image from 'next/image'
-import React from 'react'
+import { staggerContainer } from '@/lib/utils';
+import { motion } from "framer-motion";
+import Image from 'next/image';
+import React from 'react';
 
 export default function Ingredient() {
     return (
-        <div className='w-full py-10'>
+        <motion.div
+            variants={staggerContainer(0.1, 0.1)}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: false, amount: 0.25 }}
+            className='w-full py-10'>
             <div className='w-full relative pr-4'>
                 <div className='h-[60px] md:h-[100px]  w-full border-1 '></div>
                 <div className='h-[60px] md:h-[100px] w-full border border-dashed border-black border-l-0'></div>
@@ -49,7 +56,7 @@ export default function Ingredient() {
                     <div className='absolute top-[40px] self-center w-[80%] h-[100px] border bg-[#F9F6F0] leading-3 p-2 text-dark_jungle_green overflow-hidden '>
                         <h1 className='text-sm md:text-xl font-semibold mt-1'>[Ingredient 2]: </h1>
                         <p className='text-xs md:text-base '>
-                        A centuries-old remedy reimagined for modern wellness.</p>
+                            A centuries-old remedy reimagined for modern wellness.</p>
                     </div>
 
                 </div>
@@ -66,11 +73,11 @@ export default function Ingredient() {
                     <div className='absolute top-[40px] self-center w-[80%] h-[100px] border bg-[#F9F6F0] leading-3 p-2 text-dark_jungle_green overflow-hidden '>
                         <h1 className='text-sm md:text-xl font-semibold mt-1'>[Ingredient 3]: </h1>
                         <p className='text-xs md:text-base '>
-                        Science-backed, delivering antioxidants and vital nutrients for total rejuvenation.</p>
+                            Science-backed, delivering antioxidants and vital nutrients for total rejuvenation.</p>
                     </div>
 
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }
