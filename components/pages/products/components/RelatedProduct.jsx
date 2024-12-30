@@ -3,7 +3,6 @@ import ProductCardSkeleton from '@/components/ui/productCardSkeleton';
 import ProductCardVertical from '@/components/ui/productCardVertical';
 import { fadeIn, staggerContainer } from '@/lib/utils';
 import { motion } from "framer-motion";
-import ProductCardSkeleton from '@/components/ui/productCardSkeleton';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
