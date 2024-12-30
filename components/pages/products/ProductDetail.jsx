@@ -92,7 +92,7 @@ const ProductDetail = ({ productSku }) => {
         <ProductDiscover />
         <Ingredient />
         <motion.div
-          initial={{ opacity: 0, y: 300 }}
+          initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="w-full"
@@ -100,7 +100,7 @@ const ProductDetail = ({ productSku }) => {
           <Image src={"/banner3.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
         </motion.div>
         <motion.div
-          initial={{ opacity: 0, y: 300 }}
+          initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="w-full"
@@ -110,7 +110,7 @@ const ProductDetail = ({ productSku }) => {
         {/* <TheStories /> */}
         <PurposeAndTrust />
         <motion.div
-          initial={{ opacity: 0, y: 300 }}
+          initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="w-full"

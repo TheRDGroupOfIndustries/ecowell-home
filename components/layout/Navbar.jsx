@@ -297,7 +297,7 @@ const Navbar = ({ companyName }) => {
                         <Link
                           key={index}
                           href={link.herf}
-                          className={`hover:text-gray-700 text-lg text-bold text-black ease-in-out duration-300`}
+                          className={`hover:text-gray-700  text-xl text-bold text-black ease-in-out tracking-wider  duration-300`}
                         >
                           {link.head}
                         </Link>
@@ -306,9 +306,9 @@ const Navbar = ({ companyName }) => {
                       { session && session?.user && <Button
                         onClick={() => handleUserIconClick()}
                         variant="outline"
-                        className="w-full justify-center gap-2 "
+                        className="w-full justify-center gap-2 font-medium  "
                       >
-                        <CiUser size={20} color="black" />
+                        <CiUser size={30} color="black" className="size-[30px]" />
                         User
                       </Button>}
                       { session && session?.user && <Button
@@ -318,9 +318,9 @@ const Navbar = ({ companyName }) => {
                             : router.push("/auth/sign-in")
                         }
                         variant="outline"
-                        className="w-full justify-center gap-2 "
+                        className="w-full justify-center gap-2 font-medium  "
                       >
-                        <CiHeart size={20} color="black" />
+                        <CiHeart size={30} color="black" className="size-[30px]" />
                         Wishlist
                       </Button>}
 
