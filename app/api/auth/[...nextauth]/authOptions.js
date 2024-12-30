@@ -143,26 +143,27 @@ export const authOptions = {
           console.log("Query:", query);
 
           if (query) {
+            await connectToMongoDB();
             const userFromDB = await User.findOne(query).lean(); // Lean for better performance
-            console.log("user", { userFromDB }, token);
+            console.log("user", userFromDB, "\ntoken: ", token);
 
             if (userFromDB) {
               session.user = userFromDB || {
-                id: userFromDB._id.toString(),
-                email: userFromDB.email,
-                phone_number: userFromDB.phone_number,
-                first_name: userFromDB.first_name,
-                last_name: userFromDB.last_name,
-                profile_image: userFromDB.profile_image,
+                id: userFromDB?._id.toString(),
+                email: userFromDB?.email,
+                phone_number: userFromDB?.phone_number,
+                first_name: userFromDB?.first_name,
+                last_name: userFromDB?.last_name,
+                profile_image: userFromDB?.profile_image,
               };
             } else {
-              session.user = token.user || {
-                id: token.user.id,
-                email: token.user.email,
-                phone_number: token.user.phone_number,
-                first_name: token.user.first_name,
-                last_name: token.user.last_name,
-                profile_image: token.user.profile_image,
+              session.user = token?.user || {
+                id: token?.user?.id,
+                email: token?.user?.email,
+                phone_number: token?.user?.phone_number,
+                first_name: token?.user?.first_name,
+                last_name: token?.user?.last_name,
+                profile_image: token?.user?.profile_image,
               };
             }
           }
