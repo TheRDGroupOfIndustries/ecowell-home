@@ -1,9 +1,9 @@
 'use client'
-import { useEffect, useState } from 'react';
-import ProductCardVertical from '@/components/ui/productCardVertical';
-import { fadeIn } from '@/lib/utils';
-import { motion } from "framer-motion";
 import ProductCardSkeleton from '@/components/ui/productCardSkeleton';
+import ProductCardVertical from '@/components/ui/productCardVertical';
+import { fadeIn, staggerContainer } from '@/lib/utils';
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from 'react';
 
 export default function RelatedProduct({ category }) {
     const [relatedProducts, setRelatedProducts] = useState([]);
@@ -34,8 +34,15 @@ export default function RelatedProduct({ category }) {
     }
 
     return (
-        <section className="max-w-5xl mx-auto p-2 sm:p-4 md:p-6">
-            <h2 className="text-2xl text-center font-bold mb-6">Related Products</h2>
+        <motion.section
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: false, amount: 0.25 }}
+            className="max-w-5xl mx-auto p-2 sm:p-4 md:p-6">
+            <motion.h2 
+            variants={fadeIn("up", 0.2, 1)}
+            className="text-2xl text-center font-bold mb-6">Related Products</motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 {loading ? (
                     <>
@@ -55,6 +62,6 @@ export default function RelatedProduct({ category }) {
                     ))
                 )}
             </div>
-        </section>
+        </motion.section>
     )
 }

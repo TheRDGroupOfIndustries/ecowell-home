@@ -1,7 +1,8 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import { motion } from 'framer-motion';
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import AddToCartBtn from "./components/AddToCartBtn";
@@ -46,13 +47,13 @@ const ProductDetail = ({ productSku }) => {
   useEffect(() => {
     const checkOrderHistory = async () => {
       if (!session?.user?._id || !product?._id) return;
-      
+
       try {
         const response = await fetch(`/api/order/get/${session.user._id}`);
         const data = await response.json();
-        
+
         if (response.ok) {
-          const hasOrderedProduct = data.orders?.some(order => 
+          const hasOrderedProduct = data.orders?.some(order =>
             order.products.some(p => p.product_id._id === product._id)
           );
           setHasOrdered(hasOrderedProduct);
@@ -89,12 +90,39 @@ const ProductDetail = ({ productSku }) => {
         <FrequentlyBoughtTogether />
         <RelatedProduct category={product.category.title} />
         <ProductDiscover />
-        <Ingredient/>
-        <Image src={"/banner3.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
-        <Image src={"/banner2.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
+        <Ingredient />
+        <motion.div
+          initial={{ opacity: 0, y: 300 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="w-full"
+        >
+          <Image src={"/banner3.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 300 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="w-full"
+        >
+          <Image src={"/banner2.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
+        </motion.div>
         {/* <TheStories /> */}
         <PurposeAndTrust />
-        <Image src={"/banner1.png"} alt="Banner" width={1000} height={540} className='w-full ' />
+        <motion.div
+          initial={{ opacity: 0, y: 300 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="w-full"
+        >
+          <Image
+            src={"/banner1.png"}
+            alt="Banner"
+            width={1000}
+            height={540}
+            className="w-full"
+          />
+        </motion.div>
         <FrequentlyAskedQuestions faqs={product.faqs} />
         {hasOrdered && <WriteReview productId={product._id} />}
         <CustomerReviews productId={product._id} />
@@ -148,8 +176,8 @@ export const ImageGallery = ({ images }) => {
                   width={200}
                   height={200}
                   className={`w-full h-auto cursor-pointer transition-all mb-2 ${activeImage === image
-                      ? "border-2 border-primary-clr shadow-xl"
-                      : ""
+                    ? "border-2 border-primary-clr shadow-xl"
+                    : ""
                     }`}
                   onClick={() => setActiveImage(image)}
                   style={{ transform: `translateY(-${scrollPosition * 100}%)` }}
@@ -170,9 +198,8 @@ export const ImageGallery = ({ images }) => {
                 src={image}
                 alt={`Active product image ${index + 1}`}
                 fill
-                className={`w-full h-full object-contain absolute top-0 left-0 transition-opacity duration-500 ease-in-out ${
-                  activeImage === image ? "opacity-100" : "opacity-0"
-                }`}
+                className={`w-full h-full object-contain absolute top-0 left-0 transition-opacity duration-500 ease-in-out ${activeImage === image ? "opacity-100" : "opacity-0"
+                  }`}
               />
             ))}
           </div>
@@ -270,8 +297,8 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
             <div
               key={index}
               className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer ${selectedVariant.flavor === variant.flavor
-                  ? "bg-primary-clr text-white"
-                  : ""
+                ? "bg-primary-clr text-white"
+                : ""
                 }`}
               onClick={() => handleVariantChange(variant)}
             >
@@ -309,7 +336,7 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
             {product.benefits.map((benefit, index) => (
               <div
                 key={index}
-                className="flex-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 overflow-hidden line-clamp-2"
+                className="flex-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 overflow-hidden line-clamp-2 "
               >
                 <Image
                   src="/assets/biceps.png"

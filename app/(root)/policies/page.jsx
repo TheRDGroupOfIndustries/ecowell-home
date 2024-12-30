@@ -1,24 +1,33 @@
+'use client'
 import React from 'react';
+import { motion } from "framer-motion";
+import { fadeIn, staggerContainer } from '@/lib/utils';
 
 const IconShield = ({ className = "w-6 h-6" }) => (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-    </svg>
-  );
-  
-  export const IconLock = ({ className = "w-6 h-6" }) => (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-    </svg>
-  );
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+  </svg>
+);
+
+export const IconLock = ({ className = "w-6 h-6" }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+  </svg>
+);
 
 const PrivacyPolicy = () => {
   return (
-    <div className="min-h-screen bg-[#fdf4f0] p-8 ">
+    <motion.div 
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: false, amount: 0.25 }}
+      className="min-h-screen bg-[#fdf4f0] p-8"
+    >
       <div className="max-w-3xl mt-28 mx-auto">
-        <div className="mb-2 text-[#b47d56]">Privacy Policy</div>
+        <motion.div variants={fadeIn("up", 0.2)} className="mb-2 text-[#b47d56]">Privacy Policy</motion.div>
         
-        <div className="flex justify-between items-center mb-6">
+        <motion.div variants={fadeIn("up", 0.3)} className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-[#d4a373]">PRIVACY POLICY OF ECOWELL</h1>
           <button className="text-[#d4a373] hover:underline flex items-center gap-2">
             <span>Copy link</span>
@@ -26,21 +35,21 @@ const PrivacyPolicy = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
           </button>
-        </div>
+        </motion.div>
 
-        <div className="bg-[#fff5eb] border border-[#d4a373] rounded-lg p-4 mb-8">
+        <motion.div variants={fadeIn("up", 0.4)} className="bg-[#fff5eb] border border-[#d4a373] rounded-lg p-4 mb-8">
           <p className="text-[#b47d56]">Effective Date: January 1, 2025</p>
-        </div>
+        </motion.div>
 
         <div className="space-y-8">
-          <div>
+          <motion.div variants={fadeIn("up", 0.5)}>
             <p className="mb-4">Welcome to Ecowell!</p>
             <p className="text-gray-700">
               At Ecowell, we respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.
             </p>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div variants={fadeIn("up", 0.6)}>
             <h2 className="flex items-center gap-2 text-xl font-semibold text-[#d4a373] mb-4">
               <IconShield className="w-6 h-6" />
               INFORMATION WE COLLECT
@@ -55,9 +64,9 @@ const PrivacyPolicy = () => {
                 <span className="text-gray-700">Such as browser type, IP address, and pages visited on our website.</span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div variants={fadeIn("up", 0.7)}>
             <h2 className="flex items-center gap-2 text-xl font-semibold text-[#d4a373] mb-4">
               <IconLock className="w-6 h-6" />
               HOW WE USE YOUR INFORMATION
@@ -68,9 +77,9 @@ const PrivacyPolicy = () => {
               <li>Send promotional emails with your consent</li>
               <li>Improve our services and user experience</li>
             </ul>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div variants={fadeIn("up", 0.8)}>
             <h2 className="flex items-center gap-2 text-xl font-semibold text-[#d4a373] mb-4">
               <IconShield className="w-6 h-6" />
               YOUR PRIVACY RIGHTS
@@ -81,10 +90,10 @@ const PrivacyPolicy = () => {
               <li>Opt out of promotional communications</li>
               <li>Restrict the processing of your data</li>
             </ul>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

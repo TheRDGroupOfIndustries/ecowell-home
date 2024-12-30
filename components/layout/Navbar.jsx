@@ -302,7 +302,7 @@ const Navbar = ({ companyName }) => {
                           {link.head}
                         </Link>
                       ))}
-                      <div className="h-[1px] w-full bg-gray-300 "></div>
+                      { session && session?.user && <div className="h-[1px] w-full bg-gray-300 "></div>}
                       { session && session?.user && <Button
                         onClick={() => handleUserIconClick()}
                         variant="outline"
