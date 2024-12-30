@@ -46,7 +46,7 @@ function CustomerReviews({ productId }) {
   }
 
   if (!reviews || reviews.reviews.length === 0) {
-    return <div>No reviews available for this product.</div>;
+    return <div className='flex justify-center'>No reviews available for this product.</div>;
   }
 
   const totalRatings = reviews.reviews.length;

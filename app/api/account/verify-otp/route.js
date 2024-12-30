@@ -8,7 +8,7 @@ import User from "@/models/User";
 export async function POST(req) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    if (!session?.user?._id) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
@@ -21,8 +21,8 @@ export async function POST(req) {
 
     if (isOtpValid) {
       await connectToMongoDB();
-      await User.findOneAndUpdate(
-        { email: session.user.email },
+      await User.findByIdAndUpdate(
+        session.user._id,
         { $set: { is_phone_verified: true } }
       );
 
