@@ -6,11 +6,12 @@ import { X } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { LuLoaderCircle } from "react-icons/lu";
 
 export default function AddToCartBtn({ product, selectedVariant }) {
   const [quantity, setQuantity] = useState(1);
   const [showWhatsApp, setShowWhatsApp] = useState(true);
-  const { addToCart, productExistsInCart } = useCart();
+  const { addToCart, addToCartLoading, productExistsInCart } = useCart();
   const router = useRouter();
 
   const decreaseQuantity = () => {
@@ -89,9 +90,24 @@ export default function AddToCartBtn({ product, selectedVariant }) {
           onClick={handleAddToCart}
           size="sm"
           effect="shine"
+          disabled={addToCartLoading}
+          title={
+            productExistsInCart(product._id)
+              ? "Go to Cart"
+              : addToCartLoading
+              ? "Adding to cart"
+              : "Click to add in cart"
+          }
           className="rounded-none w-[150px] md:w-[200px] bg-primary-clr text-white py-2 hover:bg-green-700 transition text-sm md:text-xl"
         >
-          {productExistsInCart(product._id) ? "Go to Cart" : "Add To Cart"}
+          {productExistsInCart(product._id) ? (
+            "Go to Cart"
+          ) : (
+            <span className="flex-center gap-2">
+              Add To Cart{" "}
+              {addToCartLoading && <LuLoaderCircle className="animate-spin" />}
+            </span>
+          )}
         </Button>
       </div>
     </div>

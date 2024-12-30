@@ -39,9 +39,10 @@ import {
 } from "@/components/ui/sheet";
 import ReactCountUp from "@/components/ui/countUp";
 import Notification from "./Notification";
-import { ImageIcon, List, LogOut, X } from "lucide-react";
+import { ImageIcon, List, LogOut } from "lucide-react";
 import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import { RxCross1 } from "react-icons/rx";
+import { LuLoaderCircle } from "react-icons/lu";
 
 const Navbar = ({ companyName }) => {
   const { data: session } = useSession();
@@ -175,49 +176,56 @@ const Navbar = ({ companyName }) => {
                   </NavigationMenuTrigger>
 
                   <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 md:w-[400px] h-[250px] max-h-[280px] overflow-x-hidden overflow-y-scroll">
-                      {cartItems &&
-                        Array.isArray(cartItems) &&
-                        cartItems.length > 0 &&
-                        cartItems.map((item, index) => (
-                          <HoverCartProductCard
-                            key={index}
-                            productDetails={item}
-                          />
-                        ))}
-                    </div>
-                    <hr />
-                    <div className="space-y-2 p-4">
-                      <div className="flex-between gap-4 font-semibold">
-                        <span>Sub Total: </span>
-                        <ReactCountUp
-                          amt={totalPrice}
-                          prefix="₹"
-                          className="text-xl text-primary-clr"
-                        />
-                      </div>
+                    {cartItems &&
+                    Array.isArray(cartItems) &&
+                    cartItems.length > 0 ? (
+                      <div className="md:w-[400px] h-fit">
+                        <div className="grid gap-3 p-4 h-fit max-h-[280px] w-full overflow-x-hidden overflow-y-scroll">
+                          {cartItems.map((item, index) => (
+                            <HoverCartProductCard
+                              key={index}
+                              productDetails={item}
+                            />
+                          ))}
+                        </div>
+                        <hr />
+                        <div className="space-y-2 p-4">
+                          <div className="flex-between gap-4 font-semibold">
+                            <span>Sub Total: </span>
+                            <ReactCountUp
+                              amt={totalPrice}
+                              prefix="₹"
+                              className="text-xl text-primary-clr"
+                            />
+                          </div>
 
-                      <div className="flex-between gap-4 border-t pt-4">
-                        <Link href="/account/cart">
-                          <Button
-                            size="sm"
-                            effect="gooeyLeft"
-                            className="bg-primary-clr text-white py-2 rounded-md hover:bg-green-700 transition"
-                          >
-                            View in Cart
-                          </Button>
-                        </Link>
-                        <Link href="/account/cart/checkout">
-                          <Button
-                            size="sm"
-                            effect="gooeyRight"
-                            className="bg-primary-clr text-white py-2 rounded-md hover:bg-green-700 transition"
-                          >
-                            CHECK OUT
-                          </Button>
-                        </Link>
+                          <div className="flex-between gap-4 border-t pt-4">
+                            <Link href="/account/cart">
+                              <Button
+                                size="sm"
+                                effect="gooeyLeft"
+                                className="bg-primary-clr text-white py-2 rounded-md hover:bg-green-700 transition"
+                              >
+                                View in Cart
+                              </Button>
+                            </Link>
+                            <Link href="/account/cart/checkout">
+                              <Button
+                                size="sm"
+                                effect="gooeyRight"
+                                className="bg-primary-clr text-white py-2 rounded-md hover:bg-green-700 transition"
+                              >
+                                CHECK OUT
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="md:w-[250px] h-fit p-2">
+                        No items added into the cart!
+                      </div>
+                    )}
                   </NavigationMenuContent>
                 </NavigationMenuItem>
               )}
@@ -481,9 +489,9 @@ export function Search({
 }
 
 const HoverCartProductCard = ({ productDetails }) => {
-  const { removeCartItem } = useCart();
+  const { removeCartItem, removeFromCartLoading } = useCart();
   return (
-    <div className="w-full h-fit">
+    <div className="relative w-full h-fit">
       <Link
         href={`/prodcuts/${productDetails?.productId?.sku}`}
         className="w-full"
@@ -510,32 +518,34 @@ const HoverCartProductCard = ({ productDetails }) => {
               {/* <p className="text-base">chosedVariant</p> */}
             </div>
 
-            <div className="w-fit flex flex-col gap-1">
-              <h5 className="text-base font-semibold">Price</h5>
-              <div className="flex flex-row gap-4 w-full items-center">
-                <p className="flex-center gap-1">
-                  <ReactCountUp
-                    amt={
-                      productDetails?.productId?.salePrice ||
-                      productDetails?.productId?.price
-                    }
-                    prefix="₹"
-                  />
-                  X
-                  <ReactCountUp amt={productDetails?.quantity} />
-                </p>
-              </div>
-            </div>
+            <p className="flex justify-end gap-1">
+              <ReactCountUp
+                amt={
+                  productDetails?.productId?.salePrice ||
+                  productDetails?.productId?.price
+                }
+                prefix="₹"
+              />
+              X
+              <ReactCountUp amt={productDetails?.quantity} />
+            </p>
           </div>
-
-          <RxCross1
-            onClick={() => removeCartItem(productDetails?.productId?._id)}
-            title="Remove from cart"
-            size={15}
-            className="cursor-pointer hover:text-[red] mt-1.5 -mr-1.5 ease-in-out duration-500"
-          />
         </div>
       </Link>
+      <div className="absolute top-1.5 right-1.5 z-10 cursor-pointer hover:text-[red] ease-in-out duration-500">
+        {removeFromCartLoading ? (
+          <LuLoaderCircle title="Please wait" className="animate-spin" />
+        ) : (
+          <RxCross1
+            onClick={(e) => {
+              e.preventDefault();
+              removeCartItem(productDetails?.productId?._id);
+            }}
+            title="Remove from cart"
+            size={15}
+          />
+        )}
+      </div>
     </div>
   );
 };

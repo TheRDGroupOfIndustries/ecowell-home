@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { RxCross1 } from "react-icons/rx";
 import { TfiMinus, TfiPlus } from "react-icons/tfi";
+import { LuLoaderCircle } from "react-icons/lu";
 
 const Cart = () => {
   const { cartItems, totalPrice } = useCart();
@@ -71,7 +72,13 @@ const Cart = () => {
 export default Cart;
 
 const CartTable = () => {
-  const { cartItems, removeCartItem, updateCartItem } = useCart();
+  const {
+    cartItems,
+    removeCartItem,
+    updateCartItem,
+    removeFromCartLoading,
+    updateCartLoading,
+  } = useCart();
   const handleQuantityChange = (itemId, action) => {
     updateCartItem(itemId, action, 1);
   };
@@ -126,8 +133,16 @@ const CartTable = () => {
                     onClick={() =>
                       handleQuantityChange(item?._id, "decrement-quantity")
                     }
+                    disabled={updateCartLoading}
+                    title={
+                      updateCartLoading ? "Please wait" : "remove quantity"
+                    }
                   >
-                    <TfiMinus />
+                    {updateCartLoading ? (
+                      <LuLoaderCircle className="animate-spin" />
+                    ) : (
+                      <TfiMinus />
+                    )}
                   </Button>
                   <span className="mx-2 w-10 text-center">
                     {item?.quantity}
@@ -138,17 +153,40 @@ const CartTable = () => {
                     onClick={() =>
                       handleQuantityChange(item?._id, "increment-quantity")
                     }
+                    disabled={updateCartLoading}
+                    title={
+                      updateCartLoading ? "Please wait" : "add more quantity"
+                    }
                   >
-                    <TfiPlus />
+                    {updateCartLoading ? (
+                      <LuLoaderCircle className="animate-spin" />
+                    ) : (
+                      <TfiPlus />
+                    )}
                   </Button>
                 </div>
               </td>
               <td className="py-4 px-6 text-center">
-                <RxCross1
+                <Button
+                  variant="outline"
+                  className="border-gray-400 text-gray-600"
                   onClick={() => removeCartItem(item?._id)}
-                  title="Remove from cart"
-                  className="text-red-600 cursor-pointer"
-                />
+                  disabled={removeFromCartLoading}
+                  title={
+                    removeFromCartLoading
+                      ? "Please wait"
+                      : "Remove item from cart"
+                  }
+                >
+                  {removeFromCartLoading ? (
+                    <LuLoaderCircle className="animate-spin" />
+                  ) : (
+                    <RxCross1
+                      title="Remove from cart"
+                      className="text-red-600 cursor-pointer"
+                    />
+                  )}
+                </Button>
               </td>
               <td className="py-4 px-6">
                 <ReactCountUp

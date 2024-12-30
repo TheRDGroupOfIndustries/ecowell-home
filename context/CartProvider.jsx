@@ -25,6 +25,9 @@ export const CartProvider = ({ children }) => {
 
   const [userOrderList, setUserOrderList] = useState([]);
   const [placingOrder, setPlacingOrder] = useState(false);
+  const [addToCartLoading, setAddToCartLoading] = useState(false);
+  const [removeFromCartLoading, setRemoveFromCartLoading] = useState(false);
+  const [updateCartLoading, setUpdateCartLoading] = useState(false);
 
   const fetchCart = useCallback(async () => {
     if (!userId) return;
@@ -55,6 +58,8 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
+      setAddToCartLoading(true);
+
       const selectedVariant = {
         flavor: variant.flavor,
         image_link: variant.images[0],
@@ -96,6 +101,53 @@ export const CartProvider = ({ children }) => {
     } catch (error) {
       console.log("error:", error);
       toast.error("Something went wrong, please try again later.");
+    } finally {
+      setAddToCartLoading(false);
+    }
+  };
+
+  const removeCartItem = async (cartItemId) => {
+    // console.log("add to cart variant", cartItemId);
+    if (!userId) {
+      router.push("/auth/sign-in");
+      return;
+    }
+
+    setRemoveFromCartLoading(true);
+    try {
+      const response = await fetch("/api/products/cart/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, cartItemId }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        if (data.status === 400) {
+          return toast.error(
+            data?.error ||
+              "Failed to remove product from the cart, please try again."
+          );
+        }
+        setCartItems(data?.updatedCart?.items || []);
+        setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
+        setTotalPrice(data?.updatedCart?.totalPrice || 0);
+
+        // console.log("cartTotal: ", data?.updatedCart?.items || []);
+        toast.success(data?.message || "Removed Product from your cart!");
+      } else {
+        // Handle error response
+        toast.error(
+          data?.error ||
+            "Failed to remove product from the cart, please try again."
+        );
+      }
+    } catch (error) {
+      console.log("error:", error);
+      toast.error("Something went wrong, please try again later.");
+    } finally {
+      setRemoveFromCartLoading(false);
     }
   };
 
@@ -107,6 +159,7 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
+      setUpdateCartLoading(true);
       const selectedVariant = {
         flavor: variant?.flavor,
         image_link: variant?.images[0],
@@ -155,48 +208,8 @@ export const CartProvider = ({ children }) => {
     } catch (error) {
       console.log("error:", error);
       toast.error("Something went wrong, please try again later.");
-    }
-  };
-
-  const removeCartItem = async (cartItemId) => {
-    // console.log("add to cart variant", cartItemId);
-    if (!userId) {
-      router.push("/auth/sign-in");
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/products/cart/delete", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, cartItemId }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        if (data.status === 400) {
-          return toast.error(
-            data?.error ||
-              "Failed to remove product from the cart, please try again."
-          );
-        }
-        setCartItems(data?.updatedCart?.items || []);
-        setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
-        setTotalPrice(data?.updatedCart?.totalPrice || 0);
-
-        // console.log("cartTotal: ", data?.updatedCart?.items || []);
-        toast.success(data?.message || "Removed Product from your cart!");
-      } else {
-        // Handle error response
-        toast.error(
-          data?.error ||
-            "Failed to remove product from the cart, please try again."
-        );
-      }
-    } catch (error) {
-      console.log("error:", error);
-      toast.error("Something went wrong, please try again later.");
+    } finally {
+      setUpdateCartLoading(false);
     }
   };
 
@@ -292,8 +305,11 @@ export const CartProvider = ({ children }) => {
         totalPrice,
         addToCart,
         removeCartItem,
-        productExistsInCart,
         updateCartItem,
+        addToCartLoading,
+        removeFromCartLoading,
+        updateCartLoading,
+        productExistsInCart,
 
         placeOrder,
         placingOrder,

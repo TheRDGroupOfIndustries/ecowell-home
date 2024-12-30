@@ -7,6 +7,7 @@ import { Button } from "./button";
 import { Dialog, DialogContent, DialogTrigger } from "./dialog";
 import ReactCountUp from "./countUp";
 import Link from "next/link";
+import { LuLoaderCircle } from "react-icons/lu";
 
 export default function AddToCartmodel({ loading, product }) {
   //   console.log("product", product);
@@ -65,7 +66,7 @@ const Modal = ({ product }) => {
   //   console.log("variantCheck", variantCheck);
 
   const [quantity, setQuantity] = useState(1);
-  const { addToCart } = useCart();
+  const { addToCart, addToCartLoading } = useCart();
 
   const decreaseQuantity = () => {
     setQuantity((prev) => Math.max(1, prev - 1));
@@ -194,11 +195,18 @@ const Modal = ({ product }) => {
                   e.preventDefault();
                   addToCart(product, quantity, product.variants[0]);
                 }}
+                disabled={addToCartLoading}
+                title={
+                  addToCartLoading ? "Adding to cart" : "Click to add in cart"
+                }
                 size="sm"
                 effect="shine"
                 className="rounded-none w-[200px] bg-primary-clr text-white py-2  hover:bg-green-700 transition"
               >
-                Add To Cart
+                Add To Cart{" "}
+                {addToCartLoading && (
+                  <LuLoaderCircle className="animate-spin" />
+                )}
               </Button>
               <Link href={`/product/${product?.sku}`}>
                 <Button
