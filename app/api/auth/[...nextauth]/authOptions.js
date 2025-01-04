@@ -142,14 +142,22 @@ export const authOptions = {
 
         // if (query) {
         await connectToMongoDB();
-        const userFromDB = await User.findOne(query).lean(); // Lean for better performance
+        let userFromDB;
+
+        const fetch = async () => {
+          userFromDB = await User.findOne(query); //.lean(); // Lean for better performance
+        };
         console.log("\nuser", userFromDB, "\ntoken: ", token);
 
-        if (userFromDB) {
-          session.user = userFromDB;
-        } else {
-          session.user = token?.user;
+        if (!userFromDB) {
+          log.error("User not found in the database");
+          fetch();
         }
+
+        session.user = userFromDB;
+        // } else {
+        //   session.user = token?.user;
+        // }
         // }
       }
       return session;
