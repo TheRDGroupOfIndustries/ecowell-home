@@ -131,12 +131,18 @@ export const authOptions = {
       const { email, phone_number } = token.user;
       const query = email ? { email } : { phone_number };
 
-      const userFromDB = await User.findOne(query); // .lean();
+      const userFromDB = await User.findOne(query).select("-password"); // .lean();
 
-      // if (userFromDB)
-      session.user = userFromDB;
-      // else session.user = token.user;
-      // }
+      if (userFromDB) session.user = userFromDB;
+      else session.user = token.user;
+
+      // console.log(
+      //   "\nRetrieved User from DB:",
+      //   userFromDB,
+      //   "\nSession:",
+      //   session
+      // );
+
       return session;
     },
 
@@ -254,6 +260,9 @@ export const authOptions = {
     //   return session;
     // },
   },
+  // session: {
+  //   strategy: "jwt",
+  // },
   pages: {
     signIn: "/auth/sign-in",
   },

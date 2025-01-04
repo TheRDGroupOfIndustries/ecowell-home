@@ -1,24 +1,38 @@
 "use client";
 
-import { SessionProvider } from "next-auth/react";
+import { getSession, SessionProvider } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-const AuthProvider = ({ children, session }) => {
-  const [updSession, setUpdSession] = useState(session);
+const AuthProvider = ({ children, session: initialSession }) => {
+  const [currentSession, setCurrentSession] = useState(initialSession);
+
   useEffect(() => {
-    console.log("\nSession:", session);
+    let intervalId;
 
-    setUpdSession(session);
-    if (session?.user?._id) {
-      console.log("\nsession?.user?._id:", session?.user?._id);
+    const checkSession = async () => {
+      if (!currentSession?.user?._id) {
+        const updatedSession = await getSession();
+        if (updatedSession?.user?._id) {
+          setCurrentSession(updatedSession);
+          clearInterval(intervalId); // stoping the interval once the session is updated
+        }
+      }
+    };
 
-      () => {
-        setUpdSession(session);
-      };
-    }
-  }, [session]);
+    intervalId = setInterval(() => {
+      checkSession();
+    }, 1000);
 
-  return <SessionProvider session={updSession}>{children}</SessionProvider>;
+    return () => clearInterval(intervalId);
+  }, [currentSession]);
+
+  // console.log("Current Session:", currentSession);
+
+  return (
+    <SessionProvider session={currentSession?.user?._id && currentSession}>
+      {children}
+    </SessionProvider>
+  );
 };
 
 export default AuthProvider;

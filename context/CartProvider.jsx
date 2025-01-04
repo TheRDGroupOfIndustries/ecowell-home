@@ -14,9 +14,8 @@ import { toast } from "sonner";
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const { data: session } = useSession(); // console.log("session", session);
-
   const router = useRouter();
+  const { data: session } = useSession(); //console.log("Cart: session", session);
   const userId = session?.user?._id;
 
   const [cartItems, setCartItems] = useState([]);
@@ -87,9 +86,10 @@ export const CartProvider = ({ children }) => {
         // console.log("cartTotal: ", data?.updatedCart, data?.updatedCart?.items);
 
         if (data.status === 200) {
-          setCartItems(data?.updatedCart?.items || []);
-          setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
-          setTotalPrice(data?.updatedCart?.totalPrice || 0);
+          fetchCart();
+          // setCartItems(data?.updatedCart?.items || []);
+          // setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
+          // setTotalPrice(data?.updatedCart?.totalPrice || 0);
 
           toast.success("Product added to cart Successfully!");
           return;
@@ -130,9 +130,10 @@ export const CartProvider = ({ children }) => {
               "Failed to remove product from the cart, please try again."
           );
         }
-        setCartItems(data?.updatedCart?.items || []);
-        setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
-        setTotalPrice(data?.updatedCart?.totalPrice || 0);
+        // setCartItems(data?.updatedCart?.items || []);
+        // setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
+        // setTotalPrice(data?.updatedCart?.totalPrice || 0);
+        fetchCart();
 
         // console.log("cartTotal: ", data?.updatedCart?.items || []);
         toast.success(data?.message || "Removed Product from your cart!");
@@ -194,9 +195,10 @@ export const CartProvider = ({ children }) => {
               "Failed to update product quantity, please try again."
           );
         }
-        setCartItems(data?.updatedCart?.items || []);
-        setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
-        setTotalPrice(data?.updatedCart?.totalPrice || 0);
+        // setCartItems(data?.updatedCart?.items || []);
+        // setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
+        // setTotalPrice(data?.updatedCart?.totalPrice || 0);
+        fetchCart();
 
         toast.success(data?.message || "Product quantity updated!");
       } else {
@@ -220,8 +222,8 @@ export const CartProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+    if (!cartItems.length) fetchCart();
+  }, [cartItems, fetchCart]);
 
   const placeOrder = async (order_info, products) => {
     // console.log("order_info", products);
@@ -247,6 +249,7 @@ export const CartProvider = ({ children }) => {
 
       if (orderResult.status === 200) {
         setUserOrderList(orderResult?.updatedOrders || []);
+        fetchCart();
         router.push(
           `/account/orders/order-success?orderId=${orderResult?.orderId}`
         );

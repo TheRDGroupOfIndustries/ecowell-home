@@ -27,7 +27,7 @@ const Hero = () => {
           <div className="w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 text-center flex flex-col items-center gap-4">
             <motion.h1
               variants={fadeIn("up", 0.3)}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl sm:font-extralight  text-white"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl sm:font-extralight text-white"
             >
               Redefining Wellness, One Scoop at a Time
             </motion.h1>
@@ -36,7 +36,8 @@ const Hero = () => {
                 onClick={handleShopNowBtn}
                 id="hero"
                 variant="outline"
-                className="btn-hover-fill text-white px-4 sm:px-6 md:px-8 lg:px-10 py-2 sm:py-3"
+                effect="shine"
+                className="btn-hover-fil rounded-full bg-white/30 backdrop-blur-md text-white font-semibold mt-2 px-4 sm:px-6 md:px-8 lg:px-10 py-2 sm:py-3"
               >
                 Shop Now
               </Button>

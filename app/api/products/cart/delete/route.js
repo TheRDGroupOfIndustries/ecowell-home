@@ -47,10 +47,13 @@ export async function DELETE(request) {
 
     await cart.save();
 
-    const updatedCart = await Cart.findOne({ userId }).populate({
-      path: "items.productId",
-      select: "_id title sku salePrice price variants",
-    });
+    const updatedCart = await Cart.findOne({ userId })
+      .populate({
+        path: "items.productId",
+        select: "_id title sku salePrice price variants",
+      })
+      .sort({ ["createdAt"]: "desc" })
+      .lean();
 
     // console.log(updatedCart);
 

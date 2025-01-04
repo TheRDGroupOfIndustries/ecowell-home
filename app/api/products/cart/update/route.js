@@ -33,6 +33,12 @@ export async function PUT(request) {
     // performing the requested action
     switch (action) {
       case "increment-quantity":
+        if (cartItem.quantity >= cartItem.variant.stock) {
+          return NextResponse.json({
+            error: `Cannot add more items. Only ${cartItem.variant.stock} units available in stock.`,
+            status: 400,
+          });
+        }
         cartItem.quantity += 1;
         message = `Quantity for "${cartItem.variant.flavor}" incremented successfully.`;
         break;
@@ -82,10 +88,13 @@ export async function PUT(request) {
     cart.totalPrice = totals.totalPrice;
 
     await cart.save();
-    const updatedCart = await Cart.findOne({ userId }).populate({
-      path: "items.productId",
-      select: "_id title sku salePrice price variants",
-    });
+    const updatedCart = await Cart.findOne({ userId })
+      .populate({
+        path: "items.productId",
+        select: "_id title sku salePrice price variants",
+      })
+      .sort({ ["createdAt"]: "desc" })
+      .lean();
 
     return NextResponse.json({
       status: 200,
