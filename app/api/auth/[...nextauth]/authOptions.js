@@ -121,6 +121,50 @@ export const authOptions = {
         }
       }
     },
+    async session({ session, token }) {
+      try {
+        // if (token?.user) {
+        // let tokenState = false;
+        // setTimeout(() => {
+        //   tokenState = true;
+        // }, 3000);
+
+        // if (tokenState) {
+
+        const { email, phone_number } = token.user;
+
+        const query = email
+          ? { email }
+          : phone_number
+          ? { phone_number }
+          : null;
+
+        if (!query) {
+          throw new Error("Invalid token: missing email or phone_number.");
+        }
+
+        // Ensure the database connection is active
+        await connectToMongoDB();
+
+        // Fetch the user from the database
+        const userFromDB = await User.findOne(query); //.select("_id"); //.lean(); // Use lean() for better performance
+
+        if (!userFromDB) {
+          throw new Error("User not found in the database.");
+        }
+
+        console.log("\nRetrieved User from DB:", userFromDB);
+
+        session.user = userFromDB;
+        return session;
+        // }
+      } catch (error) {
+        console.error("Error updating session user:", error.message);
+        session.user = null; // Set session.user to null on error
+        return session;
+      }
+      // return session;
+    },
     async jwt({ token, user }) {
       if (user) token.user = user;
       return token;
@@ -173,50 +217,6 @@ export const authOptions = {
     //   }
     //   return session; // Return the unchanged session if no token.user
     // },
-
-    async session({ session, token }) {
-      try {
-        // if (token?.user) {
-        let tokenState = false;
-        setTimeout(() => {
-          tokenState = true;
-        }, 3000);
-
-        if (tokenState) {
-          const { email, phone_number } = token.user;
-
-          const query = email
-            ? { email }
-            : phone_number
-            ? { phone_number }
-            : null;
-
-          if (!query) {
-            throw new Error("Invalid token: missing email or phone_number.");
-          }
-
-          // Ensure the database connection is active
-          await connectToMongoDB();
-
-          // Fetch the user from the database
-          const userFromDB = await User.findOne(query); //.select("_id"); //.lean(); // Use lean() for better performance
-
-          if (!userFromDB) {
-            throw new Error("User not found in the database.");
-          }
-
-          console.log("\nRetrieved User from DB:", userFromDB);
-
-          session.user = userFromDB;
-          return session;
-        }
-      } catch (error) {
-        console.error("Error updating session user:", error.message);
-        session.user = null; // Set session.user to null on error
-        return session;
-      }
-      // return session;
-    },
 
     // async session({ session, token }) {
     //   if (token?.user) {
