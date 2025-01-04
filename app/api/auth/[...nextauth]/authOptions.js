@@ -18,8 +18,8 @@ export const authOptions = {
         otp: { label: "OTP", type: "text" },
       },
       async authorize(credentials) {
-        await connectToMongoDB();
         try {
+          await connectToMongoDB();
           // console.log("Credentials received:", credentials);
 
           if (credentials.phone_number !== "") {
@@ -94,12 +94,11 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ user, account }) {
-      await connectToMongoDB();
-
       if (account?.provider === "credentials") return true;
 
       if (account?.provider === "google") {
         try {
+          await connectToMongoDB();
           const userExists = await User.findOne({ email: user?.email });
 
           if (!userExists) {
@@ -129,50 +128,49 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-      try {
-        await connectToMongoDB();
-        if (token?.user) {
-          const { email, phone_number } = token.user;
+      // try {
+      if (token?.user) {
+        const { email, phone_number } = token.user;
 
-          const query = email
-            ? { email }
-            : phone_number
-            ? { phone_number }
-            : null;
+        const query = email
+          ? { email }
+          : phone_number
+          ? { phone_number }
+          : null;
 
-          console.log("Query:", query);
+        console.log("Query:", query);
 
-          if (query) {
-            await connectToMongoDB();
-            const userFromDB = await User.findOne(query).lean(); // Lean for better performance
-            console.log("user", userFromDB, "\ntoken: ", token);
+        if (query) {
+          await connectToMongoDB();
+          const userFromDB = await User.findOne(query).lean(); // Lean for better performance
+          console.log("user", userFromDB, "\ntoken: ", token);
 
-            if (userFromDB) {
-              session.user = userFromDB || {
-                id: userFromDB?._id.toString(),
-                email: userFromDB?.email,
-                phone_number: userFromDB?.phone_number,
-                first_name: userFromDB?.first_name,
-                last_name: userFromDB?.last_name,
-                profile_image: userFromDB?.profile_image,
-              };
-            } else {
-              session.user = token?.user || {
-                id: token?.user?.id,
-                email: token?.user?.email,
-                phone_number: token?.user?.phone_number,
-                first_name: token?.user?.first_name,
-                last_name: token?.user?.last_name,
-                profile_image: token?.user?.profile_image,
-              };
-            }
+          if (userFromDB) {
+            session.user = userFromDB; //|| {
+            //   id: userFromDB?._id.toString(),
+            //   email: userFromDB?.email,
+            //   phone_number: userFromDB?.phone_number,
+            //   first_name: userFromDB?.first_name,
+            //   last_name: userFromDB?.last_name,
+            //   profile_image: userFromDB?.profile_image,
+            // };
+          } else {
+            session.user = token?.user; //|| {
+            //   id: token?.user?.id,
+            //   email: token?.user?.email,
+            //   phone_number: token?.user?.phone_number,
+            //   first_name: token?.user?.first_name,
+            //   last_name: token?.user?.last_name,
+            //   profile_image: token?.user?.profile_image,
+            // };
           }
         }
-        return session;
-      } catch (error) {
-        console.error("Error in session callback:", error.message);
-        return session;
       }
+      return session;
+      // } catch (error) {
+      //   console.error("Error in session callback:", error.message);
+      //   return session;
+      // }
     },
 
     // async session({ session, token }) {
