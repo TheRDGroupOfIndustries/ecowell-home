@@ -122,81 +122,64 @@ export const authOptions = {
       }
     },
     async jwt({ token, user }) {
-      if (typeof user !== "undefined") {
-        token.user = user;
-      }
+      if (user) token.user = user;
       return token;
     },
     async session({ session, token }) {
-      // try {
-      if (token?.user) {
-        const { email, phone_number } = token.user;
+      try {
+        if (token?.user) {
+          const { email, phone_number } = token.user;
 
-        const query = email
-          ? { email }
-          : phone_number
-          ? { phone_number }
-          : null;
+          const query = email
+            ? { email }
+            : phone_number
+            ? { phone_number }
+            : null;
 
-        console.log("\nQuery:", query);
+          if (!query) {
+            throw new Error("Invalid token: missing email or phone_number.");
+          }
 
-        // if (query) {
-        await connectToMongoDB();
-        let userFromDB;
+          // Ensure the database connection is active
+          await connectToMongoDB();
 
-        const fetch = async () => {
-          userFromDB = await User.findOne(query); //.lean(); // Lean for better performance
-        };
-        console.log("\nuser", userFromDB, "\ntoken: ", token);
+          // Fetch the user from the database
+          const userFromDB = await User.findOne(query); //.lean(); // Use lean() for better performance
 
-        if (!userFromDB) {
-          log.error("User not found in the database");
-          fetch();
+          if (!userFromDB) {
+            throw new Error("User not found in the database.");
+          }
+
+          console.log("\nRetrieved User from DB:", userFromDB);
+
+          session.user = userFromDB;
         }
-
-        session.user = userFromDB;
-        // } else {
-        //   session.user = token?.user;
-        // }
-        // }
+      } catch (error) {
+        console.error("Error updating session user:", error.message);
+        session.user = null; // Set session.user to null on error
       }
       return session;
-      // } catch (error) {
-      //   console.error("Error in session callback:", error.message);
-      //   return session;
-      // }
     },
 
     // async session({ session, token }) {
-    //   try {
+    //   if (token?.user) {
+    //     const { email, phone_number } = token.user;
+
+    //     const query = email
+    //       ? { email }
+    //       : phone_number
+    //       ? { phone_number }
+    //       : null;
+
+    //     console.log("\nQuery:", query);
+
     //     await connectToMongoDB();
-    //     if (token?.user && typeof token?.user !== undefined) {
-    //       const { email, phone_number } = token.user;
-    //       const query = email ? { email } : { phone_number };
+    //     const userFromDB = await User.findOne(query).lean(); // Lean for better performance
+    //     console.log("\nuser", userFromDB, "\ntoken: ", token);
 
-    //       const userFromDB = await User.findOne(query); // .lean();
-
-    //       if (userFromDB) session.user = userFromDB;
-    //       else session.user = token.user;
-    //     }
-    //     return session;
-    //   } catch (error) {
-    //     console.error("Session callback error:", error);
-    //     return session;
+    //     session.user = userFromDB;
     //   }
-    // },
-    // async session({ session, token }) {
-    //   await connectToMongoDB();
-
-    //   if (typeof token?.user !== "undefined") {
-    //     const userExists = await User.findOne({ email: token?.user?.email });
-    //     if (userExists) {
-    //       session.user = { authUser: token?.user, user: userExists };
-    //     } else {
-    //       session.user = { user: token?.user };
-    //     }
-    //   }
-    //   return session.user;
+    //   return session;
     // },
   },
   pages: {
