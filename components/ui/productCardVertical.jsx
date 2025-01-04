@@ -1,13 +1,19 @@
+"use client"
+
 import Image from "next/image";
 import { Button } from "./button";
 import { useCart } from "@/context/CartProvider";
 import { CiHeart } from "react-icons/ci";
 import { AiFillHeart } from "react-icons/ai";
 import { useWishlist } from "@/context/WishlistContext";
+import { useState } from "react";
 
 const ProductCardVertical = ({ product }) => {
   const { addToCart } = useCart();
   const { wishlistProducts, addToWishlist, removeFromWishlist } = useWishlist();
+
+  const [imageError, setImageError] = useState(false);
+  const [imageTwoError, setImageTwoError] = useState(false);
 
   const isInWishlist = wishlistProducts.some(item => item._id === product._id);
 
@@ -34,8 +40,15 @@ const ProductCardVertical = ({ product }) => {
       <div className="w-full h-[140px] md:h-[180px] lg:h-[210px] relative bg-gray-100 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center group-hover:opacity-0 ease-in-out duration-300 overflow-hidden">
           <Image
-            src={product.variants[0].images[0]}
+            src={
+              imageError
+                ? "/placeholder.svg"
+                : (product?.variants &&
+                    product?.variants[0]?.images[0]) ||
+                  "/placeholder.svg"
+            }
             alt={product.title}
+            onError={() => setImageError(true)}
             width={400}
             height={400}
             className="w-full h-full object-contain"
@@ -43,8 +56,17 @@ const ProductCardVertical = ({ product }) => {
         </div>
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 ease-in-out duration-300 overflow-hidden">
           <Image
-            src={product.variants[0].images[1]}
+            src={
+              imageTwoError
+                ? "/placeholder.svg"
+                : (product?.variants && product?.variants[0]?.images[1]
+                    ? product?.variants && product?.variants[0]?.images[1]
+                    : product?.variants &&
+                      product?.variants[0]?.images[0]) ||
+                  "/placeholder.svg"
+            }
             alt={product.title}
+            onError={() => setImageTwoError(true)}
             width={400}
             height={400}
             className="w-full h-full object-contain"

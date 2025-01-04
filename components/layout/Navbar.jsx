@@ -1,20 +1,7 @@
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { useCart } from "@/context/CartProvider";
-import { useWishlist } from "@/context/WishlistContext";
-import { useNotification } from "@/context/NotificationProvider";
-import { useDebounce } from "@/hooks/debounce";
-import { fadeIn, staggerContainer } from "@/lib/utils";
-import { links } from "@/constants/data";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import ReactCountUp from "@/components/ui/countUp";
 import {
   Dialog,
   DialogContent,
@@ -22,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -30,19 +18,32 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import ReactCountUp from "@/components/ui/countUp";
-import Notification from "./Notification";
+import { links } from "@/constants/data";
+import { useCart } from "@/context/CartProvider";
+import { useNotification } from "@/context/NotificationProvider";
+import { useWishlist } from "@/context/WishlistContext";
+import { useDebounce } from "@/hooks/debounce";
+import { fadeIn, staggerContainer } from "@/lib/utils";
+import { motion } from "framer-motion";
 import { ImageIcon, List, LogOut } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
-import { RxCross1 } from "react-icons/rx";
 import { LuLoaderCircle } from "react-icons/lu";
+import { RxCross1 } from "react-icons/rx";
+import Notification from "./Notification";
 
 const Navbar = ({ companyName }) => {
   const { data: session } = useSession();
@@ -117,9 +118,8 @@ const Navbar = ({ companyName }) => {
             <Link
               key={index}
               href={link.herf}
-              className={`hover:text-gray-700 text-lg text-bold ${
-                isHomeScrolled ? "text-black" : "text-white"
-              } ease-in-out duration-300`}
+              className={`hover:text-gray-700 text-lg text-bold ${isHomeScrolled ? "text-black" : "text-white"
+                } ease-in-out duration-300`}
             >
               {link.head}
             </Link>
@@ -143,9 +143,8 @@ const Navbar = ({ companyName }) => {
                   <div className="relative hidden sm:block">
                     <CiHeart
                       size={20}
-                      className={`hover:text-gray-700 size-[30px] md:size-[20px] ${
-                        isHomeScrolled ? "text-black" : "text-white"
-                      } ease-in-out duration-300`}
+                      className={`hover:text-gray-700 size-[30px] md:size-[20px] ${isHomeScrolled ? "text-black" : "text-white"
+                        } ease-in-out duration-300`}
                     />
                     {wishlistProducts.length > 0 && (
                       <div className="absolute -top-2.5 -right-2.5 text-xs text-white bg-[red] rounded-full px-1">
@@ -167,9 +166,8 @@ const Navbar = ({ companyName }) => {
                         )}
                         <CiShoppingCart
                           size={20}
-                          className={`hover:text-gray-700 ${
-                            isHomeScrolled ? "text-black" : "text-white"
-                          } ease-in-out duration-300 size-[30px] md:size-[20px]`}
+                          className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
+                            } ease-in-out duration-300 size-[30px] md:size-[20px]`}
                         />
                       </div>
                     </Link>
@@ -177,8 +175,8 @@ const Navbar = ({ companyName }) => {
 
                   <NavigationMenuContent>
                     {cartItems &&
-                    Array.isArray(cartItems) &&
-                    cartItems.length > 0 ? (
+                      Array.isArray(cartItems) &&
+                      cartItems.length > 0 ? (
                       <div className="md:w-[400px] h-fit">
                         <div className="grid gap-3 p-4 h-fit max-h-[280px] w-full overflow-x-hidden overflow-y-scroll">
                           {cartItems.map((item, index) => (
@@ -236,9 +234,8 @@ const Navbar = ({ companyName }) => {
                   <Link href="/account">
                     <CiUser
                       size={20}
-                      className={`hover:text-gray-700 ${
-                        isHomeScrolled ? "text-black" : "text-white"
-                      } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px] hidden sm:block`}
+                      className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
+                        } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px] hidden sm:block`}
                       onClick={handleUserIconClick}
                     />
                   </Link>
@@ -281,9 +278,8 @@ const Navbar = ({ companyName }) => {
                 <SheetTrigger className="md:hidden">
                   <List
                     size={20}
-                    className={`hover:text-gray-700 ${
-                      isHomeScrolled ? "text-black" : "text-white"
-                    } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px]`}
+                    className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
+                      } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px]`}
                   />
                 </SheetTrigger>
                 <SheetContent className="h-full">
@@ -294,37 +290,47 @@ const Navbar = ({ companyName }) => {
                       className=" h-full space-x-4 flex flex-col gap-4 items-center justify-center  "
                     >
                       {links.map((link, index) => (
-                        <Link
-                          key={index}
-                          href={link.herf}
-                          className={`hover:text-gray-700 text-lg text-bold text-black ease-in-out duration-300`}
-                        >
-                          {link.head}
-                        </Link>
+                        <SheetClose asChild key={index}>
+                          <Link
+                            href={link.herf}
+                            className="hover:text-gray-700 text-xl text-bold text-black ease-in-out tracking-wider duration-300"
+                          >
+                            {link.head}
+                          </Link>
+                        </SheetClose>
                       ))}
-                      { session && session?.user && <div className="h-[1px] w-full bg-gray-300 "></div>}
-                      { session && session?.user && <Button
+                      {session && session?.user && <div className="h-[1px] w-full bg-gray-300 "></div>}
+                      {session && session?.user && 
+                        <SheetClose asChild className="w-full">
+                      <Button
                         onClick={() => handleUserIconClick()}
                         variant="outline"
-                        className="w-full justify-center gap-2 "
+                        className="w-full justify-center gap-2 font-medium  "
                       >
-                        <CiUser size={20} color="black" />
+                        <CiUser size={30} color="black" className="size-[30px]" />
                         User
-                      </Button>}
-                      { session && session?.user && <Button
+                      </Button>
+                      </SheetClose>
+                      }
+                      {session && session?.user && 
+                        <SheetClose asChild className="w-full">
+                      <Button
                         onClick={() =>
                           session
                             ? router.push("/account/wishlist")
                             : router.push("/auth/sign-in")
                         }
                         variant="outline"
-                        className="w-full justify-center gap-2 "
+                        className="w-full justify-center gap-2 font-medium  "
                       >
-                        <CiHeart size={20} color="black" />
+                        <CiHeart size={30} color="black" className="size-[30px]" />
                         Wishlist
-                      </Button>}
+                      </Button>
+                      </SheetClose>
+                      }
 
                       <div className="h-[1px] w-full bg-gray-300 mt-auto"></div>
+                      <SheetClose asChild className="w-full">
                       <Button
                         onClick={() => {
                           if (session && session?.user) signOut();
@@ -338,6 +344,7 @@ const Navbar = ({ companyName }) => {
                         <LogOut size={20} />
                         {session && session?.user ? "Logout" : "Login"}
                       </Button>
+                      </SheetClose>
                     </motion.div>
                   </SheetDescription>
                 </SheetContent>
@@ -441,9 +448,8 @@ export function Search({
       <DialogTrigger asChild className="cursor-default">
         <CiSearch
           size={20}
-          className={`hover:text-gray-700 size-[30px] md:size-[20px] cursor-default ${
-            isHomeScrolled ? "text-black" : "text-white"
-          } ease-in-out duration-300`}
+          className={`hover:text-gray-700 size-[30px] md:size-[20px] cursor-default ${isHomeScrolled ? "text-black" : "text-white"
+            } ease-in-out duration-300`}
           onClick={() => setOpen(true)}
         />
       </DialogTrigger>

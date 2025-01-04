@@ -20,7 +20,12 @@ const UserSchema = new Schema(
     },
     phone_number: {
       type: String,
-      maxLength: 10,
+      validate: {
+        validator: function(v) {
+          return /^\d{10}$/.test(v);
+        },
+        message: props => `${props.value} is not a valid 10-digit phone number!`
+      },
       required: false,
     },
     is_phone_verified: {

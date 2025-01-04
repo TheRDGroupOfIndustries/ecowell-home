@@ -79,20 +79,24 @@ const ProductDetail = ({ productSku }) => {
       <section className="w-full h-full space-y-8  md:pt-28">
         <AddToCartBtn product={product} selectedVariant={selectedVariant} />
 
-        <div className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8 p-4 md:px-8 lg:px-10 xl:px-14">
+        <motion.div 
+        initial={{ opacity: 0, y: 150 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8 p-4 md:px-8 lg:px-10 xl:px-14">
           <ImageGallery images={selectedVariant.images} />
           <Details
             product={product}
             selectedVariant={selectedVariant}
             setSelectedVariant={setSelectedVariant}
           />
-        </div>
+        </motion.div>
         <FrequentlyBoughtTogether />
-        <RelatedProduct category={product.category.title} />
+        <RelatedProduct category={product.category.title} currentProductId={product._id} />
         <ProductDiscover />
         <Ingredient />
         <motion.div
-          initial={{ opacity: 0, y: 300 }}
+          initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="w-full"
@@ -100,7 +104,7 @@ const ProductDetail = ({ productSku }) => {
           <Image src={"/banner3.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
         </motion.div>
         <motion.div
-          initial={{ opacity: 0, y: 300 }}
+          initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="w-full"
@@ -110,7 +114,7 @@ const ProductDetail = ({ productSku }) => {
         {/* <TheStories /> */}
         <PurposeAndTrust />
         <motion.div
-          initial={{ opacity: 0, y: 300 }}
+          initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="w-full"

@@ -115,7 +115,7 @@ const ProductCard = ({ product, loading = false }) => {
               <>
                 <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
                 <span>
-                  {product?.ratings ? "|" + product?.ratings.toFixed(1) : "| 0"}
+                  {product?.ratings ? "|  " + product?.ratings.toFixed(1) : "| 0"}
                 </span>
                 <span className="text-gray-500">
                   {product?.reviews_number
