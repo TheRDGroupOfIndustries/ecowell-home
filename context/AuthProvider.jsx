@@ -1,15 +1,17 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const AuthProvider = ({ children, session }) => {
   const [updSession, setUpdSession] = useState(session);
   useEffect(() => {
-    console.log("Session:", session);
+    console.log("\nSession:", session);
 
     setUpdSession(session);
     if (session?.user?._id) {
+      console.log("\nsession?.user?._id:", session?.user?._id);
+
       () => {
         setUpdSession(session);
       };

@@ -138,12 +138,12 @@ export const authOptions = {
           ? { phone_number }
           : null;
 
-        console.log("Query:", query);
+        console.log("\nQuery:", query);
 
         // if (query) {
         await connectToMongoDB();
         const userFromDB = await User.findOne(query).lean(); // Lean for better performance
-        console.log("user", userFromDB, "\ntoken: ", token);
+        console.log("\nuser", userFromDB, "\ntoken: ", token);
 
         if (userFromDB) {
           session.user = userFromDB;
