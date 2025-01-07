@@ -76,7 +76,7 @@ const ProductDetail = ({ productSku }) => {
 
   return (
     <>
-      <section className="w-full h-full space-y-8  md:pt-28">
+      <section className="w-full h-full   md:pt-28">
         <AddToCartBtn product={product} selectedVariant={selectedVariant} />
 
         <motion.div 

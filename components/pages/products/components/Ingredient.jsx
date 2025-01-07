@@ -50,14 +50,14 @@ export default function Ingredient() {
                     </div>
                 </div>
             </div>
-            <div className='w-full h-[240px] md:h-[340px] grid grid-cols-3 gap-4'>
+            <div className='w-full h-[240px] md:h-[340px] grid grid-cols-3'>
                 {/** Ingredient Cards */}
                 {[1, 2, 3].map((ingredient, index) => (
                     <motion.div 
                         key={ingredient}
                         variants={fadeIn('up', 0.2 + index * 0.1)}
                         // whileHover={{ scale: 1.05, boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.15)' }}
-                        className='relative flex flex-col bg-white rounded-lg overflow-hidden transition-transform duration-300'
+                        className='relative flex flex-col bg-white overflow-hidden transition-transform duration-300'
                     >
                         <div className='self-center w-[1px] h-[40px] border border-dashed border-black'></div>
                         <motion.div 
