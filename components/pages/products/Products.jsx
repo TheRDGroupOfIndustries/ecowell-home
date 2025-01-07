@@ -11,7 +11,7 @@ import { reverseSlug } from "@/lib/utils";
 const Products = ({ category }) => {
   const { pt } = useNotification();
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState(["All Products"]); // Update 1
+  const [categories, setCategories] = useState(["All Products"]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState(
     category ? reverseSlug(category) : ""
@@ -30,12 +30,10 @@ const Products = ({ category }) => {
         const params = new URLSearchParams();
         if (activeCategory) params.append("category", activeCategory);
         if (sort) params.append("sort", sort);
-        params.append("page", "1");
+        params.append("page", pagination.currentPage.toString());
         params.append("limit", "12");
 
-        const response = await fetch(
-          `/api/products?category=${activeCategory}&sort=${sort}&page=${pagination.currentPage}`
-        );
+        const response = await fetch(`/api/products?${params}`);
         const data = await response.json();
         setProducts(data.products);
         setCategories([...data.categories]);
@@ -43,7 +41,7 @@ const Products = ({ category }) => {
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
-        setTimeout(() => setLoading(false), 1000); // Add a slight delay to show the skeleton
+        setTimeout(() => setLoading(false), 1000);
       }
     };
 
@@ -52,30 +50,16 @@ const Products = ({ category }) => {
 
   const handleSort = (value) => {
     setSort(value);
+    setPagination(prev => ({ ...prev, currentPage: 1 }));
   };
 
   const handleCategoryClick = (category) => {
-    setActiveCategory(category === "All Products" ? "" : category); // Update 2
+    setActiveCategory(category === "All Products" ? "" : category);
+    setPagination(prev => ({ ...prev, currentPage: 1 }));
   };
 
-  const loadPage = async (pageNumber) => {
-    try {
-      setLoading(true);
-      const params = new URLSearchParams();
-      if (activeCategory) params.append("category", activeCategory);
-      if (sort) params.append("sort", sort);
-      params.append("page", pageNumber.toString());
-      params.append("limit", "12");
-
-      const response = await fetch(`/api/products?${params}`);
-      const data = await response.json();
-      setProducts(data.products);
-      setPagination(data.pagination);
-    } catch (error) {
-      console.error("Error loading page:", error);
-    } finally {
-      setLoading(false);
-    }
+  const loadPage = (pageNumber) => {
+    setPagination(prev => ({ ...prev, currentPage: pageNumber }));
   };
 
   return (
@@ -93,7 +77,7 @@ const Products = ({ category }) => {
               key={category}
               className={`whitespace-nowrap ${
                 (category === "All Products" && activeCategory === "") ||
-                activeCategory === category // Update 3
+                activeCategory === category
                   ? "text-secondary-clr"
                   : "hover:text-secondary-clr"
               }`}
@@ -108,8 +92,7 @@ const Products = ({ category }) => {
           {loading ? "Loading..." : `${pagination.totalProducts} Products`}
           {activeCategory &&
             activeCategory !== "All Products" &&
-            ` in ${activeCategory}`}{" "}
-          {/* Update 4 */}
+            ` in ${activeCategory}`}
         </h1>
         <div className="relative">
           <Button
@@ -127,7 +110,7 @@ const Products = ({ category }) => {
           </Button>
           <div
             id="sortMenu"
-            className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md hidden z-10"
+            className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md hidden z-20"
           >
             <div className="py-1">
               <button
@@ -165,10 +148,15 @@ const Products = ({ category }) => {
           ))
         ) : (
           <>
-            {Array.isArray(products) &&
+            {Array.isArray(products) && products.length > 0 ? (
               products.map((product) => (
                 <ProductCard key={product._id} product={product} />
-              ))}
+              ))
+            ) : (
+              <div className="col-span-full text-center text-gray-500">
+                No products found.
+              </div>
+            )}
           </>
         )}
       </div>

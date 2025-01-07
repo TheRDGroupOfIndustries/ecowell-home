@@ -139,7 +139,7 @@ const Navbar = ({ companyName }) => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Link href="/account/wishlist">
+                {session && session?.user && (<Link href="/account/wishlist">
                   <div className="relative hidden sm:block">
                     <CiHeart
                       size={20}
@@ -152,7 +152,7 @@ const Navbar = ({ companyName }) => {
                       </div>
                     )}
                   </div>
-                </Link>
+                </Link>)}
               </NavigationMenuItem>
               {session && session?.user && (
                 <NavigationMenuItem>
