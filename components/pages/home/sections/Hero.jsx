@@ -24,10 +24,10 @@ const Hero = () => {
         } overflow-hidden`}
       >
         <div className="z-10 w-full h-full flex items-end justify-center pb-10 sm:pb-8 md:pb-12 lg:pb-14 2xl:pb-20">
-          <div className="w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 text-center flex flex-col items-center gap-4">
+          <div className="w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 text-center grid items-center gap-4 md:gap-6 lg:gap-8">
             <motion.h1
               variants={fadeIn("up", 0.3)}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl sm:font-extralight text-white"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl sm:font-extralight text-white text-balanc"
             >
               Redefining Wellness, One Scoop at a Time
             </motion.h1>

@@ -19,7 +19,7 @@ const ProductCardSelect = ({ product, isSelected, onToggle }) => {
       onClick={onToggle}
       className="relative w-[120px]  md:w-[180px] lg:w-[240px] cursor-pointer group bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden"
     >
-      <div className="absolute top-1.5 right-2.5 z-50">
+      <div className="absolute top-1.5 right-2.5 z-10">
         <input
           type="checkbox"
           checked={isSelected}

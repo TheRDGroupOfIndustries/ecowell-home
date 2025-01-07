@@ -69,15 +69,15 @@ const ShopCategory = () => {
                     query: { category: category.slug },
                   }}
                 >
-                  <div className="w-[180px]   md:w-[250px] h-[250px] group bg-gradient-to-t from-secondary-clr to-white hover:to-50% hover:translate-x-1 hover:translate-y-2 rounded-lg shadow-lg flex flex-col items-center justify-center p-4 ease-in-out duration-300 overflow-hidden">
+                  <div className="w-[180px] md:w-[250px] h-[250px] ring-2 ring-gray-200 group bg-gradient-to-t from-secondary-clr to-white hover:to-50% hover:translate-x-1 hover:translate-y-2 rounded-lg shadow-lg flex-center flex-col p-4 ease-in-out duration-300 overflow-hidden">
                     <Image
                       src={category.image_link}
                       alt={category.title}
                       width={400}
                       height={400}
-                      className="w-full h-full object-contain mb-4 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300"
+                      className="w-full h-full object-contain mb-4 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 overflow-hidden"
                     />
-                    <p className="relative z-10 text-md font-semibold mb-4">
+                    <p className="relative z-10 text-md font-semibold">
                       {category.title}
                     </p>
                   </div>

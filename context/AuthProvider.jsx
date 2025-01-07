@@ -24,7 +24,8 @@ const AuthProvider = ({ children, session: initialSession }) => {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [currentSession]);
+    // if (!currentSession?.user?._id) checkSession();
+  }, [currentSession, initialSession]);
 
   // console.log("Current Session:", currentSession);
 

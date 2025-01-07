@@ -7,6 +7,7 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LuLoaderCircle } from "react-icons/lu";
+import Link from "next/link";
 
 export default function AddToCartBtn({ product, selectedVariant }) {
   const [quantity, setQuantity] = useState(1);
@@ -54,16 +55,15 @@ export default function AddToCartBtn({ product, selectedVariant }) {
     }
   };
 
-  const handleWhatsAppRedirect = () => {
-    window.open("https://wa.me/919876345621", "_blank");
-  };
+  // const handleWhatsAppRedirect = () => {
+  //   window.open("https://wa.me/919876345621", "_blank");
+  // };
 
   return (
     <div className="fixed z-40 bottom-3 right-3 flex flex-col gap-2">
       {showWhatsApp && (
         <div
-          className={`self-end animate-slide-up ${whatsappStates[currentImageIndex].containerClass} bg-dark_jungle_green text-white rounded-full flex flex-row items-center px-[5px] md:gap-2 cursor-pointer transition-all duration-300`}
-          onClick={handleWhatsAppRedirect}
+          className={`self-end animate-slide-up ${whatsappStates[currentImageIndex].containerClass} bg-dark_jungle_green text-white rounded-full flex flex-row items-center px-[5px] md:gap-2 cursor-pointer transition-all duration-300 overflow-hidden`}
         >
           {whatsappStates[currentImageIndex].showText && (
             <div
@@ -78,34 +78,41 @@ export default function AddToCartBtn({ product, selectedVariant }) {
               </button>
             </div>
           )}
-          {whatsappStates[currentImageIndex].showText==false && (
-            <div
-            className="h-full flex items-center hover:opacity-50 cursor-pointer pl-3 py-3"
-          >
-            <button className="mx-auto text-sm md:text-base text-white text-end flex flex-col">
-              <ChevronLeft color="white" />
-            </button>
-          </div>
+          {whatsappStates[currentImageIndex].showText == false && (
+            <div className="h-full flex items-center hover:opacity-50 cursor-pointer pl-3 py-3">
+              <button className="mx-auto text-sm md:text-base text-white text-end flex flex-col">
+                <ChevronLeft color="white" />
+              </button>
+            </div>
           )}
-          
+
           {whatsappStates[currentImageIndex].showText && (
-            <div className="ml-auto text-xs md:text-base text-white text-end flex flex-col text-nowrap">
-              <p>Get in touch</p>
-              <p>+91 9876345621</p>
+            <div className="w-full flex-1">
+              <Link
+                href="https://wa.me/919876345621"
+                target="_blank"
+                className="w-full ml-auto text-xs md:text-base text-white text-end flex flex-col text-nowrap"
+              >
+                <p>Get in touch</p>
+                <p>+91 9876345621</p>
+              </Link>
             </div>
           )}
           <div className="w-[40px] h-[40px] md:w-[55px] md:h-[55px] overflow-hidden ml-1 rounded-full relative">
-            <Image
-              src="/whatsapp.png"
-              fill
-              alt="whatsapp"
-              className="rounded-full min-w-[40px] min-h-[40px] md:w-[55px] md:h-[55px]"
-            />
+            .
+            <Link href="https://wa.me/919876345621" target="_blank">
+              <Image
+                src="/whatsapp.png"
+                fill
+                alt="whatsapp"
+                className="rounded-full min-w-[40px] min-h-[40px] md:w-[55px] md:h-[55px]"
+              />
+            </Link>
           </div>
         </div>
       )}
-      <div className="animate-slide-up bg-gray-200 flex flex-row items-center p-2 border border-gray-400">
-        <div className="flex items-center border border-gray-400 h-9">
+      <div className="animate-slide-up bg-gray-200/60 backdrop-blur-md flex items-center gap-2 p-2 ring-1 ring-gray-400/60 overflow-hidden">
+        <div className="flex items-center ring-1 ring-gray-400/60 h-9">
           <Button
             type="button"
             variant="ghost"
@@ -115,7 +122,7 @@ export default function AddToCartBtn({ product, selectedVariant }) {
           >
             −
           </Button>
-          <span className="flex-1 px-4 py-2 text-center border-x text-sm md:text-base">
+          <span className="flex-1 px-4 py-2 text-center border-x border-gray-400/60 text-sm md:text-base">
             {quantity}
           </span>
           <Button

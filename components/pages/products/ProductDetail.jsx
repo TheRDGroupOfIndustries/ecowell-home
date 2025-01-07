@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -16,6 +16,7 @@ import RelatedProduct from "./components/RelatedProduct";
 import SkeletonLoader from "./components/SkeletonLoader";
 import TheStories from "./components/TheStories";
 import WriteReview from "./components/WriteReview";
+import ReactCountUp from "@/components/ui/countUp";
 
 const ProductDetail = ({ productSku }) => {
   const { data: session } = useSession();
@@ -53,13 +54,13 @@ const ProductDetail = ({ productSku }) => {
         const data = await response.json();
 
         if (response.ok) {
-          const hasOrderedProduct = data.orders?.some(order =>
-            order.products.some(p => p.product_id._id === product._id)
+          const hasOrderedProduct = data.orders?.some((order) =>
+            order.products.some((p) => p.product_id._id === product?._id)
           );
           setHasOrdered(hasOrderedProduct);
         }
       } catch (error) {
-        console.error('Error checking order history:', error);
+        console.error("Error checking order history:", error);
       }
     };
 
@@ -79,11 +80,12 @@ const ProductDetail = ({ productSku }) => {
       <section className="w-full h-full   md:pt-28">
         <AddToCartBtn product={product} selectedVariant={selectedVariant} />
 
-        <motion.div 
-        initial={{ opacity: 0, y: 150 }}
+        <motion.div
+          initial={{ opacity: 0, y: 150 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-        className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8 p-4 md:px-8 lg:px-10 xl:px-14">
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8 p-4 md:px-8 lg:px-10 xl:px-14"
+        >
           <ImageGallery images={selectedVariant.images} />
           <Details
             product={product}
@@ -92,31 +94,46 @@ const ProductDetail = ({ productSku }) => {
           />
         </motion.div>
         <FrequentlyBoughtTogether />
-        <RelatedProduct category={product.category.title} currentProductId={product._id} />
+        <RelatedProduct
+          category={product.category.title}
+          currentProductId={product._id}
+        />
         <ProductDiscover />
-        <Ingredient />
+        <Ingredient productName={product?.title} />
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="w-full"
         >
-          <Image src={"/banner3.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
+          <Image
+            src={"/banner3.jpeg"}
+            alt="Banner"
+            width={1000}
+            height={540}
+            className="w-full "
+          />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="w-full"
         >
-          <Image src={"/banner2.jpeg"} alt="Banner" width={1000} height={540} className='w-full ' />
+          <Image
+            src={"/banner2.jpeg"}
+            alt="Banner"
+            width={1000}
+            height={540}
+            className="w-full "
+          />
         </motion.div>
         {/* <TheStories /> */}
         <PurposeAndTrust />
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="w-full"
         >
           <Image
@@ -127,7 +144,7 @@ const ProductDetail = ({ productSku }) => {
             className="w-full"
           />
         </motion.div>
-        <FrequentlyAskedQuestions faqs={product.faqs} />
+        <FrequentlyAskedQuestions faqs={product?.faqs} />
         {hasOrdered && <WriteReview productId={product._id} />}
         <CustomerReviews productId={product._id} />
       </section>
@@ -179,10 +196,11 @@ export const ImageGallery = ({ images }) => {
                   alt={`image ${index + 1}`}
                   width={200}
                   height={200}
-                  className={`w-full h-auto cursor-pointer transition-all mb-2 ${activeImage === image
-                    ? "border-2 border-primary-clr shadow-xl"
-                    : ""
-                    }`}
+                  className={`w-full h-auto cursor-pointer transition-all mb-2 ${
+                    activeImage === image
+                      ? "border-2 border-primary-clr shadow-xl"
+                      : ""
+                  }`}
                   onClick={() => setActiveImage(image)}
                   style={{ transform: `translateY(-${scrollPosition * 100}%)` }}
                 />
@@ -202,8 +220,9 @@ export const ImageGallery = ({ images }) => {
                 src={image}
                 alt={`Active product image ${index + 1}`}
                 fill
-                className={`w-full h-full object-contain absolute top-0 left-0 transition-opacity duration-500 ease-in-out ${activeImage === image ? "opacity-100" : "opacity-0"
-                  }`}
+                className={`w-full h-full object-contain absolute top-0 left-0 transition-opacity duration-500 ease-in-out ${
+                  activeImage === image ? "opacity-100" : "opacity-0"
+                }`}
               />
             ))}
           </div>
@@ -215,10 +234,11 @@ export const ImageGallery = ({ images }) => {
           <i className="w-fit font-semibold font-serif text-primary-clr overflow-hidden">
             Certified By
           </i>
-          <div className="w-full h-full flex-1 flex gap-6 overflow-x-scroll no-scrollbar overflow-y-hidden"
+          <div
+            className="w-full h-full flex-1 flex gap-6 overflow-x-scroll no-scrollbar overflow-y-hidden"
             style={{
-              msOverflowStyle: 'none',
-              scrollbarWidth: 'none',
+              msOverflowStyle: "none",
+              scrollbarWidth: "none",
             }}
           >
             {["/c1.png", "/c2.png", "/c3.png", "/c4.png", "/c5.png"].map(
@@ -255,15 +275,28 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
         className="w-full h-fit flex-1 space-y-4 overflow-hidden"
       >
         <div className="w-fit bg-[#F9F6F0] text-xs py-1 px-4 overflow-hidden">
-          {product.category.title}
+          {product?.category.title}
         </div>
         <div className="space-y-1">
           <div className="text-xl md:text-2xl lg:text-3xl xl:text-4xl text-primary-clr font-semibold">
-            {product.title}
+            {product?.title}
           </div>
           <div className="space-y-1 text-primary-clr">
-            <div className="text-md md:text-lg lg:text-2xl xl:text-3xl font-semibold">
-              ₹{product.price.toFixed(2)}/-
+            <div className="flex gap-2 items-end">
+              <div className="text-md md:text-lg lg:text-2xl xl:text-3xl font-semibold">
+                <ReactCountUp
+                  amt={product?.salePrice ? product?.salePrice : product?.price}
+                  prefix="₹"
+                />
+                /-
+              </div>
+              {product?.price && (
+                <ReactCountUp
+                  amt={product?.price}
+                  prefix="₹"
+                  className="line-through text-gray-500"
+                />
+              )}
             </div>
             <div className="text-xs">Price include GST</div>
           </div>
@@ -287,7 +320,7 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
-          {product.variants.map((variant, index) => (
+          {product?.variants.map((variant, index) => (
             <div
               key={index}
               className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer`}
@@ -297,13 +330,14 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
           ))}
         </div>
         <div className="flex flex-wrap gap-3">
-          {product.variants.map((variant, index) => (
+          {product?.variants.map((variant, index) => (
             <div
               key={index}
-              className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer ${selectedVariant.flavor === variant.flavor
-                ? "bg-primary-clr text-white"
-                : ""
-                }`}
+              className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer ${
+                selectedVariant.flavor === variant.flavor
+                  ? "bg-primary-clr text-white"
+                  : ""
+              }`}
               onClick={() => handleVariantChange(variant)}
             >
               {variant.flavor.toUpperCase()}
@@ -337,7 +371,7 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
             How this Formula supports your wellness
           </div>
           <div className="grid grid-cols-3 gap-4">
-            {product.benefits.map((benefit, index) => (
+            {product?.benefits.map((benefit, index) => (
               <div
                 key={index}
                 className="flex-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 overflow-hidden line-clamp-2 "
