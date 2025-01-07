@@ -16,7 +16,7 @@ export default function FrequentlyAskedQuestions() {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.2 }}
-      className="flex flex-col w-full gap-10 justify-center items-center"
+      className="flex flex-col w-full gap-10 justify-center items-center mt-24"
     >
       {/* Section Header */}
       <motion.h1
