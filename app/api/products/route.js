@@ -25,31 +25,10 @@ export async function GET(request) {
           useAggregation = true;
           break;
         case "price-low-high":
-          sortQuery = {
-            $expr: {
-              $cond: [
-                { $ifNull: ["$salePrice", false] },
-                "$salePrice",
-                "$price",
-              ],
-            },
-          };
+          sortQuery = { salePrice: 1, price: 1 };
           break;
         case "price-high-low":
-          sortQuery = {
-            $expr: {
-              $multiply: [
-                -1,
-                {
-                  $cond: [
-                    { $ifNull: ["$salePrice", false] },
-                    "$salePrice",
-                    "$price",
-                  ],
-                },
-              ],
-            },
-          };
+          sortQuery = { salePrice: -1, price: -1 };
           break;
         case "rating":
           sortQuery = { ratings: -1 };
@@ -69,33 +48,12 @@ export async function GET(request) {
     const categories = await Products.distinct("category.title");
     categories.unshift("All Products");
 
-    const [products, totalCount] = await Promise.all([
-      useAggregation
-        ? Products.aggregate([
-            { $match: query },
-            { $sample: { size: limit } },
-            {
-              $project: {
-                _id: 1,
-                sku: 1,
-                title: 1,
-                new: 1,
-                category: 1,
-                brand: 1,
-                price: 1,
-                salePrice: 1,
-                discount: 1,
-                variants: { $slice: ["$variants", 1] },
-                ratings: 1,
-                reviews_number: 1,
-              },
-            },
-          ])
-        : Products.find(query)
-            .sort(sortQuery)
-            .skip(skip)
-            .limit(limit)
-            .select({
+    let productsQuery = useAggregation
+      ? Products.aggregate([
+          { $match: query },
+          { $sample: { size: limit } },
+          {
+            $project: {
               _id: 1,
               sku: 1,
               title: 1,
@@ -105,10 +63,33 @@ export async function GET(request) {
               price: 1,
               salePrice: 1,
               discount: 1,
-              variants: { $slice: 1 },
+              variants: { $slice: ["$variants", 1] },
               ratings: 1,
               reviews_number: 1,
-            }),
+            },
+          },
+        ])
+      : Products.find(query)
+          .sort(sortQuery)
+          .skip(skip)
+          .limit(limit)
+          .select({
+            _id: 1,
+            sku: 1,
+            title: 1,
+            new: 1,
+            category: 1,
+            brand: 1,
+            price: 1,
+            salePrice: 1,
+            discount: 1,
+            variants: { $slice: 1 },
+            ratings: 1,
+            reviews_number: 1,
+          });
+
+    const [products, totalCount] = await Promise.all([
+      productsQuery,
       Products.countDocuments(query),
     ]);
 
