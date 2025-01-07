@@ -22,6 +22,7 @@ const Products = ({ category }) => {
     totalProducts: 0,
   });
   const [sort, setSort] = useState("");
+  const [selectedSort, setSelectedSort] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -50,6 +51,7 @@ const Products = ({ category }) => {
 
   const handleSort = (value) => {
     setSort(value);
+    setSelectedSort(value);
     setPagination(prev => ({ ...prev, currentPage: 1 }));
   };
 
@@ -114,25 +116,33 @@ const Products = ({ category }) => {
           >
             <div className="py-1">
               <button
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
+                  selectedSort === "price-low-high" ? "bg-gray-200" : ""
+                  }`}
                 onClick={() => handleSort("price-low-high")}
               >
                 Price: Low to High
               </button>
               <button
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
+                  selectedSort === "price-high-low" ? "bg-gray-200" : ""
+                  }`}
                 onClick={() => handleSort("price-high-low")}
               >
                 Price: High to Low
               </button>
               <button
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
+                  selectedSort === "rating" ? "bg-gray-200" : ""
+                }`}
                 onClick={() => handleSort("rating")}
               >
                 Highest Rated
               </button>
               <button
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
+                  selectedSort === "newest" ? "bg-gray-200" : ""
+                }`}
                 onClick={() => handleSort("newest")}
               >
                 Newest First
