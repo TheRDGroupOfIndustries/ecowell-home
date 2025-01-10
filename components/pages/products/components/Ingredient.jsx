@@ -1,9 +1,32 @@
 import { fadeIn, staggerContainer } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function Ingredient() {
+const fetchProductData = async (sku) => {
+    try {
+        const response = await fetch(`/api/products/${sku}`);
+        if (!response.ok) {
+            throw new Error("Failed to fetch product");
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching product:", error);
+        return null;
+    }
+};
+
+export default function Ingredient({ sku }) {
+    const [productData, setProductData] = useState(null);
+
+    useEffect(() => {
+        const loadProductData = async () => {
+            const data = await fetchProductData(sku);
+            setProductData(data);
+        };
+        loadProductData();
+    }, [sku]);
+
     return (
         <motion.div
             variants={staggerContainer(0.1, 0.1)}
@@ -39,7 +62,7 @@ export default function Ingredient() {
                             variants={fadeIn('down', 0.2)}
                             className='text-xs sm:text-base md:text-2xl'
                         >
-                            What makes [Product Name] stand out?
+                            What makes {productData?.title || "[Product Name]"} stand out?
                         </motion.p>
                         <motion.p 
                             variants={fadeIn('down', 0.2)}
@@ -52,7 +75,7 @@ export default function Ingredient() {
             </div>
             <div className='w-full h-[240px] md:h-[340px] grid grid-cols-3 gap-4'>
                 {/** Ingredient Cards */}
-                {[1, 2, 3].map((ingredient, index) => (
+                {[productData?.ingredientHighlights[0] || 1, productData?.ingredientHighlights[1] || 2, productData?.ingredientHighlights[2] || 3].map((ingredient, index) => (
                     <motion.div 
                         key={ingredient}
                         variants={fadeIn('up', 0.2 + index * 0.1)}
@@ -65,19 +88,20 @@ export default function Ingredient() {
                             className='h-[150px] md:h-[250px] w-full mt-auto transition-transform duration-300'
                         >
                             <Image
-                                src={`/ingredient${ingredient}.jpg`}
+                                src={ingredient.image || `/ingredient${ingredient}.jpg`}
                                 width={250}
                                 height={250}
-                                alt={`Ingredient ${ingredient}`}
+                                alt={`Ingredient ${ingredient.name || ingredient}`}
                                 className='w-full h-full object-cover'
                             />
                         </motion.div>
                         <div className='absolute top-[40px] self-center w-[80%] h-[100px] border bg-[#F9F6F0] leading-3 p-2 text-dark_jungle_green overflow-hidden'>
-                            <h1 className='text-sm md:text-xl font-semibold mt-1'>[Ingredient {ingredient}]:</h1>
+                            <h1 className='text-sm md:text-xl font-semibold mt-1'>{ingredient.name || `[Ingredient ${ingredient}]`}:</h1>
                             <p className='text-xs md:text-base'>
-                                {ingredient === 1 && "Nature’s powerhouse, giving your body the tools it needs to recover and grow stronger."}
-                                {ingredient === 2 && "A centuries-old remedy reimagined for modern wellness."}
-                                {ingredient === 3 && "Science-backed, delivering antioxidants and vital nutrients for total rejuvenation."}
+                                {ingredient.description || 
+                                (index === 0 && "Nature's powerhouse, giving your body the tools it needs to recover and grow stronger.") ||
+                                (index === 1 && "A centuries-old remedy reimagined for modern wellness.") ||
+                                (index === 2 && "Science-backed, delivering antioxidants and vital nutrients for total rejuvenation.")}
                             </p>
                         </div>
                     </motion.div>

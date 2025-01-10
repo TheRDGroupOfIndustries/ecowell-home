@@ -1,10 +1,33 @@
 'use client';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, staggerContainer } from '@/lib/utils';
 
-export default function ProductDiscover() {
+const fetchProductData = async (sku) => {
+    try {
+        const response = await fetch(`/api/products/${sku}`);
+        if (!response.ok) {
+            throw new Error("Failed to fetch product");
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching product:", error);
+        return null;
+    }
+};
+
+export default function ProductDiscover({ sku }) {
+    const [productData, setProductData] = useState(null);
+
+    useEffect(() => {
+        const loadProductData = async () => {
+            const data = await fetchProductData(sku);
+            setProductData(data);
+        };
+        loadProductData();
+    }, [sku]);
+
     return (
         <motion.div
             variants={staggerContainer}
@@ -19,7 +42,7 @@ export default function ProductDiscover() {
                 className="relative w-full max-h-[400px] lg:max-h-[550px] overflow-hidden"
             >
                 <Image
-                    src="/productDiscover1.jpg"
+                    src={productData?.heroBanner?.backgroundImage || "/productDiscover1.jpg"}
                     width={1920}
                     height={500}
                     alt="product discover"
@@ -31,27 +54,25 @@ export default function ProductDiscover() {
                             variants={fadeIn('up', 0.3, 0.8)}
                             className="text-lg sm:text-xl md:text-2xl lg:text-4xl text-dark_jungle_green font-semibold"
                         >
-                            Product Discover
+                            {productData?.heroBanner?.title || "Product Discover"}
                         </motion.h3>
                         <motion.h1
                             variants={fadeIn('up', 0.4, 0.8)}
                             className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl text-dark_jungle_green font-semibold"
                         >
-                            Diabivita
+                            {productData?.title || "Diabivita"}
                         </motion.h1>
                         <motion.h4
                             variants={fadeIn('up', 0.5, 0.8)}
                             className="text-base sm:text-lg md:text-xl lg:text-2xl text-dark_jungle_green font-normal"
                         >
-                            YOUR WELLNESS COMPANION
+                            {productData?.heroBanner?.subtitle || "YOUR WELLNESS COMPANION"}
                         </motion.h4>
                         <motion.p
                             variants={fadeIn('up', 0.6, 0.8)}
                             className="text-xs sm:text-base md:text-lg lg:text-xl mt-2 max-w-[250px] sm:max-w-[300px] md:max-w-[400px] lg:max-w-[500px] text-charcoal_black font-semibold"
                         >
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil deserunt id quod ducimus
-                            consequatur rem sunt cum, dolorum fugiat sit quasi fuga quo doloribus laboriosam dolores
-                            unde, adipisci ullam vero?
+                            {productData?.heroBanner?.description || "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil deserunt id quod ducimus consequatur rem sunt cum, dolorum fugiat sit quasi fuga quo doloribus laboriosam dolores unde, adipisci ullam vero?"}
                         </motion.p>
                     </div>
                 </div>
@@ -65,12 +86,10 @@ export default function ProductDiscover() {
                         className="max-w-[600px] mt-auto text-wrap overflow-hidden"
                     >
                         <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl text-wrap text-dark_jungle_green font-semibold">
-                            Your New Daily Ritual
+                            {productData?.dailyRitual?.title || "Your New Daily Ritual"}
                         </h1>
                         <p className="line-clamp-5 md:line-clamp-none text-xs sm:text-base md:text-lg text-wrap mt-2 max-w-[500px] text-charcoal_black font-semibold">
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil deserunt id quod ducimus
-                            consequatur rem sunt cum, dolorum fugiat sit quasi fuga quo doloribus laboriosam dolores
-                            unde, adipisci ullam vero?
+                            {productData?.dailyRitual?.description || "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil deserunt id quod ducimus consequatur rem sunt cum, dolorum fugiat sit quasi fuga quo doloribus laboriosam dolores unde, adipisci ullam vero?"}
                         </p>
                     </motion.div>
                 </div>
@@ -79,7 +98,7 @@ export default function ProductDiscover() {
                     className="w-[490px] md:w-[590px] lg:w-[680px] rounded-2xl h-[330px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden bg-pink-200 relative"
                 >
                     <Image
-                        src="/productDiscover1.jpg"
+                        src={productData?.dailyRitual?.lifestyleImage || "/productDiscover1.jpg"}
                         fill
                         alt="product discover"
                         className="h-full rounded-2xl border-8 border-white"

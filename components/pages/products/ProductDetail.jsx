@@ -93,8 +93,8 @@ const ProductDetail = ({ productSku }) => {
         </motion.div>
         <FrequentlyBoughtTogether />
         <RelatedProduct category={product.category.title} currentProductId={product._id} />
-        <ProductDiscover />
-        <Ingredient />
+        <ProductDiscover sku={productSku} />
+        <Ingredient sku={productSku} />
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
