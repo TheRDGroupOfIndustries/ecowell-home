@@ -44,7 +44,7 @@ const Hero = () => {
             </motion.div>
           </div>
         </div>
-        <div className="absolute inset-0 -z-10 bg-[url('/assets/2.jpg')] bg-cover bg-center transition-transform duration-500 ease-in-out group-hover:scale-110"></div>
+        <div className="absolute inset-0 -z-10 bg-[url('/assets/hero-banner.gif')] bg-cover bg-center bg-no-repeat transition-transform duration-500 ease-in-out group-hover:scale-110"></div>
       </div>
     </motion.div>
   );

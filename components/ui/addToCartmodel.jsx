@@ -51,7 +51,7 @@ export default function AddToCartmodel({ loading, product }) {
               )}
             </Button>
           </DialogTrigger>
-          <DialogContent className="z-50 mt-10 sm:max-w-[600px] h-[100vh] sm:h-fit  ">
+          <DialogContent className="z-50 mt-10 max-w-[80%] md:max-w-2xl lg:max-w-3xl h-fit max-h-[90%]">
             <Modal product={product} />
           </DialogContent>
         </Dialog>
@@ -77,7 +77,7 @@ const Modal = ({ product }) => {
   };
 
   return (
-    <div className="bg-white max-h-[100vh] sm:max-h-[80vh] p-6 rounded-lg w-full mx-4 relative overflow-y-scroll">
+    <div className="bg-white h-fit p-2 md:p-4 lg:p-6 rounded-lg w-full relative overflow-y-scroll">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Product Image */}
         <div className="w-full md:w-1/3">
@@ -141,12 +141,10 @@ const Modal = ({ product }) => {
                   key={index}
                   variant="ghost"
                   onClick={() => setVariantCheck(variant.flavor)}
-                  className={`px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600 border border-gray-400 "
-                                aria-label="Decrease quantity ${
-                                  variant.flavor === variantCheck
-                                    ? "bg-slate-100"
-                                    : ""
-                                }`}
+                  className={`px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600 border border-gray-400 aria-label="Decrease quantity ${
+                    variant.flavor === variantCheck &&
+                    "bg-primary-clr text-white"
+                  }`}
                 >
                   {variant.flavor}
                 </Button>
@@ -188,12 +186,16 @@ const Modal = ({ product }) => {
                 className=" text-xl font-semibold"
               />
             </div>
-            <div className=" flex flex-row items-center gap-2">
+            <div className="w-full h-fit flex-center flex-col md:flex-row gap-2">
               <Button
                 type="button"
                 onClick={(e) => {
                   e.preventDefault();
-                  addToCart(product, quantity, product.variants[0]);
+                  addToCart(
+                    product,
+                    quantity,
+                    variantCheck || product.variants[0]
+                  );
                 }}
                 disabled={addToCartLoading}
                 title={
@@ -201,19 +203,19 @@ const Modal = ({ product }) => {
                 }
                 size="sm"
                 effect="shine"
-                className="rounded-none w-[200px] bg-primary-clr text-white py-2  hover:bg-green-700 transition"
+                className="rounded-none w-full md:w-[200px] text-white bg-primary-clr hover:bg-green-700 py-2 transition"
               >
                 Add To Cart{" "}
                 {addToCartLoading && (
                   <LuLoaderCircle className="animate-spin" />
                 )}
               </Button>
-              <Link href={`/products/${product?.sku}`}>
+              <Link href={`/products/${product?.sku}`} className="w-full">
                 <Button
                   type="button"
                   size="sm"
                   effect="gooeyRight"
-                  className="rounded-none w-[200px] bg-primary-clr text-white py-2  hover:bg-green-700 transition"
+                  className="rounded-none w-full md:w-[200px] text-white bg-primary-clr hover:bg-green-700 py-2 transition"
                 >
                   Details
                 </Button>

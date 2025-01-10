@@ -118,8 +118,9 @@ const Navbar = ({ companyName }) => {
             <Link
               key={index}
               href={link.herf}
-              className={`hover:text-gray-700 text-lg text-bold ${isHomeScrolled ? "text-black" : "text-white"
-                } ease-in-out duration-300`}
+              className={`hover:text-gray-700 text-lg text-bold ${
+                isHomeScrolled ? "text-black" : "text-white"
+              } ease-in-out duration-300`}
             >
               {link.head}
             </Link>
@@ -139,20 +140,23 @@ const Navbar = ({ companyName }) => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                {session && session?.user && (<Link href="/account/wishlist">
-                  <div className="relative hidden sm:block">
-                    <CiHeart
-                      size={20}
-                      className={`hover:text-gray-700 size-[30px] md:size-[20px] ${isHomeScrolled ? "text-black" : "text-white"
+                {session && session?.user && (
+                  <Link href="/account/wishlist">
+                    <div className="relative hidden sm:block">
+                      <CiHeart
+                        size={20}
+                        className={`hover:text-gray-700 size-[30px] md:size-[20px] ${
+                          isHomeScrolled ? "text-black" : "text-white"
                         } ease-in-out duration-300`}
-                    />
-                    {wishlistProducts.length > 0 && (
-                      <div className="absolute -top-2.5 -right-2.5 text-xs text-white bg-[red] rounded-full px-1">
-                        {wishlistProducts.length}
-                      </div>
-                    )}
-                  </div>
-                </Link>)}
+                      />
+                      {wishlistProducts.length > 0 && (
+                        <div className="absolute -top-2.5 -right-2.5 text-xs text-white bg-[red] rounded-full px-1">
+                          {wishlistProducts.length}
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+                )}
               </NavigationMenuItem>
               {session && session?.user && (
                 <NavigationMenuItem>
@@ -166,8 +170,9 @@ const Navbar = ({ companyName }) => {
                         )}
                         <CiShoppingCart
                           size={20}
-                          className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
-                            } ease-in-out duration-300 size-[30px] md:size-[20px]`}
+                          className={`hover:text-gray-700 ${
+                            isHomeScrolled ? "text-black" : "text-white"
+                          } ease-in-out duration-300 size-[30px] md:size-[20px]`}
                         />
                       </div>
                     </Link>
@@ -175,8 +180,8 @@ const Navbar = ({ companyName }) => {
 
                   <NavigationMenuContent>
                     {cartItems &&
-                      Array.isArray(cartItems) &&
-                      cartItems.length > 0 ? (
+                    Array.isArray(cartItems) &&
+                    cartItems.length > 0 ? (
                       <div className="md:w-[400px] h-fit">
                         <div className="grid gap-3 p-4 h-fit max-h-[280px] w-full overflow-x-hidden overflow-y-scroll">
                           {cartItems.map((item, index) => (
@@ -234,8 +239,9 @@ const Navbar = ({ companyName }) => {
                   <Link href="/account">
                     <CiUser
                       size={20}
-                      className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
-                        } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px] hidden sm:block`}
+                      className={`hover:text-gray-700 ${
+                        isHomeScrolled ? "text-black" : "text-white"
+                      } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px] hidden sm:block`}
                       onClick={handleUserIconClick}
                     />
                   </Link>
@@ -278,8 +284,9 @@ const Navbar = ({ companyName }) => {
                 <SheetTrigger className="md:hidden">
                   <List
                     size={20}
-                    className={`hover:text-gray-700 ${isHomeScrolled ? "text-black" : "text-white"
-                      } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px]`}
+                    className={`hover:text-gray-700 ${
+                      isHomeScrolled ? "text-black" : "text-white"
+                    } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px]`}
                   />
                 </SheetTrigger>
                 <SheetContent className="h-full">
@@ -299,51 +306,61 @@ const Navbar = ({ companyName }) => {
                           </Link>
                         </SheetClose>
                       ))}
-                      {session && session?.user && <div className="h-[1px] w-full bg-gray-300 "></div>}
-                      {session && session?.user && 
+                      {session && session?.user && (
+                        <div className="h-[1px] w-full bg-gray-300 "></div>
+                      )}
+                      {session && session?.user && (
                         <SheetClose asChild className="w-full">
-                      <Button
-                        onClick={() => handleUserIconClick()}
-                        variant="outline"
-                        className="w-full justify-center gap-2 font-medium  "
-                      >
-                        <CiUser size={30} color="black" className="size-[30px]" />
-                        User
-                      </Button>
-                      </SheetClose>
-                      }
-                      {session && session?.user && 
+                          <Button
+                            onClick={() => handleUserIconClick()}
+                            variant="outline"
+                            className="w-full justify-center gap-2 font-medium  "
+                          >
+                            <CiUser
+                              size={30}
+                              color="black"
+                              className="size-[30px]"
+                            />
+                            User
+                          </Button>
+                        </SheetClose>
+                      )}
+                      {session && session?.user && (
                         <SheetClose asChild className="w-full">
-                      <Button
-                        onClick={() =>
-                          session
-                            ? router.push("/account/wishlist")
-                            : router.push("/auth/sign-in")
-                        }
-                        variant="outline"
-                        className="w-full justify-center gap-2 font-medium  "
-                      >
-                        <CiHeart size={30} color="black" className="size-[30px]" />
-                        Wishlist
-                      </Button>
-                      </SheetClose>
-                      }
+                          <Button
+                            onClick={() =>
+                              session
+                                ? router.push("/account/wishlist")
+                                : router.push("/auth/sign-in")
+                            }
+                            variant="outline"
+                            className="w-full justify-center gap-2 font-medium  "
+                          >
+                            <CiHeart
+                              size={30}
+                              color="black"
+                              className="size-[30px]"
+                            />
+                            Wishlist
+                          </Button>
+                        </SheetClose>
+                      )}
 
                       <div className="h-[1px] w-full bg-gray-300 mt-auto"></div>
                       <SheetClose asChild className="w-full">
-                      <Button
-                        onClick={() => {
-                          if (session && session?.user) signOut();
-                          else router.push("/auth/sign-in");
-                        }}
-                        effect={
-                          session && session?.user ? "shineHover" : "shine"
-                        }
-                        className="w-full bg-primary-clr hover:bg-green-700"
-                      >
-                        <LogOut size={20} />
-                        {session && session?.user ? "Logout" : "Login"}
-                      </Button>
+                        <Button
+                          onClick={() => {
+                            if (session && session?.user) signOut();
+                            else router.push("/auth/sign-in");
+                          }}
+                          effect={
+                            session && session?.user ? "shineHover" : "shine"
+                          }
+                          className="w-full bg-primary-clr hover:bg-green-700"
+                        >
+                          <LogOut size={20} />
+                          {session && session?.user ? "Logout" : "Login"}
+                        </Button>
                       </SheetClose>
                     </motion.div>
                   </SheetDescription>
@@ -448,17 +465,18 @@ export function Search({
       <DialogTrigger asChild className="cursor-default">
         <CiSearch
           size={20}
-          className={`hover:text-gray-700 size-[30px] md:size-[20px] cursor-default ${isHomeScrolled ? "text-black" : "text-white"
-            } ease-in-out duration-300`}
+          className={`hover:text-gray-700 size-[30px] md:size-[20px] cursor-default ${
+            isHomeScrolled ? "text-black" : "text-white"
+          } ease-in-out duration-300`}
           onClick={() => setOpen(true)}
         />
       </DialogTrigger>
       <DialogContent
-        className=" w-full h-full md:max-w-[600px] z-50"
+        className=" w-full h-fit max-h-[80%] md:max-w-[600px] py-2 z-50 overflow-hidden"
         ref={dialogRef}
       >
         <DialogHeader>
-          <DialogTitle className="text-left mb-4">Search Products</DialogTitle>
+          <DialogTitle className="text-left mb-2">Search Products</DialogTitle>
           <div className="relative">
             <Input
               placeholder="Search for products..."
