@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { fadeIn, staggerContainer } from '@/lib/utils';
+import { fadeIn, staggerContainer } from "@/lib/utils";
 
 const WhyChooseUs = () => {
   return (
@@ -11,34 +11,42 @@ const WhyChooseUs = () => {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.25 }}
-      className="w-full max-w-7xl mx-auto px-4 py-16"
+      className="w-full mx-auto p-4 py-12 sm:p-6 sm:py-14 md:p-8 md:py-16 lg:p-10 lg:py-20 overflow-hidden"
     >
-      <motion.div 
-        variants={fadeIn('down', 0.2)}
-        className="text-center mb-12"
-      >
-        <h2 className="text-3xl font-bold mb-4">Why to choose us?</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          At Ecowell, we don&apos;t just create products – we craft experiences
-          that elevate your wellness journey. Here&apos;s what sets us apart:
+      <motion.div variants={fadeIn("down", 0.2)} className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          Why to choose us?
+        </h2>
+        <p className="text-gray-950 max-w-2xl lg:max-w-xl mx-auto text-lg md:text-xl lg:text-2xl font-light">
+          At Ecowell, we don&apos;t just create products – we{" "}
+          <span className="italic font-serif font-semibold text-primary-clr">
+            craft experiences
+          </span>{" "}
+          that elevate{" "}
+          <span className="italic font-serif font-semibold text-primary-clr">
+            your wellness
+          </span>{" "}
+          journey. Here&apos;s what sets us apart:
         </p>
       </motion.div>
 
-      <div className="w-full flex flex-col justify-center items-center">
-        <motion.div variants={fadeIn('up', 0.3)}>
+      <div className="w-full h-fit flex-center flex-col overflow-hidden">
+        <motion.div variants={fadeIn("up", 0.3)}>
           <Image
             src="/card1.png"
             alt="Why Choose Us"
-            width={1000}
-            height={1000}
+            width={1500}
+            height={1500}
+            className="w-full h-fit overflow-hidden"
           />
         </motion.div>
-        <motion.div variants={fadeIn('up', 0.4)}>
+        <motion.div variants={fadeIn("up", 0.4)}>
           <Image
             src="/bento.png"
             alt="Why Choose Us"
-            width={1000}
-            height={1000}
+            width={1500}
+            height={1500}
+            className="w-full h-fit overflow-hidden"
           />
         </motion.div>
       </div>

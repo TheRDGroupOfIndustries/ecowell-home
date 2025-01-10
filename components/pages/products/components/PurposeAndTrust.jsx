@@ -57,8 +57,10 @@ export default function PurposeAndTrust() {
         className="flex flex-col justify-center items-center px-3"
       >
         <h2 className="text-4xl text-dark_jungle_green font-medium">
-          Built with <span className="italic font-semibold">Purpose</span>,
-          Backed by <span className="italic font-semibold">Trust</span>
+          Built with{" "}
+          <span className="italic font-semibold font-serif">Purpose</span>,
+          Backed by{" "}
+          <span className="italic font-semibold font-serif">Trust</span>
         </h2>
       </motion.div>
 

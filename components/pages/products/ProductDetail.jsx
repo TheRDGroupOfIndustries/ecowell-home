@@ -157,18 +157,34 @@ export default ProductDetail;
 export const ImageGallery = ({ images }) => {
   const [activeImage, setActiveImage] = useState(images[0]);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [showScrollUp, setShowScrollUp] = useState(false);
+  const [showScrollDown, setShowScrollDown] = useState(true);
 
   const scrollUp = () => {
-    setScrollPosition(Math.max(scrollPosition - 1, 0));
+    if (scrollPosition > 0) {
+      setScrollPosition(scrollPosition - 1);
+      setShowScrollDown(true);
+    }
+    if (scrollPosition <= 1) {
+      setShowScrollUp(false);
+    }
   };
 
   const scrollDown = () => {
-    setScrollPosition(Math.min(scrollPosition + 1, images.length - 1));
+    if (scrollPosition < images.length - 4) {
+      setScrollPosition(scrollPosition + 1);
+      setShowScrollUp(true);
+    }
+    if (scrollPosition >= images.length - 5) {
+      setShowScrollDown(false);
+    }
   };
 
   useEffect(() => {
     setActiveImage(images[0]);
     setScrollPosition(0);
+    setShowScrollUp(false);
+    setShowScrollDown(images.length > 4);
   }, [images]);
 
   return (
@@ -182,13 +198,15 @@ export const ImageGallery = ({ images }) => {
           className="w-full h-fit lg:h-[65vh] flex gap-4 select-none overflow-hidden"
         >
           <div id="images" className="w-[20%] h-full relative overflow-hidden">
-            <button
+            <Button
+              type="button"
               onClick={scrollUp}
-              className="absolute top-0 left-0 w-full bg-gray-200 z-10"
+              disabled={!showScrollUp}
+              className="absolute top-0 left-0 z-10 w-full h-fit text-black bg-gray-200 hover:bg-gray-300 rounded-none p-0 transition-colors"
             >
               ▲
-            </button>
-            <div className="h-full overflow-y-scroll mt-6">
+            </Button>
+            <div className="h-full overflow-y-hidden mt-6">
               {images.map((image, index) => (
                 <Image
                   key={index}
@@ -197,21 +215,22 @@ export const ImageGallery = ({ images }) => {
                   width={200}
                   height={200}
                   className={`w-full h-auto cursor-pointer transition-all mb-2 ${
-                    activeImage === image
-                      ? "border-2 border-primary-clr shadow-xl"
-                      : ""
+                    activeImage === image &&
+                    "border-2 border-primary-clr shadow-xl"
                   }`}
                   onClick={() => setActiveImage(image)}
                   style={{ transform: `translateY(-${scrollPosition * 100}%)` }}
                 />
               ))}
             </div>
-            <button
+            <Button
+              type="button"
               onClick={scrollDown}
-              className="absolute bottom-0 left-0 w-full bg-gray-200 z-10"
+              disabled={!showScrollDown}
+              className="absolute bottom-0 left-0 z-10 w-full h-fit text-black bg-gray-200 hover:bg-gray-300 rounded-none p-0 transition-colors"
             >
               ▼
-            </button>
+            </Button>
           </div>
           <div id="active-image" className="w-[80%] h-[400px] relative">
             {images.map((image, index) => (
@@ -334,9 +353,8 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
             <div
               key={index}
               className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer ${
-                selectedVariant.flavor === variant.flavor
-                  ? "bg-primary-clr text-white"
-                  : ""
+                selectedVariant.flavor === variant.flavor &&
+                "bg-primary-clr text-white"
               }`}
               onClick={() => handleVariantChange(variant)}
             >
@@ -366,28 +384,30 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
             </div>
           ))}
         </div>
-        <div className="space-y-1">
-          <div className="text-md md:text-lg lg:text-xl xl:text-2xl">
-            How this Formula supports your wellness
-          </div>
-          <div className="grid grid-cols-3 gap-4 py-2 overflow-hidden">
-            {product?.benefits.map((benefit, index) => (
-              <div key={index} className="w-full h-full relative group">
-                <div className="absolute inset-0 z-[-1] opacity-0 group-hover:opacity-100 bg-[#FDFBF9] translate-x-1 translate-y-1 flex items-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 ease-in-out duration-300 overflow-hidden"></div>
-                <div className="relative w-full h-full bg-[#FDFBF9] flex items-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 hover:shadow-sm ease-in-out duration-300 overflow-hidden">
-                  <Image
-                    src="/assets/biceps.png"
-                    alt={benefit}
-                    width={400}
-                    height={400}
-                    className="w-fit h-fit"
-                  />
-                  <span className="text-balance text-center">{benefit}</span>
+        {product?.benefits.length > 0 && (
+          <div className="space-y-1">
+            <div className="text-md md:text-lg lg:text-xl xl:text-2xl">
+              How this Formula supports your wellness
+            </div>
+            <div className="grid grid-cols-3 gap-4 py-2 overflow-hidden">
+              {product?.benefits.map((benefit, index) => (
+                <div key={index} className="w-full h-full relative group">
+                  <div className="absolute inset-0 z-[-1] opacity-0 group-hover:opacity-100 bg-[#FDFBF9] translate-x-1 translate-y-1 flex items-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 ease-in-out duration-300 overflow-hidden"></div>
+                  <div className="relative w-full h-full bg-[#FDFBF9] flex items-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 hover:shadow-sm ease-in-out duration-300 overflow-hidden">
+                    <Image
+                      src="/assets/biceps.png"
+                      alt={benefit}
+                      width={400}
+                      height={400}
+                      className="w-fit h-fit"
+                    />
+                    <span className="text-balance text-center">{benefit}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

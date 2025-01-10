@@ -131,10 +131,10 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
 
-    --off-white: #F9F6F0;
+    --off-white: #f9f6f0;
     --charcoal-black: #333333;
-    --dark-jungle-green: #0B3D2E; 
-    --muted-navy : #4B5D6B;
+    --dark-jungle-green: #0b3d2e;
+    --muted-navy: #4b5d6b;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -164,8 +164,6 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-
-
 }
 
 @layer base {

@@ -26,7 +26,8 @@ export default function TheStories({ stories = tempData }) {
             The Stories
           </h2>
           <p className="text-dark_jungle_green text-4xl">
-            The <span className="italic font-semibold">Inspire </span>Us
+            The <span className="italic font-semibold font-serif">Inspire</span>{" "}
+            Us
           </p>
         </div>
 
