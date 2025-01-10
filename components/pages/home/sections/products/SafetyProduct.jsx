@@ -37,13 +37,13 @@ const SafetyProduct = () => {
       </h2>
 
       <div className="relative min-h-[200px]">
-        {/* <HexagonConnector /> */}
+        <HexagonConnector />
 
         <div className="grid grid-cols-5 gap-4 relative z-10">
           {features.map((feature, index) => (
             <div
               key={feature.title}
-              className={`flex flex-col items-center ${index % 2 === 1 ? 'mt-20' : ''
+              className={`flex flex-col items-center ${index % 2 === 1 ? 'mt-[100px]' : 'mt-[10px]'
                 }`}
             >
               <Image
@@ -70,11 +70,12 @@ const SafetyProduct = () => {
 export default SafetyProduct;
 
 
+
 const HexagonConnector = () => {
   return (
     <svg
-      className="absolute left-0 right-0 w-full"
-      height="200"
+      className="absolute left-0 right-0 w-full hidden md:block"
+      height="240"
       style={{
         top: '50%',
         transform: 'translateY(-50%)',
@@ -83,36 +84,39 @@ const HexagonConnector = () => {
       }}
     >
       <g>
+        {/* Line from Chemical Free to Well Certified */}
         <line
-          x1="25%" y1="30%"
-          x2="35%" y2="70%"
-          stroke="#d1d5db"
-          strokeWidth="2"
-          strokeDasharray="4 4"
+          x1="11%" y1="26%"
+          x2="30%" y2="75%"
+          stroke="#385147"
+          strokeWidth="2.5"
+          strokeDasharray="6 6"
         />
+        {/* Line from Well Certified to Safety Tested */}
         <line
-          x1="35%" y1="70%"
-          x2="45%" y2="30%"
-          stroke="#d1d5db"
-          strokeWidth="2"
-          strokeDasharray="4 4"
+          x1="30%" y1="75%"
+          x2="49%" y2="25%"
+          stroke="#385147"
+          strokeWidth="2.5"
+          strokeDasharray="6 6"
         />
+        {/* Line from Safety Tested to No Preservatives */}
         <line
-          x1="45%" y1="30%"
-          x2="55%" y2="70%"
-          stroke="#d1d5db"
-          strokeWidth="2"
-          strokeDasharray="4 4"
+          x1="52%" y1="25%"
+          x2="70.5%" y2="75%"
+          stroke="#385147"
+          strokeWidth="2.5"
+          strokeDasharray="6 6"
         />
+        {/* Line from No Preservatives to No-GMO */}
         <line
-          x1="55%" y1="70%"
-          x2="65%" y2="30%"
-          stroke="#d1d5db"
-          strokeWidth="2"
-          strokeDasharray="4 4"
+          x1="71.5%" y1="73%"
+          x2="89%" y2="25%"
+          stroke="#385147"
+          strokeWidth="2.5"
+          strokeDasharray="6 6"
         />
       </g>
     </svg>
   );
 };
-

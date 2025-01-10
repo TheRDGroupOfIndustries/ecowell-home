@@ -1,26 +1,28 @@
-'use client';
-import { motion } from 'framer-motion';
+"use client";
+import { motion } from "framer-motion";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
-import React from 'react'
-import { fadeIn, staggerContainer } from '@/lib/utils';
+} from "@/components/ui/accordion";
+import React from "react";
+import { fadeIn, staggerContainer } from "@/lib/utils";
 
-export default function FrequentlyAskedQuestions() {
+export default function FrequentlyAskedQuestions({ faqs }) {
+  console.log(faqs);
+
   return (
     <motion.div
       variants={staggerContainer}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.2 }}
-      className="flex flex-col w-full gap-10 justify-center items-center"
+      className="flex flex-col w-full gap-10 justify-center items-center mt-24 py-4"
     >
       {/* Section Header */}
       <motion.h1
-        variants={fadeIn('up', 0.1, 0.8)}
+        variants={fadeIn("up", 0.1, 0.3)}
         className="text-4xl text-center text-dark_jungle_green font-medium"
       >
         Frequently Asked Questions
@@ -28,29 +30,32 @@ export default function FrequentlyAskedQuestions() {
 
       {/* Accordion Items */}
       <motion.div
-        variants={fadeIn('up', 0.2, 0.8)}
+        variants={fadeIn("up", 0.2, 0.5)}
         className="w-full md:w-[80%] px-3 flex flex-col gap-5"
       >
-        <Accordion type="single" collapsible>
-          <AccordionItem value="item-1">
-            <AccordionTrigger>Is it accessible?</AccordionTrigger>
-            <AccordionContent>
-              Yes. It adheres to the WAI-ARIA design pattern.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-2">
-            <AccordionTrigger>Is it styled?</AccordionTrigger>
-            <AccordionContent>
-              Yes. It comes with default styles that match the other components&apos; aesthetic.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-3">
-            <AccordionTrigger>Is it animated?</AccordionTrigger>
-            <AccordionContent>
-              Yes. It&apos;s animated by default, but you can disable it if you prefer.
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+        {!faqs.lenght ? (
+          <Accordion type="single" collapsible className="space-y-4">
+            {faqs?.map((faq, index) => (
+              <motion.div key={index} variants={fadeIn("up", 0.2, 0.8 * index)}>
+                <AccordionItem
+                  value={`item-${index}`}
+                  className="border-2 border-[#4b5d6b94] rounded-xl p-2"
+                >
+                  <AccordionTrigger className="text-primary-clr text-lg md:text-xl focus:no-underline">
+                    {faq?.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="md:text-lg">
+                    {faq?.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              </motion.div>
+            ))}
+          </Accordion>
+        ) : (
+          <div className="text-center text-lg md:text-xl text-primary-clr font-medium p-4">
+            No FAQs available at the moment.
+          </div>
+        )}
       </motion.div>
     </motion.div>
   );

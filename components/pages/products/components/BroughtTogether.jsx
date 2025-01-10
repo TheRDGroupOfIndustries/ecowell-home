@@ -1,11 +1,12 @@
-'use client'
-import { useEffect, useState } from 'react';
-import ProductCardSelect from '@/components/ui/productCardSelect';
+"use client";
+import { useEffect, useState } from "react";
+import ProductCardSelect from "@/components/ui/productCardSelect";
 import { useCart } from "@/context/CartProvider";
-import Image from 'next/image';
-import { Check } from 'lucide-react';
+import Image from "next/image";
+import { Check } from "lucide-react";
 import { motion } from "framer-motion";
-import { fadeIn, staggerContainer } from '@/lib/utils';
+import { fadeIn, staggerContainer } from "@/lib/utils";
+import ReactCountUp from "@/components/ui/countUp";
 
 const SkeletonCard = () => (
   <div className="animate-pulse">
@@ -17,7 +18,7 @@ const SkeletonCard = () => (
 
 export function FrequentlyBoughtTogether() {
   const { addToCart } = useCart();
-  
+
   const [selectedProducts, setSelectedProducts] = useState(new Set([]));
   const [randomProducts, setRandomProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,12 +27,14 @@ export function FrequentlyBoughtTogether() {
     const fetchRandomProducts = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('/api/products?sort=random-products&limit=3');
+        const response = await fetch(
+          "/api/products?sort=random-products&limit=3"
+        );
         const data = await response.json();
         setRandomProducts(data.products);
-        setSelectedProducts(new Set(data.products.map(p => p._id)));
+        setSelectedProducts(new Set(data.products.map((p) => p._id)));
       } catch (error) {
-        console.error('Error fetching random products:', error);
+        console.error("Error fetching random products:", error);
       } finally {
         setIsLoading(false);
       }
@@ -51,13 +54,13 @@ export function FrequentlyBoughtTogether() {
   };
 
   const totalPrice = randomProducts
-    .filter(product => selectedProducts.has(product._id))
+    .filter((product) => selectedProducts.has(product._id))
     .reduce((sum, product) => sum + (product.salePrice || product.price), 0);
 
   const handleAddToCart = () => {
     randomProducts
-      .filter(product => selectedProducts.has(product._id))
-      .forEach(product => {
+      .filter((product) => selectedProducts.has(product._id))
+      .forEach((product) => {
         addToCart(product, 1, product.variants[0]);
       });
   };
@@ -70,7 +73,7 @@ export function FrequentlyBoughtTogether() {
       viewport={{ once: false, amount: 0.25 }}
       className="max-w-7xl mx-auto p-2 md:p-6"
     >
-      <motion.h2 
+      <motion.h2
         variants={fadeIn("up", 0.2, 1)}
         className="text-2xl font-bold mb-6"
       >
@@ -85,37 +88,43 @@ export function FrequentlyBoughtTogether() {
           </>
         ) : (
           randomProducts.map((product, index) => (
-            <motion.div 
+            <motion.div
               key={product._id}
-              variants={fadeIn('up', 0.3 + index * 0.1)}
+              variants={fadeIn("up", 0.3 + index * 0.1)}
               className="relative"
             >
-             {index > 0 && (
+              {index > 0 && (
                 <div className="absolute -left-10 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-600">
                   +
                 </div>
               )}
-              <ProductCardSelect 
+              <ProductCardSelect
                 product={{
                   id: product._id,
                   title: product.title,
                   price: `₹${product.salePrice || product.price}`,
                   oldPrice: product.salePrice ? `₹${product.price}` : undefined,
-                  image: product.variants[0]?.images[0] || '/placeholder.png',
-                  hoverImage: product.variants[0]?.images[1] || '/placeholder.png',
+                  image: product.variants[0]?.images[0] || "/placeholder.png",
+                  hoverImage:
+                    product.variants[0]?.images[1] || "/placeholder.png",
                 }}
                 isSelected={selectedProducts.has(product._id)}
-                onToggle={() => toggleProduct(product._id)} 
+                onToggle={() => toggleProduct(product._id)}
               />
             </motion.div>
           ))
         )}
-        <motion.div 
-          variants={fadeIn("up", 0.4)} 
+        <motion.div
+          variants={fadeIn("up", 0.4)}
           className="flex flex-col md:ml-auto items-center justify-evenly md:p-4 rounded-lg w-full col-span-3 md:col-span-1"
         >
-          <div className="text-lg flex md:flex-col gap-2 items-center mt-">
-            Total Price: <span className="font-bold">₹{totalPrice.toFixed(2)}/-</span>
+          <div className="text-lg space-y-2 text-center">
+            Total Price:
+            <div>
+              <ReactCountUp amt={totalPrice} prefix="₹" className="font-bold" />
+              /-
+            </div>
+            {/* <span className="font-bold">₹{totalPrice.toFixed(2)}/-</span> */}
           </div>
           <button
             className="bg-green-900 text-white w-full px-6 py-2 rounded-md hover:bg-green-800 transition-colors "
@@ -126,7 +135,7 @@ export function FrequentlyBoughtTogether() {
           </button>
         </motion.div>
       </div>
-      </motion.div>
+    </motion.div>
   );
 }
 
@@ -137,14 +146,13 @@ export function ProductCardWithcheckbox({ product, isSelected, onToggle }) {
         className="absolute z-10 top-2 right-2 w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer"
         onClick={onToggle}
         style={{
-          backgroundColor: isSelected ? '#065f46' : 'white',
-          borderColor: isSelected ? '#065f46' : '#d1d5db'
+          backgroundColor: isSelected ? "#065f46" : "white",
+          borderColor: isSelected ? "#065f46" : "#d1d5db",
         }}
       >
         {isSelected && <Check size={16} className="text-white" />}
       </div>
       <div className="group bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden ">
-
         <div className="absolute z-50 bg-[#0B3D2E] text-white text-xs font-bold px-2 py-1 rounded-tr-lg">
           {product.discount}
         </div>
