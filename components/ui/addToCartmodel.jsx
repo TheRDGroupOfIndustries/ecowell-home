@@ -210,7 +210,7 @@ const Modal = ({ product }) => {
                   <LuLoaderCircle className="animate-spin" />
                 )}
               </Button>
-              <Link href={`/products/${product?.sku}`} className="w-full">
+              <Link href={`/products/${product?.sku}`} className="w-full h-fit">
                 <Button
                   type="button"
                   size="sm"
