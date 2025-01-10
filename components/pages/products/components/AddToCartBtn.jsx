@@ -8,6 +8,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LuLoaderCircle } from "react-icons/lu";
 import Link from "next/link";
+import { contactNumber } from "@/constants/data";
 
 export default function AddToCartBtn({ product, selectedVariant }) {
   const [quantity, setQuantity] = useState(1);
@@ -89,12 +90,12 @@ export default function AddToCartBtn({ product, selectedVariant }) {
           {whatsappStates[currentImageIndex].showText && (
             <div className="w-full flex-1">
               <Link
-                href="https://wa.me/919876345621"
+                href={`https://wa.me/${contactNumber}`}
                 target="_blank"
                 className="w-full ml-auto text-xs md:text-base text-white text-end flex flex-col text-nowrap"
               >
                 <p>Get in touch</p>
-                <p>+91 9876345621</p>
+                <p>+91 {contactNumber}</p>
               </Link>
             </div>
           )}
@@ -117,7 +118,7 @@ export default function AddToCartBtn({ product, selectedVariant }) {
             type="button"
             variant="ghost"
             onClick={decreaseQuantity}
-            className="px-4 py-2  hover:bg-transparent font-medium text-gray-600 focus:outline-none text-sm md:text-xl"
+            className="px-4 py-2 hover:bg-transparent font-medium text-gray-600 focus:outline-none text-md md:text-2xl"
             aria-label="Decrease quantity"
           >
             −
@@ -130,7 +131,7 @@ export default function AddToCartBtn({ product, selectedVariant }) {
             variant="ghost"
             onClick={increaseQuantity}
             className="px-4 py-2 font-medium text-gray-600 hover:bg-transparent focus:outline-none"
-            aria-label="Increase quantity text-sm md:text-xl"
+            aria-label="Increase quantity text-md md:text-2xl"
           >
             +
           </Button>
@@ -148,7 +149,7 @@ export default function AddToCartBtn({ product, selectedVariant }) {
               ? "Adding to cart"
               : "Click to add in cart"
           }
-          className="rounded-none w-[150px] md:w-[200px] bg-primary-clr text-white py-2 hover:bg-green-700 transition text-sm md:text-xl"
+          className="rounded-none w-[150px] md:w-[200px] bg-primary-clr text-white py-2 hover:bg-green-700 transition text-md md:text-2xl"
         >
           {productExistsInCart(product._id) ? (
             "Go to Cart"

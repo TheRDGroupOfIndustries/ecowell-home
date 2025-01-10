@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Star } from 'lucide-react';
+import { Star } from "lucide-react";
 import { Button } from "./button";
 import { useCart } from "@/context/CartProvider";
 import Link from "next/link";
@@ -18,7 +18,9 @@ const ProductCard = ({ product, loading = false }) => {
   const [imageError, setImageError] = useState(false);
   const [imageTwoError, setImageTwoError] = useState(false);
 
-  const isInWishlist = wishlistProducts.some(item => item._id === product?._id);
+  const isInWishlist = wishlistProducts.some(
+    (item) => item._id === product?._id
+  );
 
   const handleWishlistToggle = (e) => {
     e.preventDefault();
@@ -39,7 +41,7 @@ const ProductCard = ({ product, loading = false }) => {
       } overflow-hidden`}
     >
       <Link href={`/products/${product?.sku}`}>
-        <div className="w-full h-[200px] relative bg-gray-200 overflow-hidden">
+        <div className="w-full aspect-square relative bg-gray-200 overflow-hidden">
           {!loading && product?.discount && product?.discount > 0 ? (
             <div className="absolute top-0 left-0 z-[5] bg-primary-clr text-white text-xs font-bold px-2 py-1 rounded-tr-lg">
               {Math.round(product?.discount)}% OFF
@@ -60,9 +62,8 @@ const ProductCard = ({ product, loading = false }) => {
                   }
                   alt={product?.title}
                   onError={() => setImageError(true)}
-                  width={400}
-                  height={400}
-                  className="w-full h-full object-contain"
+                  fill
+                  className="object-contain p-2"
                 />
               </div>
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 ease-in-out duration-300 overflow-hidden">
@@ -78,9 +79,8 @@ const ProductCard = ({ product, loading = false }) => {
                   }
                   alt={product?.title}
                   onError={() => setImageTwoError(true)}
-                  width={400}
-                  height={400}
-                  className="w-full h-full object-contain"
+                  fill
+                  className="object-contain p-2"
                 />
               </div>
               <button
@@ -90,12 +90,15 @@ const ProductCard = ({ product, loading = false }) => {
                 {isInWishlist ? (
                   <AiFillHeart size={24} className="text-red-500" />
                 ) : (
-                  <CiHeart size={24} className="text-gray-500 hover:scale-110 transition-all duration-200" />
+                  <CiHeart
+                    size={24}
+                    className="text-gray-500 hover:scale-110 transition-all duration-200"
+                  />
                 )}
               </button>
             </>
           ) : (
-            <div className="w-full h-full bg-gray-300"></div>
+            <div className="w-full h-full bg-gray-200"></div>
           )}
         </div>
         <div className="mt-1">
@@ -115,7 +118,9 @@ const ProductCard = ({ product, loading = false }) => {
               <>
                 <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
                 <span>
-                  {product?.ratings ? "|  " + product?.ratings.toFixed(1) : "| 0"}
+                  {product?.ratings
+                    ? "|  " + product?.ratings.toFixed(1)
+                    : "| 0"}
                 </span>
                 <span className="text-gray-500">
                   {product?.reviews_number
@@ -140,13 +145,11 @@ const ProductCard = ({ product, loading = false }) => {
                 : ""}
             </span>
 
-            {!loading &&
-              product?.price &&
-              product?.price !== product?.salePrice && (
-                <span className="text-sm line-through text-gray-500">
-                  ₹{product?.price?.toLocaleString()}/-
-                </span>
-              )}
+            {!loading && product?.price && product?.salePrice !== 0 && (
+              <span className="text-sm line-through text-gray-500">
+                ₹{product?.price?.toLocaleString()}/-
+              </span>
+            )}
           </div>
         </div>
       </Link>

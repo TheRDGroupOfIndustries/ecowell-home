@@ -52,21 +52,21 @@ const Products = ({ category }) => {
   const handleSort = (value) => {
     setSort(value);
     setSelectedSort(value);
-    setPagination(prev => ({ ...prev, currentPage: 1 }));
+    setPagination((prev) => ({ ...prev, currentPage: 1 }));
   };
 
   const handleCategoryClick = (category) => {
     setActiveCategory(category === "All Products" ? "" : category);
-    setPagination(prev => ({ ...prev, currentPage: 1 }));
+    setPagination((prev) => ({ ...prev, currentPage: 1 }));
   };
 
   const loadPage = (pageNumber) => {
-    setPagination(prev => ({ ...prev, currentPage: pageNumber }));
+    setPagination((prev) => ({ ...prev, currentPage: pageNumber }));
   };
 
   return (
     <div className={`${pt} mt-[120px] px-4 sm:px-8 lg:px-16 overflow-hidden`}>
-      <div className="w-full h-fit flex-center">
+      <div className="w-full h-fit">
         <Button variant="link" size="sm" className="text-md">
           <CiFilter size={20} />
           Filter
@@ -118,7 +118,7 @@ const Products = ({ category }) => {
               <button
                 className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
                   selectedSort === "price-low-high" ? "bg-gray-200" : ""
-                  }`}
+                }`}
                 onClick={() => handleSort("price-low-high")}
               >
                 Price: Low to High
@@ -126,7 +126,7 @@ const Products = ({ category }) => {
               <button
                 className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
                   selectedSort === "price-high-low" ? "bg-gray-200" : ""
-                  }`}
+                }`}
                 onClick={() => handleSort("price-high-low")}
               >
                 Price: High to Low

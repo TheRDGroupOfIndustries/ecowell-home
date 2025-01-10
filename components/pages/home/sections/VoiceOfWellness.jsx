@@ -11,41 +11,41 @@ const VoiceOfWellness = () => {
     {
       id: 1,
       name: "John Smith",
-      role: "Professional weight lifter",
+      role: "Professional Bodybuilder",
       image: "/pfp.png",
-      text: "Lorem ipsum dolor sit amet consectetur. Massa sapien tincidunt faucibus gravida ullamcorper pulvinar. Auctor varius ultrices et purus id pellentesque velit maecenas euismod.",
+      text: "The quality of proteins here is unmatched. I've tried many brands, but these supplements have significantly improved my muscle recovery and strength gains. The fast delivery and authentic products keep me coming back.",
     },
     {
       id: 2,
       name: "Jane Doe",
-      role: "Fitness Instructor",
+      role: "Certified Nutrition Expert",
       image: "/pfp.png",
-      text: "Exceptional results and amazing support throughout my fitness journey. The personalized approach made all the difference in achieving my goals.",
+      text: "As a nutrition expert, I highly recommend their protein supplements. The ingredients are clean, well-sourced, and the amino acid profile is perfect for both athletes and fitness enthusiasts. Their customer service is exceptional!",
     },
     {
       id: 3,
       name: "Mike Johnson",
-      role: "Yoga Enthusiast",
+      role: "CrossFit Trainer",
       image: "/pfp.png",
-      text: "The holistic approach to wellness here is unmatched. It's not just about physical fitness, but mental well-being too. Truly transformative experience.",
+      text: "What sets them apart is their range of protein options for different dietary needs. Whether you're vegan or prefer whey, they have premium quality products. My clients have seen remarkable improvements in their performance.",
     },
     {
       id: 4,
       name: "Sarah Williams",
-      role: "Nutrition Coach",
+      role: "Fitness Competitor",
       image: "/pfp.png",
-      text: "As a nutrition coach, I'm impressed by the comprehensive wellness programs. The results my clients achieve here are remarkable.",
+      text: "Finding genuine supplements can be challenging, but this platform ensures authenticity. Their protein powders mix perfectly, taste great, and have helped me maintain lean muscle mass during competition prep.",
     },
     {
       id: 5,
       name: "David Chen",
-      role: "Marathon Runner",
+      role: "Sports Nutritionist",
       image: "/pfp.png",
-      text: "The supportive community and expert guidance helped me prepare for my first marathon. Couldn't have done it without this amazing team.",
+      text: "The transparency about ingredient sourcing and third-party testing gives me confidence in recommending these products. Their protein supplements provide excellent value for money without compromising on quality.",
     },
   ];
 
-  const [[page, direction], setPage] = useState([0, 0]);
+  const [[page, direction], setPage] = useState([2, 0]);
 
   const controls = useAnimationControls();
 
@@ -73,7 +73,6 @@ const VoiceOfWellness = () => {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.25 }}
-      
     >
       {/* Right gradient overlay */}
       <div className="absolute right-0 top-0 w-20 md:w-60 h-full bg-gradient-to-l from-[#E7E9EB] to-transparent z-10" />
@@ -83,7 +82,9 @@ const VoiceOfWellness = () => {
           variants={fadeIn("down", 0.2)}
           className="text-center mb-20"
         >
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">Voices Of Wellness</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+            Voices Of Wellness
+          </h1>
           <p className="text-sm sm:text-xl">
             Real Stories. Genuine Transformations. See How Ecowell
             <br className="hidden sm:flex" />
@@ -104,7 +105,12 @@ const VoiceOfWellness = () => {
                     : index < page
                     ? `-${(page - index) * 100}px`
                     : "200%",
-                y: index === page ? 0 : index < page ? 40 : -40,
+                y:
+                  index === page
+                    ? 0
+                    : index < page
+                    ? 40 + (page - index) * 25
+                    : -10,
                 scale: index === page ? 1 : 0.8,
                 opacity:
                   index === page
@@ -133,7 +139,7 @@ const VoiceOfWellness = () => {
             <button
               onClick={() => paginate(-1)}
               disabled={page === 0}
-              className={`w-10 h-10 rounded-full ${
+              className={`w-10 h-10 select-none rounded-full ${
                 page === 0
                   ? "bg-gray-300"
                   : page === testimonials.length - 1
@@ -161,10 +167,10 @@ const VoiceOfWellness = () => {
   );
 };
 
-// Testimonial Card Component
+// testimonial card component
 const TestimonialCard = ({ testimonial }) => {
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto transition-all duration-500">
+    <div className="min-h-[250px] h-fit bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto transition-all duration-500">
       <div className="flex items-center gap-4 mb-6">
         <div className="relative w-12 h-12">
           <Image
@@ -180,11 +186,20 @@ const TestimonialCard = ({ testimonial }) => {
           <p className="text-gray-500 text-sm">{testimonial.role}</p>
         </div>
       </div>
-      <div className="relative">
-        <span className="text-5xl text-secondary-clr absolute -left-4 -top-4">
+      <div className="relative space-y-2">
+        <div className="">
+          <Image
+            src="/testimonialComa.png"
+            alt="quote"
+            width={50}
+            height={50}
+            className="w-10 h-8 overflow-hidden"
+          />
+        </div>
+        {/* <span className="text-5xl text-secondary-clr absolute -left-4 -top-4">
           &quot;
-        </span>
-        <p className="text-gray-700 text-lg leading-relaxed pl-4">
+        </span> */}
+        <p className="text-gray-700 text-lg leading-relaxed overflow-auto">
           {testimonial.text}
         </p>
       </div>

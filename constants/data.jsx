@@ -16,6 +16,8 @@ export const passwordPattern =
 
 export const DEFAULT_AVATAR = "/pfp.png";
 
+export const contactNumber = "7065937377";
+
 export const links = [
   { id: 1, head: "Home", herf: "/" },
   { id: 1, head: "Products", herf: "/products" },
@@ -77,8 +79,8 @@ export const footerData = {
         items: [
           {
             type: "phone",
-            content: "+91 9355951519",
-            href: "tel:+919355951519",
+            content: `+91 ${contactNumber}`,
+            href: `tel:${contactNumber}`,
             icon: <CiPhone size={20} className="w-6 h-6 text-primary-clr" />,
           },
           {
@@ -172,10 +174,11 @@ export const categoriesData = [
 
 export const certificationsData = [
   { id: 1, alt: "FDA", img: "/c1.png" },
-  { id: 1, alt: "HACCP", img: "/c2.png" },
-  { id: 1, alt: "GMP", img: "/c3.png" },
-  { id: 1, alt: "ISO", img: "/c4.png" },
-  { id: 1, alt: "FSSAI", img: "/c5.png" },
+  { id: 2, alt: "HACCP", img: "/c2.png" },
+  { id: 3, alt: "GMP", img: "/c3.png" },
+  { id: 4, alt: "ISO", img: "/c4.png" },
+  { id: 5, alt: "FSSAI", img: "/c5.png" },
+  { id: 6, alt: "NOW GMO", img: "/c6.png" },
 ];
 
 export const partnerLogoData = [

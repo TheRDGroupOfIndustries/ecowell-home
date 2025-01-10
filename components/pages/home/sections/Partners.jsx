@@ -1,71 +1,82 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { fadeIn, staggerContainer } from "@/lib/utils";
 import { partnerLogoData } from "@/constants/data";
 
 const Partners = () => {
   const scrollRef = useRef(null);
+  const [scrollSpeed, setScrollSpeed] = useState(30);
+  const controls = useAnimation();
+
+  // Adjust speed based on screen width
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setScrollSpeed(width < 768 ? 20 : 30);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const startAnimation = useCallback(() => {
+    controls.start({
+      x: [0, "-50%"],
+      transition: {
+        x: {
+          repeat: Infinity,
+          repeatType: "loop",
+          duration: scrollSpeed,
+          ease: "linear",
+        },
+      },
+    });
+  }, [controls, scrollSpeed]);
+
+  useEffect(() => {
+    startAnimation();
+  }, [scrollSpeed, startAnimation]);
 
   return (
     <motion.div
-      className=" h-fitp-4 sm:p-6  md:p-10 overflow-hidden relative"
+      className="h-fit p-4 sm:p-6 md:p-10 overflow-hidden relative"
       variants={staggerContainer(0.1, 0.1)}
       initial="hidden"
       animate="show"
     >
-      {/* Left & right gradient overlay */}
       <div className="absolute left-0 top-0 w-60 h-full bg-gradient-to-r from-white to-transparent z-10" />
       <div className="absolute right-0 top-0 w-60 h-full bg-gradient-to-l from-white to-transparent z-10" />
 
       <motion.div
         ref={scrollRef}
-        className="flex justify-start whitespace-nowrap space-x-8"
-        animate={{
-          x: ["0%", "-50%"],
+        className="flex justify-start items-center whitespace-nowrap space-x-8"
+        animate={controls}
+        onHoverStart={() => {
+          controls.stop();
         }}
-        transition={{
-          x: {
-            repeat: Infinity,
-            repeatType: "loop",
-            duration: 30,
-            ease: "linear",
-          },
-        }}
-        whileHover={{
-          animationPlayState: "paused",
-          x: "var(--x)",
-        }}
-        onHoverStart={(e) => {
-          if (scrollRef.current) {
-            scrollRef.current.style.setProperty(
-              "--x",
-              getComputedStyle(scrollRef.current).transform
-            );
-          }
+        onHoverEnd={() => {
+          startAnimation();
         }}
       >
-        {partnerLogoData.map((logo, index) => (
-          <motion.div key={index} variants={fadeIn('up', 0.2 + index * 0.1)}>
+        {[...partnerLogoData, ...partnerLogoData].map((logo, index) => (
+          <motion.div
+            key={index}
+            variants={fadeIn(
+              "up",
+              0.2 + (index % partnerLogoData.length) * 0.1
+            )}
+            className="flex-shrink-0"
+          >
             <Image
               src={logo.src}
               alt={logo.alt}
               width={400}
               height={90}
-              className=" max-w-[400px] h-[90px]"
-            />
-          </motion.div>
-        ))}
-        {partnerLogoData.map((logo, index) => (
-          <motion.div key={`repeat-${index}`} variants={fadeIn('up', 0.2 + index * 0.1)}>
-            <Image
-              src={logo.src}
-              alt={logo.alt}
-              width={400}
-              height={90}
-              className=" max-w-[400px]  h-[90px]"
+              className="w-fit max-w-[400px] h-[90px] object-contain"
+              loading={index < partnerLogoData.length ? "eager" : "lazy"}
             />
           </motion.div>
         ))}

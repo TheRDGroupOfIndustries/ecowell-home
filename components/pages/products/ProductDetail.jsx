@@ -77,11 +77,11 @@ const ProductDetail = ({ productSku }) => {
 
   return (
     <>
-      <section className="w-full h-full   md:pt-28">
+      <section className="w-full h-full md:pt-28">
         <AddToCartBtn product={product} selectedVariant={selectedVariant} />
 
         <motion.div
-          initial={{ opacity: 0, y: 150 }}
+          initial={{ opacity: 0, y: -150 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8 p-4 md:px-8 lg:px-10 xl:px-14"
@@ -128,7 +128,7 @@ const ProductDetail = ({ productSku }) => {
             className="w-full "
           />
         </motion.div>
-        {/* <TheStories /> */}
+        <TheStories />
         <PurposeAndTrust />
         <motion.div
           initial={{ opacity: 0, y: 100 }}
@@ -370,20 +370,20 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
           <div className="text-md md:text-lg lg:text-xl xl:text-2xl">
             How this Formula supports your wellness
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-4 py-2 overflow-hidden">
             {product?.benefits.map((benefit, index) => (
-              <div
-                key={index}
-                className="flex-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 overflow-hidden line-clamp-2 "
-              >
-                <Image
-                  src="/assets/biceps.png"
-                  alt={benefit}
-                  width={400}
-                  height={400}
-                  className="w-fit h-fit"
-                />
-                {benefit}
+              <div key={index} className="w-full h-full relative group">
+                <div className="absolute inset-0 z-[-1] opacity-0 group-hover:opacity-100 bg-[#FDFBF9] translate-x-1 translate-y-1 flex items-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 ease-in-out duration-300 overflow-hidden"></div>
+                <div className="relative w-full h-full bg-[#FDFBF9] flex items-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 hover:shadow-sm ease-in-out duration-300 overflow-hidden">
+                  <Image
+                    src="/assets/biceps.png"
+                    alt={benefit}
+                    width={400}
+                    height={400}
+                    className="w-fit h-fit"
+                  />
+                  <span className="text-balance text-center">{benefit}</span>
+                </div>
               </div>
             ))}
           </div>

@@ -19,18 +19,18 @@ const Hero = () => {
       className="group"
     >
       <div
-        className={`w-full h-[330px] sm:h-[60vh] md:h-[65vh] lg:h-[70vh] relative bg-transparent ${
+        className={`w-full h-[330px] sm:h-[60vh] md:h-[65vh] lg:h-[75vh] relative bg-transparent ${
           isNotificationOpen ? "mt-6" : "mt-0"
         } overflow-hidden`}
       >
         <div className="z-10 w-full h-full flex items-end justify-center pb-10 sm:pb-8 md:pb-12 lg:pb-14 2xl:pb-20">
-          <div className="w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 text-center grid items-center gap-4 md:gap-6 lg:gap-8">
-            <motion.h1
+          <div className="w-full md:max-w-3xl lg:max-w-4xl text-center grid items-center gap-4 md:gap-5 lg:gap-6">
+            <motion.div
               variants={fadeIn("up", 0.3)}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl sm:font-extralight text-white text-balanc"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl sm:font-extralight leading-10 text-white text-center text-balanc"
             >
               Redefining Wellness, One Scoop at a Time
-            </motion.h1>
+            </motion.div>
             <motion.div variants={fadeIn("up", 0.5)}>
               <Button
                 onClick={handleShopNowBtn}
