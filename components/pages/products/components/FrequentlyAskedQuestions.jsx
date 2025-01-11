@@ -10,7 +10,7 @@ import React from "react";
 import { fadeIn, staggerContainer } from "@/lib/utils";
 
 export default function FrequentlyAskedQuestions({ faqs }) {
-  console.log(faqs);
+  // console.log(faqs);
 
   return (
     <motion.div

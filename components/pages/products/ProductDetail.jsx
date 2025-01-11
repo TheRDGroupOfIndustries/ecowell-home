@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import AddToCartBtn from "./components/AddToCartBtn";
+import { Button } from "@/components/ui/button";
 import { FrequentlyBoughtTogether } from "./components/BroughtTogether";
 import CustomerReviews from "./components/CustomerReviews";
 import FrequentlyAskedQuestions from "./components/FrequentlyAskedQuestions";
@@ -86,7 +86,7 @@ const ProductDetail = ({ productSku }) => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8 p-4 md:px-8 lg:px-10 xl:px-14"
         >
-          <ImageGallery images={selectedVariant.images} />
+          <ImageGallery images={selectedVariant?.images} />
           <Details
             product={product}
             selectedVariant={selectedVariant}
@@ -95,11 +95,15 @@ const ProductDetail = ({ productSku }) => {
         </motion.div>
         <FrequentlyBoughtTogether />
         <RelatedProduct
-          category={product.category.title}
-          currentProductId={product._id}
+          category={product?.category?.title}
+          currentProductId={product?._id}
         />
         <ProductDiscover sku={productSku} />
-        <Ingredient sku={productSku} />
+        <Ingredient
+          sku={productSku}
+          productTitle={product?.title}
+          productIngredientHighlights={product?.ingredientHighlights || []}
+        />
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}

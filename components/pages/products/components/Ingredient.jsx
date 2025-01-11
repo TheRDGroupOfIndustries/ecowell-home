@@ -1,31 +1,33 @@
+"use client";
+
+// import React, { useState, useEffect } from "react";
 import { fadeIn, staggerContainer } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
 
-const fetchProductData = async (sku) => {
-  try {
-    const response = await fetch(`/api/products/${sku}`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch product");
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    return null;
-  }
-};
+// const fetchProductData = async (sku) => {
+//   try {
+//     const response = await fetch(`/api/products/${sku}`);
+//     if (!response.ok) {
+//       throw new Error("Failed to fetch product");
+//     }
+//     return await response.json();
+//   } catch (error) {
+//     console.error("Error fetching product:", error);
+//     return null;
+//   }
+// };
 
-export default function Ingredient({ sku }) {
-  const [productData, setProductData] = useState(null);
+const Ingredient = ({ sku, productTitle, productIngredientHighlights }) => {
+  // const [productData, setProductData] = useState(null);
 
-  useEffect(() => {
-    const loadProductData = async () => {
-      const data = await fetchProductData(sku);
-      setProductData(data);
-    };
-    loadProductData();
-  }, [sku]);
+  // useEffect(() => {
+  //   const loadProductData = async () => {
+  //     const data = await fetchProductData(sku);
+  //     setProductData(data);
+  //   };
+  //   loadProductData();
+  // }, [sku]);
 
   return (
     <motion.div
@@ -55,12 +57,12 @@ export default function Ingredient({ sku }) {
               </motion.h1>
             </motion.div>
           </div>
-          <div className="w-[40%] md:w-[50%] mb-2 text-dark_jungle_green">
+          <div className="w-[40%] md:w-[50%] text-dark_jungle_green mb-5">
             <motion.p
               variants={fadeIn("down", 0.2)}
               className="text-xs sm:text-base md:text-2xl"
             >
-              What makes {productData?.title || "[Product Name]"} stand out?
+              What makes {productTitle} stand out?
             </motion.p>
             <motion.p
               variants={fadeIn("down", 0.2)}
@@ -74,9 +76,9 @@ export default function Ingredient({ sku }) {
       <div className="w-full h-[240px] md:h-[340px] grid grid-cols-3 gap-0">
         {/** Ingredient Cards */}
         {[
-          productData?.ingredientHighlights[0] || 1,
-          productData?.ingredientHighlights[1] || 2,
-          productData?.ingredientHighlights[2] || 3,
+          productIngredientHighlights[0] || 1,
+          productIngredientHighlights[1] || 2,
+          productIngredientHighlights[2] || 3,
         ].map((ingredient, index) => (
           <motion.div
             key={ingredient}
@@ -125,4 +127,6 @@ export default function Ingredient({ sku }) {
       </div>
     </motion.div>
   );
-}
+};
+
+export default Ingredient;
