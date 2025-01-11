@@ -1,15 +1,32 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn, staggerContainer } from "@/lib/utils";
 import { useNotification } from "@/context/NotificationProvider";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 const Hero = () => {
   const router = useRouter();
   const { isNotificationOpen } = useNotification();
+  const [currentBg, setCurrentBg] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBg((prev) => (prev === 0 ? 1 : 0));
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleShopNowBtn = () => router.push("/products");
+
+  const backgrounds = [
+    "/assets/hero-banner-image.jpg",
+    "/assets/hero-banner.gif",
+  ];
+
   return (
     <motion.div
       variants={staggerContainer()}
@@ -44,7 +61,26 @@ const Hero = () => {
             </motion.div>
           </div>
         </div>
-        <div className="absolute inset-0 -z-10 bg-[url('/assets/hero-banner.gif')] bg-cover bg-center bg-no-repeat transition-transform duration-500 ease-in-out group-hover:scale-110"></div>
+        {/* <div className="absolute inset-0 -z-10 bg-[url('/assets/hero-banner.gif')] bg-cover bg-center bg-no-repeat transition-transform duration-500 ease-in-out group-hover:scale-110"></div> */}
+
+        <div className="absolute inset-0 -z-10 group-hover:scale-110 duration-500 ease-in-out overflow-hidden">
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={currentBg}
+              initial={{ x: "100%" }}
+              animate={{ x: "0%" }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 0.95, ease: "easeInOut" }}
+              className="absolute inset-0 w-full h-full"
+              style={{
+                backgroundImage: `url(${backgrounds[currentBg]})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+            />
+          </AnimatePresence>
+        </div>
       </div>
     </motion.div>
   );
