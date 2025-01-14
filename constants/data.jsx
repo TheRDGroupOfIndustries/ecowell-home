@@ -185,4 +185,7 @@ export const partnerLogoData = [
   { src: "/l1.png", alt: "Logo 1" },
   { src: "/l2.png", alt: "Logo 2" },
   { src: "/l3.png", alt: "Logo 3" },
+  { src: "/l1.png", alt: "Logo 1" },
+  { src: "/l2.png", alt: "Logo 2" },
+  { src: "/l3.png", alt: "Logo 3" },
 ];

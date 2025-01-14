@@ -34,7 +34,7 @@ const Hero = () => {
           isNotificationOpen ? "mt-6" : "mt-0"
         } overflow-hidden`}
       >
-        <div className="z-10 w-full h-full flex items-end justify-center pb-10 sm:pb-8 md:pb-12 lg:pb-14 2xl:pb-20">
+        <div className="z-10 w-full h-full flex items-end justify-center pb-10 sm:pb-8 md:pb-12 lg:pb-20 2xl:pb-32">
           <div className="w-full md:max-w-3xl lg:max-w-4xl text-center grid items-center gap-4 md:gap-5 lg:gap-6">
             <motion.div
               variants={fadeIn("up", 0.3)}
@@ -61,6 +61,10 @@ const Hero = () => {
             autoplay={true}
             autoplaySpeed={6000}
             slidesToShow={1}
+            slidesToShow560={1}
+            slidesToShow680={1}
+            slidesToShow970={1}
+            slidesToShow1280={1}
             dots={false}
             arrows={false}
             className="w-full h-full overflow-hidden"

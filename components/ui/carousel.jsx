@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -11,9 +10,13 @@ const Carousel = ({
   infinite = true,
   autoplay = false,
   autoplaySpeed = 2000,
+  speed = 900,
   pauseOnHover = true,
   slidesToShow = 5,
-  allSizeSlidesToShow = 1,
+  slidesToShow560,
+  slidesToShow680,
+  slidesToShow970,
+  slidesToShow1280,
   arrows = false,
   dots = false,
   className,
@@ -25,62 +28,67 @@ const Carousel = ({
     swipeToSlide: true,
     touchMove: true,
     adaptiveHeight: true,
-    // focusOnSelect: true,
-    // className: "center",
-    // centerMode: true,
-    // centerPadding: "10px",
-
+    lazyLoad: true,
     infinite: infinite,
     autoplay: autoplay,
     autoplaySpeed: autoplaySpeed,
+    speed: speed,
     pauseOnHover: pauseOnHover,
     slidesToShow: slidesToShow,
     arrows: arrows,
     responsive: [
       {
+        breakpoint: 1536,
+        settings: {
+          slidesToShow: slidesToShow1280 || 4,
+          arrows: arrows,
+        },
+      },
+      {
         breakpoint: 1280,
         settings: {
-          arrows: arrows || true,
-          slidesToShow: allSizeSlidesToShow || slidesToShow,
+          slidesToShow: slidesToShow970 || 3,
+          arrows: arrows,
         },
       },
       {
-        breakpoint: 970,
+        breakpoint: 1024,
         settings: {
-          arrows: arrows || true,
-          slidesToShow: allSizeSlidesToShow || 4,
+          slidesToShow: slidesToShow970 || 3,
+          arrows: arrows,
         },
       },
       {
-        breakpoint: 680,
+        breakpoint: 768,
         settings: {
-          arrows: arrows || false,
-          slidesToShow: allSizeSlidesToShow || 3,
+          slidesToShow: slidesToShow680 || 2,
+          arrows: false,
         },
       },
       {
-        breakpoint: 560,
+        breakpoint: 640,
         settings: {
-          arrows: arrows || false,
-          slidesToShow: allSizeSlidesToShow || 2,
+          slidesToShow: slidesToShow560 || 1,
+          arrows: false,
+          dots: true,
         },
       },
     ],
-    // centerPadding: "60px",
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
   };
+
   return (
-    <>
+    <div className="relative">
       <Slider
         {...settings}
         className={`${className} cursor-grab active:cursor-grabbing bg-white ${
-          arrows && "md:py-2"
+          arrows && "px-2 md:px-4"
         }`}
       >
         {children}
       </Slider>
-    </>
+    </div>
   );
 };
 
@@ -91,20 +99,21 @@ const PrevArrow = (props) => {
   return (
     <div
       onClick={onClick}
-      className="absolute -top-2.5 left-3 p-1 cursor-pointer hover:scale-105 active:-translate-x-1 ease-in-out duration-200"
+      className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 p-2 cursor-pointer bg-white/80 hover:bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
     >
-      <IoArrowBackSharp size={20} />
+      <IoArrowBackSharp size={24} className="text-gray-700" />
     </div>
   );
 };
+
 const NextArrow = (props) => {
   const { onClick } = props;
   return (
     <div
       onClick={onClick}
-      className="absolute -top-2.5 left-10 p-1 cursor-pointer hover:scale-105 active:translate-x-1 ease-in-out duration-200"
+      className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 p-2 cursor-pointer bg-white/80 hover:bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
     >
-      <IoArrowForwardSharp size={20} />
+      <IoArrowForwardSharp size={24} className="text-gray-700" />
     </div>
   );
 };
