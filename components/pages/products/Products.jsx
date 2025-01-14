@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CiFilter } from "react-icons/ci";
 import { CgSortAz } from "react-icons/cg";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import ProductCard from "../../ui/productCard";
 import { useNotification } from "@/context/NotificationProvider";
 import { reverseSlug } from "@/lib/utils";
@@ -23,6 +28,7 @@ const Products = ({ category }) => {
   });
   const [sort, setSort] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
+  const [openPopover, setOpenPopover] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -53,6 +59,7 @@ const Products = ({ category }) => {
     setSort(value);
     setSelectedSort(value);
     setPagination((prev) => ({ ...prev, currentPage: 1 }));
+    setOpenPopover(false); // Close the popover after selection
   };
 
   const handleCategoryClick = (category) => {
@@ -67,7 +74,12 @@ const Products = ({ category }) => {
   return (
     <div className={`${pt} mt-[120px] px-4 sm:px-8 lg:px-16 overflow-hidden`}>
       <div className="w-full h-fit">
-        <Button variant="link" size="sm" className="text-md">
+        <Button
+          variant="link"
+          effect="hoverUnderline"
+          size="sm"
+          className="text-md"
+        >
           <CiFilter size={20} />
           Filter
         </Button>
@@ -96,60 +108,56 @@ const Products = ({ category }) => {
             activeCategory !== "All Products" &&
             ` in ${activeCategory}`}
         </h1>
-        <div className="relative">
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-md"
-            onClick={() => {
-              const menu = document.getElementById("sortMenu");
-              menu.style.display =
-                menu.style.display === "none" ? "block" : "none";
-            }}
-          >
-            <CgSortAz size={20} />
-            Sort by
-          </Button>
-          <div
-            id="sortMenu"
-            className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md hidden z-20"
-          >
-            <div className="py-1">
-              <button
-                className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
-                  selectedSort === "price-low-high" ? "bg-gray-200" : ""
-                }`}
-                onClick={() => handleSort("price-low-high")}
-              >
-                Price: Low to High
-              </button>
-              <button
-                className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
-                  selectedSort === "price-high-low" ? "bg-gray-200" : ""
-                }`}
-                onClick={() => handleSort("price-high-low")}
-              >
-                Price: High to Low
-              </button>
-              <button
-                className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
-                  selectedSort === "rating" ? "bg-gray-200" : ""
-                }`}
-                onClick={() => handleSort("rating")}
-              >
-                Highest Rated
-              </button>
-              <button
-                className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
-                  selectedSort === "newest" ? "bg-gray-200" : ""
-                }`}
-                onClick={() => handleSort("newest")}
-              >
-                Newest First
-              </button>
-            </div>
-          </div>
-        </div>
+        <Popover open={openPopover} onOpenChange={setOpenPopover}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm" className="text-md">
+              <CgSortAz size={20} className="mr-2" />
+              Sort by
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-fit z-10 p-0 py-1">
+            <button
+              className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
+                selectedSort === "price-low-high"
+                  ? "bg-gray-200"
+                  : "hover:bg-gray-200/80"
+              }`}
+              onClick={() => handleSort("price-low-high")}
+            >
+              Price: Low to High
+            </button>
+            <button
+              className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
+                selectedSort === "price-high-low"
+                  ? "bg-gray-200"
+                  : "hover:bg-gray-200/80"
+              }`}
+              onClick={() => handleSort("price-high-low")}
+            >
+              Price: High to Low
+            </button>
+            <button
+              className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
+                selectedSort === "rating"
+                  ? "bg-gray-200"
+                  : "hover:bg-gray-200/80"
+              }`}
+              onClick={() => handleSort("rating")}
+            >
+              Highest Rated
+            </button>
+            <button
+              className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left ${
+                selectedSort === "newest"
+                  ? "bg-gray-200"
+                  : "hover:bg-gray-200/80"
+              }`}
+              onClick={() => handleSort("newest")}
+            >
+              Newest First
+            </button>
+          </PopoverContent>
+        </Popover>
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 gap-6 mt-6">
         {loading ? (

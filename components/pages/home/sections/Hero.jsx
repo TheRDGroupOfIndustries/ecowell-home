@@ -12,12 +12,12 @@ const Hero = () => {
   const router = useRouter();
   const { isNotificationOpen } = useNotification();
 
-  const backgrounds = [
-    { type: "vid", src: "/assets/hero-banner-1.mp4" },
-    { type: "img", src: "/assets/hero-banner-2.jpg" },
-    { type: "img", src: "/assets/hero-banner-3.png" },
-    { type: "img", src: "/assets/hero-banner-4.png" },
-  ];
+  // const backgrounds = [
+  //   { type: "vid", src: "/assets/hero-banner-1.mp4" },
+  //   { type: "img", src: "/assets/hero-banner-2.jpg" },
+  //   { type: "img", src: "/assets/hero-banner-3.png" },
+  //   { type: "img", src: "/assets/hero-banner-4.png" },
+  // ];
 
   const handleShopNowBtn = () => router.push("/products");
 
@@ -57,7 +57,15 @@ const Hero = () => {
         </div>
 
         <div className="absolute inset-0 -z-10 group-hover:scale-110 duration-500 ease-in-out overflow-hidden">
-          <Carousel
+          <video
+            src="/assets/hero-banner-1.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+          />
+          {/* <Carousel
             autoplay={true}
             autoplaySpeed={8000}
             slidesToShow={1}
@@ -95,7 +103,7 @@ const Hero = () => {
                 />
               )
             )}
-          </Carousel>
+          </Carousel> */}
         </div>
       </div>
     </motion.div>
