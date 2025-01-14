@@ -13,10 +13,10 @@ const Hero = () => {
   const { isNotificationOpen } = useNotification();
 
   const backgrounds = [
-    "/assets/hero-banner-1.gif",
-    "/assets/hero-banner-2.jpg",
-    "/assets/hero-banner-3.png",
-    "/assets/hero-banner-4.png",
+    { type: "vid", src: "/assets/hero-banner-1.mp4" },
+    { type: "img", src: "/assets/hero-banner-2.jpg" },
+    { type: "img", src: "/assets/hero-banner-3.png" },
+    { type: "img", src: "/assets/hero-banner-4.png" },
   ];
 
   const handleShopNowBtn = () => router.push("/products");
@@ -59,7 +59,7 @@ const Hero = () => {
         <div className="absolute inset-0 -z-10 group-hover:scale-110 duration-500 ease-in-out overflow-hidden">
           <Carousel
             autoplay={true}
-            autoplaySpeed={6000}
+            autoplaySpeed={8000}
             slidesToShow={1}
             slidesToShow560={1}
             slidesToShow680={1}
@@ -67,19 +67,34 @@ const Hero = () => {
             slidesToShow1280={1}
             dots={false}
             arrows={false}
-            className="w-full h-full overflow-hidden"
+            className="w-full h-full flex-center overflow-hidden"
           >
-            {backgrounds.map((bg, index) => (
-              <Image
-                key={index}
-                src={bg}
-                alt={`Hero background ${index + 1}`}
-                width={1500}
-                height={1500}
-                priority={index === 0}
-                className="w-full h-full object-cover"
-              />
-            ))}
+            {backgrounds.map((bg, index) =>
+              bg.type === "vid" ? (
+                <video
+                  key={index}
+                  src={bg.src}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <Image
+                  key={index}
+                  src={bg.src}
+                  alt={`Hero background ${index + 1}`}
+                  width={1920}
+                  height={1080}
+                  quality={100}
+                  sizes="100vw"
+                  priority={index === 0}
+                  loading="eager"
+                  className="w-full h-full object-cover"
+                />
+              )
+            )}
           </Carousel>
         </div>
       </div>
