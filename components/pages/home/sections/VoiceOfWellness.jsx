@@ -68,7 +68,7 @@ const VoiceOfWellness = () => {
 
   return (
     <motion.div
-      className="bg-[#E7E9EB] py-20  w-full relative overflow-hidden"
+      className="bg-[#E7E9EB] py-20 h-[813px] xs:h-[652px]  w-full relative overflow-hidden"
       variants={staggerContainer(0.1, 0.1)}
       initial="hidden"
       whileInView="show"

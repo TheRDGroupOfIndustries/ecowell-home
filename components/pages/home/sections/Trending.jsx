@@ -44,11 +44,11 @@ const Trending = () => {
       <div className="w-full h-fit flex flex-col items-center justify-center gap-6 p-8">
         <motion.h2
           variants={fadeIn("up", 0.2, 1)}
-          className="text-xl font-semibold"
+          className="text-2xl font-semibold"
         >
           Trending searches
         </motion.h2>
-        <div className="w-fit h-fit grid grid-cols-2  gap-4">
+        <div className="w-fit h-fit grid grid-cols-2 md:grid-cols-4  gap-4">
           {trendingData.map((item, index) => (
             <motion.div
               key={index}
@@ -56,7 +56,7 @@ const Trending = () => {
               onClick={() => handleTrendingItemClick(item.text)}
               className="border border-gray-950"
             >
-              <div className="hover-fill  hover:text-white hover:border-secondary-clr  h-fit p-2 px-4 flex items-center justify-center gap-2 text-lg 2xl:text-xl cursor-pointer">
+              <div className="hover-fill  hover:text-white hover:border-secondary-clr  h-fit p-2 px-4 flex items-center justify-center gap-2 text-lg md:text-2xl cursor-pointer">
                 {item.icon}
                 <span>{item.text}</span>
               </div>
