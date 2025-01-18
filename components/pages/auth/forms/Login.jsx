@@ -149,8 +149,8 @@ const Login = () => {
   };
 
   return (
-    <section className="w-full h-full md:max-h-fit flex-center container mx-auto pt-10 md:pt-20 lg:pt-32 overflow-hidden">
-      <div className="w-full grid md:grid-cols-2 gap-8">
+    <section className="w-full h-full md:max-h-fit flex-center container mx-auto pt-10 md:pt-20 lg:pt-32 overflow-hidden mt-12 lg:mt-0">
+      <div className="w-full grid md:grid-cols-2 gap-8 px-3">
         <div className="w-full h-full animate-slide-down">
           <h3 className="text-3xl font-bold text-gray-800 mb-6">
             Welcome Back

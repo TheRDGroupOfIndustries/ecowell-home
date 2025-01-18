@@ -17,7 +17,7 @@ const ProductCardSelect = ({ product, isSelected, onToggle }) => {
   return (
     <div
       onClick={onToggle}
-      className="relative w-[120px]  md:w-[180px] lg:w-[240px] cursor-pointer group bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden"
+      className="relative w-full  md:w-[180px] lg:w-[240px] cursor-pointer group bg-white hover:bg-[#BDC3C7] rounded-lg shadow-md border p-2 ease-in-out duration-300 overflow-hidden"
     >
       <div className="absolute top-1.5 right-2.5 z-10">
         <input
@@ -50,11 +50,11 @@ const ProductCardSelect = ({ product, isSelected, onToggle }) => {
       </div>
 
       <div className="mt-1">
-        <h3 className="text-sm font-bold line-clamp-1">{product.title}</h3>
+        <h3 className="text-xs sm:text-sm font-bold line-clamp-1">{product.title}</h3>
 
         <div className="flex items-center gap-2">
-          <span className="text-lg font-bold">{product.price}</span>
-          <span className="text-sm line-through text-gray-500">
+          <span className="text-sm sm:text-lg font-bold">{product.price}</span>
+          <span className="text-xs sm:text-sm line-through text-gray-500">
             {product.oldPrice}
           </span>
         </div>

@@ -23,7 +23,7 @@ export default function AddToCartBtn({ product, selectedVariant }) {
       showText: true,
     },
     {
-      containerClass: "h-[50px] md:h-[64px] w-[200px] md:w-[110px]",
+      containerClass: "h-[50px] md:h-[64px] w-[90px] md:w-[110px]",
       showText: false,
     },
   ];

@@ -39,16 +39,15 @@ export default function ProductDiscover({ sku, productName }) {
       {/* Top Section */}
       <motion.div
         variants={fadeIn("up", 0.2, 1)}
-        className="relative w-full max-h-[400px] lg:max-h-[550px] overflow-hidden"
+        className="relative w-full h-[270px] sm:h-[300px]   md:h-[400px] lg-h-[500px] max-h-[270px] sm:max-h-[300px]   md:max-h-[400px] lg:max-h-[550px] overflow-hidden"
       >
         <Image
           src={
             productData?.heroBanner?.backgroundImage || "/productDiscover1.jpg"
           }
-          width={1920}
-          height={500}
+          fill
           alt="product discover"
-          className="w-full"
+          className="w-full h-full"
         />
         <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex flex-row items-center pl-7 lg:pl-10">
           <div className="flex flex-col text-wrap">
@@ -60,7 +59,7 @@ export default function ProductDiscover({ sku, productName }) {
             </motion.h3>
             <motion.h1
               variants={fadeIn("up", 0.4, 0.8)}
-              className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl text-dark_jungle_green font-semibold"
+              className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl text-dark_jungle_green font-semibold line-clamp-2 sm:line-clamp-none"
             >
               {productData?.title || "Diabivita"}
             </motion.h1>

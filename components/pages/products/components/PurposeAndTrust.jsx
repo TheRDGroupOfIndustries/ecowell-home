@@ -73,19 +73,19 @@ export default function PurposeAndTrust() {
           <motion.div
             key={feature.title}
             variants={fadeIn("up", 0.3 + index * 0.1, 0.8)}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center w-[148px]"
           >
             <Image
               src={feature.icon}
-              width={162}
-              height={168}
+              width={90}
+              height={90}
               alt={feature.alt}
               className="h-[90px] w-[90px] object-contain sm:w-full"
             />
-            <h3 className="text-xl font-semibold text-gray-800 text-center mb-1">
+            <h3 className=" sm:text-xl font-semibold text-gray-800 text-center mb-1">
               {feature.title}
             </h3>
-            <p className="text-xl line-clamp-2 text-gray-600 text-center max-w-[170px] md:max-w-[220px]">
+            <p className="text-xs sm:text-xl line-clamp-2 text-gray-600 text-center max-w-[170px] md:max-w-[220px]">
               {feature.description}
             </p>
           </motion.div>

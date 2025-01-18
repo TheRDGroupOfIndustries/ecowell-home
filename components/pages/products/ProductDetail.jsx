@@ -367,7 +367,7 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
           ))}
         </div>
         <hr className="border border-gray-300" />
-        <div className="grid grid-cols-3 gap-4 overflow-hidden">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 overflow-hidden">
           {[
             { img: "/assets/emi.png", lable: "EMI Available" },
             { img: "/assets/cod.png", lable: "Cash on Delivery Available" },
@@ -393,7 +393,7 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
             <div className="text-md md:text-lg lg:text-xl xl:text-2xl">
               How this Formula supports your wellness
             </div>
-            <div className="grid grid-cols-3 gap-4 py-2 overflow-hidden">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 py-2 overflow-hidden">
               {product?.benefits.map((benefit, index) => (
                 <div key={index} className="w-full h-full relative group">
                   <div className="absolute inset-0 z-[-1] opacity-0 group-hover:opacity-100 bg-[#FDFBF9] translate-x-1 translate-y-1 flex items-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 ease-in-out duration-300 overflow-hidden"></div>
@@ -405,7 +405,7 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
                       height={400}
                       className="w-fit h-fit"
                     />
-                    <span className="text-balance text-center">{benefit}</span>
+                    <span className="text-balance text-center text-xm sm:text-sm ">{benefit}</span>
                   </div>
                 </div>
               ))}

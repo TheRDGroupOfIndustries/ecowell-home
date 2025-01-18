@@ -96,7 +96,7 @@ const Navbar = ({ companyName }) => {
       className="fixed top-0 left-0 right-0 w-screen z-40 backdrop-blur-md "
     >
       {isNotificationOpen && <Notification />}
-      <div className="w-full flex justify-between items-center p-4 px-2 sm:px-4 md:px-8">
+      <div className="w-full flex justify-between items-center  px-3 py-0 sm:px-4 sm:py-2 md:px-8 md:py-4">
         <motion.div
           variants={fadeIn("down", 0.2)}
           className="text-lg font-bold"
@@ -107,6 +107,7 @@ const Navbar = ({ companyName }) => {
               alt={companyName || "Logo"}
               width={150}
               height={150}
+              className="w-[100px] sm:w-[80px] md:w-[100px] lg:w-[150px]"
             />
           </Link>
         </motion.div>
@@ -172,7 +173,7 @@ const Navbar = ({ companyName }) => {
                           size={20}
                           className={`hover:text-gray-700 ${
                             isHomeScrolled ? "text-black" : "text-white"
-                          } ease-in-out duration-300 size-[30px] md:size-[20px]`}
+                          } ease-in-out duration-300 hidden sm:block size-[30px] md:size-[20px]`}
                         />
                       </div>
                     </Link>
@@ -286,7 +287,7 @@ const Navbar = ({ companyName }) => {
                     size={20}
                     className={`hover:text-gray-700 ${
                       isHomeScrolled ? "text-black" : "text-white"
-                    } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px]`}
+                    } ease-in-out duration-300 cursor-pointer size-[25px] md:size-[20px]`}
                   />
                 </SheetTrigger>
                 <SheetContent className="h-full">

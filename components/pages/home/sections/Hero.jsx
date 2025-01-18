@@ -30,7 +30,7 @@ const Hero = () => {
       className="group"
     >
       <div
-        className={`w-full h-[25vh] sm:h-[60vh] md:h-[65vh] lg:h-[85vh] xl:h-[100vh] relative bg-transparent ${
+        className={`w-full h-[30vh] sm:h-[60vh] md:h-[65vh] lg:h-[85vh] xl:h-[100vh] relative bg-transparent ${
           isNotificationOpen ? "mt-6" : "mt-0"
         } overflow-hidden`}
       >
@@ -38,7 +38,7 @@ const Hero = () => {
           <div className="w-full md:max-w-3xl lg:max-w-4xl text-center grid items-center gap-4 md:gap-5 lg:gap-6">
             <motion.div
               variants={fadeIn("up", 0.3)}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl font-extrabold font-serif leading-10 text-white text-center text-balanc"
+              className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl font-extrabold font-serif leading-10 text-white text-center text-balanc"
             >
               Redefining Wellness, One Scoop at a Time
             </motion.div>

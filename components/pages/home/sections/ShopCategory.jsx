@@ -36,7 +36,7 @@ const ShopCategory = () => {
       initial="hidden"
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
-      className="w-full h-fit flex-center flex-col gap-4 md:gap-6 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12"
+      className="w-full h-fit flex-center flex-col gap-4 md:gap-6 p-3 sm:p-6 md:p-8 lg:p-10 xl:p-12"
     >
       <motion.h2
         variants={fadeIn("down", 0.2)}
@@ -45,7 +45,7 @@ const ShopCategory = () => {
         Shop by Category
       </motion.h2>
 
-      <div className="w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 items-center justify-center gap-4 md:gap-6 lg:gap-8 py-4 overflow-hidde">
+      <div className="w-full grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 items-center justify-center gap-4 md:gap-6 lg:gap-8 py-4 overflow-hidde">
         {loading
           ? Array(4)
               .fill(0)
@@ -86,7 +86,7 @@ const CategoryCard = ({ category }) => {
         query: { category: category.slug },
       }}
     >
-      <div className="w-full h-[300px] relative group rounded-3xl [perspective:1000px] hover:translate-x-2 hover:translate-y-4 transition-all duration-500 overflow-hidden">
+      <div className="w-full h-[220px] sm:h-[300px] relative group rounded-3xl [perspective:1000px] hover:translate-x-2 hover:translate-y-4 transition-all duration-500 overflow-hidden">
         <div
           id="back-bg"
           className="absolute inset-0 z-[-1] ring-1 ring-gray-100 bg-gradient-to-t from-secondary-clr to-white 
@@ -98,9 +98,9 @@ const CategoryCard = ({ category }) => {
             alt={category.title}
             width={400}
             height={400}
-            className="w-full h-full object-contain mb-4 scale-95 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 overflow-hidden"
+            className="w-full sm:h-full object-contain mb-4 scale-95 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 overflow-hidden"
           />
-          <p className="relative z-10 text-lg md:text-xl lg:text-2xl font-semibold">
+          <p className="relative z-10  sm:text-lg md:text-xl lg:text-2xl font-semibold">
             {category.title}
           </p>
         </div>

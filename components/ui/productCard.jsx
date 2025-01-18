@@ -34,7 +34,7 @@ const ProductCard = ({ product, loading = false }) => {
 
   return (
     <div
-      className={`w-[170px] md:w-[280px] group rounded-lg shadow-md border p-2 ${
+      className={`w-full md:w-[280px] group rounded-lg shadow-md border p-2 ${
         loading
           ? "animate-pulse"
           : "bg-white hover:bg-[#BDC3C7] ease-in-out duration-300"

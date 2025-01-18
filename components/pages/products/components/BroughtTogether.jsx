@@ -94,7 +94,7 @@ export function FrequentlyBoughtTogether() {
               className="relative"
             >
               {index > 0 && (
-                <div className="absolute -left-10 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-600">
+                <div className="hidden absolute -left-10 top-1/2 -translate-y-1/2 text-2xl font-bold text-gray-600">
                   +
                 </div>
               )}

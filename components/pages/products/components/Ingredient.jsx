@@ -37,8 +37,8 @@ const Ingredient = ({ sku, productTitle, productIngredientHighlights }) => {
       viewport={{ once: false, amount: 0.25 }}
       className="w-full pt-10"
     >
-      <div className="w-full relative pr-4">
-        <div className="h-[60px] md:h-[100px] w-full border-1"></div>
+      <div className="w-full relative pr-4 overflow-hidden">
+        <div className=" h-[150px] w-full border-1"></div>
         <div className="h-[60px] md:h-[100px] w-full border border-dashed border-black border-l-0"></div>
         <div className="flex flex-row w-[95%] items-center justify-between absolute bottom-[80px] left-0 ml-5">
           <div className="w-fit bg-white">

@@ -46,7 +46,7 @@ const RecommendedProducts = () => {
       >
         Recommended Products
       </motion.h2>
-      <div className="w-full flex flex-wrap items-center justify-center gap-4 md:gap-6">
+      <div className="w-full grid md:flex grid-cols-2  items-center justify-center gap-3 md:gap-6">
         {!loading
           ? products?.map((product, index) => (
               <motion.div

@@ -47,8 +47,8 @@ const Partners = () => {
       initial="hidden"
       animate="show"
     >
-      <div className="absolute left-0 top-0 w-60 h-full bg-gradient-to-r from-white to-transparent z-10" />
-      <div className="absolute right-0 top-0 w-60 h-full bg-gradient-to-l from-white to-transparent z-10" />
+      <div className="absolute left-0 top-0 w-[50px] sm:[120] md:w-60 h-full bg-gradient-to-r from-white to-transparent z-10" />
+      <div className="absolute right-0 top-0 w-[50px] sm:[120] md:w-60 h-full bg-gradient-to-l from-white to-transparent z-10" />
 
       <motion.div
         ref={scrollRef}

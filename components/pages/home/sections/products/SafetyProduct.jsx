@@ -40,13 +40,13 @@ const SafetyProduct = () => {
         <div className="relative min-h-[200px]">
           <HexagonConnector />
 
-          <div className="grid grid-cols-5 gap-4 relative z-10">
+          <div className="grid grid-cols-3 md:grid-cols-5 gap-4 relative z-10">
             {features.map((feature, index) => (
               <div
                 key={feature.title}
-                className={`flex flex-col items-center ${
-                  index % 2 === 1 ? "mt-[100px]" : "mt-[10px]"
-                }`}
+                className={`flex flex-col items-center  ${
+                  index % 2 === 1 ? "md:mt-[100px]" : "md:mt-[10px]"
+                } `}
               >
                 <Image
                   src={feature.link}

@@ -23,21 +23,21 @@ export default function Footer() {
       </div>
 
       {/* Links, Help, and Contact Sections */}
-      <div className=" mx-auto px-4 py-12">
+      <div className=" mx-auto px-3 py-12">
         <div className="grid grid-cols-1  lg:grid-cols-12 gap-8">
           {/* Dynamic Sections (About, Help, Contact) */}
-          <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 sm:gap-4 md:gap-6 lg:gap-8 overflow-hidden">
+          <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 sm:gap-4 md:gap-6 lg:gap-8 overflow-hidden">
             {footerData.links.sections.map((section, index) => (
               <div
                 key={index}
                 className={`${
-                  index === 2 ? "lg:border-r-2 border-[#333333] lg:pr-8" : ""
-                }`}
+                  index === 2 ? "lg:border-r-2 border-[#333333] lg:pr-8 col-span-2 md:col-span-1" : ""
+                }  `}
               >
                 <h3 className="font-semibold text-center sm:text-start mb-4 border-b-2 border-[#333333] pb-2">
                   {section.title}
                 </h3>
-                <ul className="space-y-2 flex flex-row gap-4 sm:gap-0 flex-wrap  sm:flex-col justify-evenly items-center sm:items-start mb-5 sm:mb-0">
+                <ul className="space-y-2 flex  gap-4 sm:gap-0 flex-wrap  flex-col justify-evenly items-center sm:items-start mb-5 sm:mb-0">
                   {section.items.map((item, idx) => (
                     <li className="mt-2" key={idx}>
                       <Link
@@ -45,7 +45,7 @@ export default function Footer() {
                         className="w-fit flex items-start gap-2 group  "
                       >
                         {item.icon}
-                        <span className="text-md group-hover:underline h-6">
+                        <span className="text-md group-hover:underline h-6 text-xm sm:text-sm md:text-base">
                           {item.content}
                         </span>
                       </Link>
@@ -164,7 +164,7 @@ const Newsletter = () => {
           <Button
             type="submit"
             variant="default"
-            className="w-fit h-full text-xl rounded-none bg-[#333333] hover:bg-zinc-700 py-2 px-8 xl:px-20 overflow-hidden"
+            className="w-[20vh]  h-full text-lg md:text-xl rounded-none bg-[#333333] hover:bg-zinc-700 py-2 px-2 md:px-8 xl:px-20 overflow-hidden"
             disabled={!isValidEmail || !email}
           >
             {footerData.newsletter.buttonText}
