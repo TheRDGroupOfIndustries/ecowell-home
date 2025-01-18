@@ -11,7 +11,7 @@ const WhyChooseUs = () => {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.25 }}
-      className="w-full mx-auto p-4 py-12 sm:p-6 sm:py-14 md:p-8 md:py-16 lg:p-10 lg:py-20 overflow-hidden"
+      className="w-full flex flex-col items-center justify-center p-4 py-12 sm:p-6 sm:py-14 md:p-8 md:py-16 lg:p-10 lg:py-20 overflow-hidden"
     >
       <motion.div variants={fadeIn("down", 0.2)} className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
