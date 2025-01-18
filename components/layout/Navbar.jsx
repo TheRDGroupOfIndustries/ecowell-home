@@ -120,7 +120,7 @@ const Navbar = ({ companyName }) => {
               key={index}
               href={link.herf}
               className={`hover:text-gray-700 text-lg text-bold ${
-                isHomeScrolled ? "text-black" : "text-white"
+                isHomeScrolled ? "text-black" : "text-black"
               } ease-in-out duration-300`}
             >
               {link.head}

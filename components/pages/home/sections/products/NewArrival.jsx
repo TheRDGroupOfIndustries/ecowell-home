@@ -31,6 +31,10 @@ const NewArrival = () => {
 
     fetchProducts();
   }, []);
+
+  if(!loading && products.length === 0){
+    return null
+  }
   return (
     <motion.div
       variants={staggerContainer(0.1, 0.1)}

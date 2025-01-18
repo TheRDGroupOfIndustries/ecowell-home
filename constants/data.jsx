@@ -1,11 +1,11 @@
 import {
   Facebook,
   Instagram,
+  PinIcon as Pinterest,
   Twitter,
   Youtube,
-  PinIcon as Pinterest,
 } from "lucide-react";
-import { CiPhone, CiMail, CiLocationOn } from "react-icons/ci";
+import { CiLocationOn, CiMail, CiPhone } from "react-icons/ci";
 
 export const emailRegex =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -173,12 +173,12 @@ export const categoriesData = [
 ];
 
 export const certificationsData = [
-  { id: 1, alt: "FDA", img: "/c1.png" },
-  { id: 2, alt: "HACCP", img: "/c2.png" },
-  { id: 3, alt: "GMP", img: "/c3.png" },
-  { id: 4, alt: "ISO", img: "/c4.png" },
-  { id: 5, alt: "FSSAI", img: "/c5.png" },
-  { id: 6, alt: "NOW GMO", img: "/c6.png" },
+  { id: 1, alt: "FDA", img: "/c01.png" },
+  { id: 2, alt: "HACCP", img: "/c02.png" },
+  { id: 3, alt: "GMP", img: "/c03.png" },
+  { id: 4, alt: "ISO", img: "/c04.png" },
+  { id: 5, alt: "FSSAI", img: "/c05.png" },
+  { id: 6, alt: "NOW GMO", img: "/c06.png" },
 ];
 
 export const partnerLogoData = [

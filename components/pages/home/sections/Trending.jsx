@@ -54,9 +54,9 @@ const Trending = () => {
               key={index}
               variants={fadeIn("right", 0.2 * index, 1)}
               onClick={() => handleTrendingItemClick(item.text)}
-              className="border border-gray-950"
+              className="overflow-hidden "
             >
-              <div className="hover-fill  hover:text-white hover:border-secondary-clr  h-fit p-2 px-4 flex items-center justify-center gap-2 text-lg md:text-2xl cursor-pointer">
+              <div className=" w-full hover-fill  border border-gray-950 hover:text-white hover:border-secondary-clr  h-fit p-2 px-4 flex items-center justify-center gap-2 text-lg md:text-2xl lg:text-3xl cursor-pointer ">
                 {item.icon}
                 <span>{item.text}</span>
               </div>

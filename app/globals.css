@@ -73,7 +73,7 @@ body {
   }
 
   .hover-fill {
-    @apply w-fit text-lg relative ease-in-out duration-500 overflow-hidden;
+    @apply text-lg relative ease-in-out duration-500 overflow-hidden;
     position: relative;
     overflow: hidden;
   }

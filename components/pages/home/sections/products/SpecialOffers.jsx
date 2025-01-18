@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { fadeIn, staggerContainer } from "@/lib/utils";
-import { specialOfferProducts } from "@/constants/product";
 import ProductCard from "@/components/ui/productCard";
+import { specialOfferProducts } from "@/constants/product";
+import { fadeIn, staggerContainer } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const SpecialOffers = () => {
   const [loading, setLoading] = useState(true);
@@ -32,6 +32,10 @@ const SpecialOffers = () => {
     fetchProducts();
   }, []);
 
+  if (!loading && products.length === 0) {
+    return null
+  }
+
   return (
     <motion.div
       variants={staggerContainer(0.1, 0.1)}
@@ -49,24 +53,24 @@ const SpecialOffers = () => {
       <div className="w-full grid md:flex grid-cols-2  items-center justify-center gap-3 md:gap-6">
         {!loading
           ? products?.map((product, index) => (
-              <motion.div
-                key={index}
-                variants={fadeIn("up", 0.3 + index * 0.1)}
-              >
-                <ProductCard product={product} />
-              </motion.div>
-            ))
+            <motion.div
+              key={index}
+              variants={fadeIn("up", 0.3 + index * 0.1)}
+            >
+              <ProductCard product={product} />
+            </motion.div>
+          ))
           : Array.from({ length: 4 }, (_, index) => (
-              <motion.div
-                key={index}
-                variants={fadeIn("up", 0.3 + index * 0.1)}
-              >
-                <ProductCard
-                  loading={loading}
-                  product={specialOfferProducts[index]}
-                />
-              </motion.div>
-            ))}
+            <motion.div
+              key={index}
+              variants={fadeIn("up", 0.3 + index * 0.1)}
+            >
+              <ProductCard
+                loading={loading}
+                product={specialOfferProducts[index]}
+              />
+            </motion.div>
+          ))}
       </div>
 
       {/* <div className="w-full flex flex-wrap items-center justify-center gap-6">
