@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from 'next/cache';
 import connectToMongoDB from "@/utils/db";
 import Product from "@/models/Products";
 
@@ -30,6 +31,7 @@ export async function GET(request) {
       variants: { $slice: 1 } // Only get the first variant
     }).limit(20); // Limit to 20 results for performance
 
+    revalidatePath(request.url);
     return NextResponse.json(products);
   } catch (error) {
     console.error("Error in products search API:", error);

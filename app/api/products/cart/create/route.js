@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from 'next/cache';
 import connectToMongoDB from "@/utils/db";
 import Cart from "@/models/Cart";
 import Product from "@/models/Products";
@@ -113,6 +114,7 @@ export async function POST(request) {
       .sort({ ["createdAt"]: "desc" })
       .lean();
 
+    revalidatePath(request.url);
     return NextResponse.json({
       success: true,
       message: "Product added to cart successfully",

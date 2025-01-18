@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from 'next/cache';
 import connectToMongoDB from "@/utils/db";
 import Review from "@/models/Reviews";
 import Product from "@/models/Products";
@@ -12,12 +13,14 @@ export async function GET(request, { params }) {
     const reviews = await Review.findOne({ product_id: productId });
 
     if (!reviews) {
+      revalidatePath(request.url);
       return NextResponse.json(
         { error: "No product reviews not found!" },
         { status: 404 }
       );
     }
 
+    revalidatePath(request.url);
     return NextResponse.json(reviews);
   } catch (error) {
     console.error("Error in product detail API:", error);
@@ -35,6 +38,7 @@ export async function POST(request, { params }) {
 
   try {
     if (!rating || !review_descr || !username || !user_avatar || !user_id) {
+      revalidatePath(request.url);
       return NextResponse.json(
         {
           status: 400,
@@ -49,6 +53,7 @@ export async function POST(request, { params }) {
 
     const product = await Product.findById(productId);
     if (!product) {
+      revalidatePath(request.url);
       return NextResponse.json(
         {
           status: 404,
@@ -91,6 +96,7 @@ export async function POST(request, { params }) {
       $inc: { reviews_number: 1 }
     });
 
+    revalidatePath(request.url);
     return NextResponse.json(
       {
         status: 200,
@@ -115,6 +121,7 @@ export async function PUT(request, { params }) {
 
   try {
     if (!rating || !review_descr || !user_id) {
+      revalidatePath(request.url);
       return NextResponse.json(
         {
           status: 400,
@@ -143,6 +150,7 @@ export async function PUT(request, { params }) {
     );
 
     if (!updatedReview) {
+      revalidatePath(request.url);
       return NextResponse.json(
         {
           status: 404,
@@ -163,6 +171,7 @@ export async function PUT(request, { params }) {
       $set: { ratings: averageRating.toFixed(1) }
     });
 
+    revalidatePath(request.url);
     return NextResponse.json(
       {
         status: 200,
@@ -187,6 +196,7 @@ export async function DELETE(request, { params }) {
 
   try {
     if (!reviewId) {
+      revalidatePath(request.url);
       return NextResponse.json(
         {
           status: 400,
@@ -201,6 +211,7 @@ export async function DELETE(request, { params }) {
 
     const reviewDoc = await Review.findOne({ product_id: productId });
     if (!reviewDoc) {
+      revalidatePath(request.url);
       return NextResponse.json(
         {
           status: 404,
@@ -224,6 +235,7 @@ export async function DELETE(request, { params }) {
         $inc: { reviews_number: -1 }
       });
 
+      revalidatePath(request.url);
       return NextResponse.json(
         {
           status: 200,
@@ -247,6 +259,7 @@ export async function DELETE(request, { params }) {
       $inc: { reviews_number: -1 }
     });
 
+    revalidatePath(request.url);
     return NextResponse.json(
       {
         status: 200,

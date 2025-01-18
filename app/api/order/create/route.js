@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from 'next/cache';
 import connectToMongoDB from "@/utils/db";
 import User from "@/models/User";
 import Order from "@/models/Order";
@@ -253,6 +254,7 @@ export async function POST(request) {
       throw new OrderError("Cart not found for this user.", 404);
     }
 
+    revalidatePath(request.url);
     return NextResponse.json({
       status: 200,
       success: true,

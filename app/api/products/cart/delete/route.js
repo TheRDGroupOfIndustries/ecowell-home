@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from 'next/cache';
 import connectToMongoDB from "@/utils/db";
 import Cart from "@/models/Cart";
 
@@ -57,6 +58,7 @@ export async function DELETE(request) {
 
     // console.log(updatedCart);
 
+    revalidatePath(request.url);
     return NextResponse.json({
       message: `Cart ${productName} deleted successfully`,
       status: 200,

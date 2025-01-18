@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from 'next/cache';
 import connectToMongoDB from "@/utils/db";
 import Products from "@/models/Products";
 
@@ -18,6 +19,7 @@ export async function GET(request) {
       .limit(limit)
       .select('sku title variants price salePrice discount ratings reviews_number');
 
+    revalidatePath(request.url);
     return NextResponse.json(relatedProducts);
   } catch (error) {
     console.error("Error fetching related products:", error);

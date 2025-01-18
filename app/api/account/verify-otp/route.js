@@ -4,8 +4,9 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { verifyOtpFromPhone } from "@/app/api/core";
 import connectToMongoDB from "@/utils/db";
 import User from "@/models/User";
+import { revalidatePath } from "next/cache";
 
-export async function POST(req) {
+export async function POST(request) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?._id) {
@@ -15,7 +16,7 @@ export async function POST(req) {
       );
     }
 
-    const { phone_number, otp } = await req.json();
+    const { phone_number, otp } = await request.json();
 
     const isOtpValid = await verifyOtpFromPhone(phone_number, otp);
 
@@ -26,6 +27,7 @@ export async function POST(req) {
         { $set: { is_phone_verified: true } }
       );
 
+      revalidatePath(request.url)
       return NextResponse.json({ message: "OTP verified successfully" }, { status: 200 });
     } else {
       return NextResponse.json({ error: "Invalid OTP" }, { status: 400 });

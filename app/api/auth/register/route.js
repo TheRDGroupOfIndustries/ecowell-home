@@ -7,6 +7,7 @@ import {
   transporter,
   verifyOtpFromPhone,
 } from "@/app/api/core";
+import { revalidatePath } from 'next/cache';
 
 export const POST = async (request) => {
   const {
@@ -67,6 +68,7 @@ export const POST = async (request) => {
         html: body,
       });
 
+      revalidatePath(request.url);
       return new NextResponse(JSON.stringify(otpCode), {
         status: 201,
       });
@@ -76,6 +78,7 @@ export const POST = async (request) => {
         const verification = await sendOtpToPhone(phone_number);
 
         if (verification) {
+          revalidatePath(request.url);
           return new NextResponse(JSON.stringify(otpCode), {
             status: 201,
           });
@@ -132,6 +135,7 @@ export const POST = async (request) => {
 
     try {
       await newUser.save();
+      revalidatePath(request.url);
       return new NextResponse("User Registered successfully!", {
         status: 200,
       });

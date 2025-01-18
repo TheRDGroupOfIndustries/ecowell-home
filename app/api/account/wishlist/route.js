@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
+import { revalidatePath } from "next/cache";
 import connectToMongoDB from "@/utils/db";
 import User from "@/models/User";
 import Product from "@/models/Products";
@@ -16,6 +17,7 @@ export async function GET(request) {
 
     const user = await User.findById(session.user._id).populate('wishlist_products');
 
+    revalidatePath(request.url);
     return NextResponse.json({ wishlist: user.wishlist_products });
   } catch (error) {
     console.error("Error in wishlist API:", error);
@@ -46,6 +48,7 @@ export async function POST(request) {
       await user.save();
     }
 
+    revalidatePath(request.url);
     return NextResponse.json({ message: "Product added to wishlist" });
   } catch (error) {
     console.error("Error in wishlist API:", error);
@@ -69,6 +72,7 @@ export async function DELETE(request) {
     user.wishlist_products = user.wishlist_products.filter(id => id.toString() !== productId);
     await user.save();
 
+    revalidatePath(request.url);
     return NextResponse.json({ message: "Product removed from wishlist" });
   } catch (error) {
     console.error("Error in wishlist API:", error);

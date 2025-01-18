@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import connectToMongoDB from "@/utils/db";
 import Newsletter from '@/models/Newsletter';
 import User from '@/models/User';
@@ -59,6 +60,7 @@ Best regards,
 Your Team`,
     });
 
+    revalidatePath(request.url);
     return NextResponse.json({ message: 'Subscription successful' }, { status: 200 });
   } catch (error) {
     console.error('Newsletter subscription error:', error);

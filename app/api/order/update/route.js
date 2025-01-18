@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from 'next/cache';
 import connectToMongoDB from "@/utils/db";
 import Order from "@/models/Order";
 import Products from "@/models/Products";
@@ -44,6 +45,7 @@ export async function PUT(request) {
       // model: "Products",
     });
 
+    revalidatePath(request.url);
     return NextResponse.json(
       {
         updatedOrders,

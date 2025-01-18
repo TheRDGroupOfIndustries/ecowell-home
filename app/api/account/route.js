@@ -3,8 +3,9 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions"
 import connectToMongoDB from "@/utils/db"
 import User from "@/models/User"
 import { NextResponse } from "next/server"
+import { revalidatePath } from "next/cache"
 
-export async function GET() {
+export async function GET(request) {
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user?._id) {
@@ -26,6 +27,7 @@ export async function GET() {
       )
     }
 
+    revalidatePath(request.url)
     return NextResponse.json(user)
   } catch (error) {
     console.error("Profile fetch error:", error)

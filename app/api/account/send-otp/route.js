@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { sendOtpToPhone } from "@/app/api/core";
 
@@ -18,6 +19,7 @@ export async function POST(req) {
     const verification = await sendOtpToPhone(phone_number);
 
     if (verification) {
+      revalidatePath(req.url);
       return NextResponse.json({ message: "OTP sent successfully" }, { status: 200 });
     } else {
       return NextResponse.json({ error: "Failed to send OTP" }, { status: 500 });

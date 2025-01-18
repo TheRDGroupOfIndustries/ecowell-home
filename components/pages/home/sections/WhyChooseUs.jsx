@@ -35,8 +35,8 @@ const WhyChooseUs = () => {
           <Image
             src="/card1.png"
             alt="Why Choose Us"
-            width={1500}
-            height={1500}
+            width={2000}
+            height={2000}
             className="w-full h-fit overflow-hidden"
           />
         </motion.div>
@@ -44,8 +44,8 @@ const WhyChooseUs = () => {
           <Image
             src="/bento.png"
             alt="Why Choose Us"
-            width={1500}
-            height={1500}
+            width={2000}
+            height={2000}
             className="w-full h-fit overflow-hidden"
           />
         </motion.div>

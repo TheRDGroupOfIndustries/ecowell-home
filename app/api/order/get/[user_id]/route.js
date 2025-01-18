@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from 'next/cache';
 import connectToMongoDB from "@/utils/db";
 import Order from "@/models/Order";
 import Products from "@/models/Products";
@@ -21,6 +22,7 @@ export async function GET(request, { params }) {
       );
     }
 
+    revalidatePath(request.url);
     return NextResponse.json(userOrders);
   } catch (error) {
     console.error("Error fetching orders:", error);

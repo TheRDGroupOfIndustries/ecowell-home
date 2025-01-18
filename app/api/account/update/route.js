@@ -3,6 +3,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions"
 import connectToMongoDB from "@/utils/db"
 import User from "@/models/User"
 import { NextResponse } from "next/server"
+import { revalidatePath } from "next/cache"
 
 export async function PUT(req) {
   try {
@@ -30,6 +31,7 @@ export async function PUT(req) {
       )
     }
 
+    revalidatePath(req.url);
     return NextResponse.json(updatedUser)
   } catch (error) {
     console.error("Profile update error:", error)
