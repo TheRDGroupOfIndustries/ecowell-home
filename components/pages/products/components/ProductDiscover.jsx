@@ -1,8 +1,8 @@
 "use client";
+import { fadeIn, staggerContainer } from "@/lib/utils";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { fadeIn, staggerContainer } from "@/lib/utils";
 
 const fetchProductData = async (sku) => {
   try {
@@ -39,7 +39,7 @@ export default function ProductDiscover({ sku, productName }) {
       {/* Top Section */}
       <motion.div
         variants={fadeIn("up", 0.2, 1)}
-        className="relative w-full h-[270px] sm:h-[300px]   md:h-[400px] lg-h-[500px] max-h-[270px] sm:max-h-[300px]   md:max-h-[400px] lg:max-h-[550px] overflow-hidden"
+        className="relative w-full h-[270px] sm:h-[300px]   md:h-[400px] lg:h-[550px] max-h-[270px] sm:max-h-[300px]   md:max-h-[400px] lg:max-h-[550px] overflow-hidden"
       >
         <Image
           src={
@@ -47,7 +47,7 @@ export default function ProductDiscover({ sku, productName }) {
           }
           fill
           alt="product discover"
-          className="w-full h-full"
+          className="w-full object-cover object-top"
         />
         <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full flex flex-row items-center pl-7 lg:pl-10">
           <div className="flex flex-col text-wrap">
@@ -103,13 +103,15 @@ export default function ProductDiscover({ sku, productName }) {
           <Image
             src={
               productData?.dailyRitual?.lifestyleImage ||
-              "/productDiscover1.jpg"
+              "/productDiscover2.jpg"
             }
-            fill
+            width={2000}
+            height={2000}
             alt="product discover"
-            className="h-full rounded-2xl border-8 border-white"
+            className="h-full w-full object-cover object-center rounded-2xl border-8 border-white"
           />
         </motion.div>
+
       </div>
     </motion.div>
   );
