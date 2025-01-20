@@ -4,7 +4,7 @@ import { fadeIn, staggerContainer } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export default function ProductDiscover({ productData, productName }) {
+export default function ProductDiscover({ productData }) {
   return (
     <motion.div
       variants={staggerContainer}
