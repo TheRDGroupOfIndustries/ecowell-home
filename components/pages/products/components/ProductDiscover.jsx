@@ -39,7 +39,7 @@ export default function ProductDiscover({ sku, productName }) {
       {/* Top Section */}
       <motion.div
         variants={fadeIn("up", 0.2, 1)}
-        className="relative w-full h-[270px] sm:h-[300px]   md:h-[400px] lg:h-[550px] max-h-[270px] sm:max-h-[300px]   md:max-h-[400px] lg:max-h-[550px] overflow-hidden"
+        className="relative w-full h-[270px] sm:h-[400px]   md:h-[400px] lg:h-[550px] max-h-[270px] sm:max-h-[400px]   md:max-h-[400px] lg:max-h-[550px] overflow-hidden"
       >
         <Image
           src={
