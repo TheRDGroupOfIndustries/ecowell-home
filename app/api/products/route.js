@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { revalidatePath } from 'next/cache';
+import { revalidatePath } from "next/cache";
 import connectToMongoDB from "@/utils/db";
 import Products from "@/models/Products";
 
@@ -7,6 +7,7 @@ export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
+    const search = searchParams.get("search");
     const sort = searchParams.get("sort");
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "12");
@@ -14,7 +15,22 @@ export async function GET(request) {
     await connectToMongoDB();
 
     let query = {};
-    if (category && category !== "All Products") {
+    if (search) {
+      query = {
+        $or: [
+          { title: { $regex: search, $options: "i" } },
+          { description: { $regex: search, $options: "i" } },
+          { "category.title": { $regex: search, $options: "i" } },
+        ],
+      };
+
+      // If category is also specified, combine the queries
+      if (category && category !== "All Products") {
+        query = {
+          $and: [query, { "category.title": category }],
+        };
+      }
+    } else if (category && category !== "All Products") {
       query = { "category.title": category };
     }
 

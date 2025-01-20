@@ -21,7 +21,7 @@ const AuthProvider = ({ children, session: initialSession }) => {
 
     intervalId = setInterval(() => {
       checkSession();
-    }, 1000);
+    }, 2000);
 
     return () => clearInterval(intervalId);
     // if (!currentSession?.user?._id) checkSession();

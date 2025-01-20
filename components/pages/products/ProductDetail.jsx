@@ -17,10 +17,12 @@ import SkeletonLoader from "./components/SkeletonLoader";
 import TheStories from "./components/TheStories";
 import WriteReview from "./components/WriteReview";
 import ReactCountUp from "@/components/ui/countUp";
+import { certificationsData } from "@/constants/data";
 
 const ProductDetail = ({ productSku }) => {
   const { data: session } = useSession();
   const [product, setProduct] = useState(null);
+  console.log(product);
   const [loading, setLoading] = useState(true);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [hasOrdered, setHasOrdered] = useState(false);
@@ -67,13 +69,9 @@ const ProductDetail = ({ productSku }) => {
     checkOrderHistory();
   }, [session?.user?._id, product?._id]);
 
-  if (loading) {
-    return <SkeletonLoader />;
-  }
+  if (loading) return <SkeletonLoader />;
 
-  if (!product) {
-    return <div>Product not found</div>;
-  }
+  if (!product) return <div>Product not found</div>;
 
   return (
     <>
@@ -98,7 +96,7 @@ const ProductDetail = ({ productSku }) => {
           category={product?.category?.title}
           currentProductId={product?._id}
         />
-        <ProductDiscover sku={productSku} />
+        <ProductDiscover productData={product} />
         <Ingredient
           sku={productSku}
           productTitle={product?.title}
@@ -149,8 +147,8 @@ const ProductDetail = ({ productSku }) => {
           />
         </motion.div>
         <FrequentlyAskedQuestions faqs={product?.faqs} />
-        {hasOrdered && <WriteReview productId={product._id} />}
-        <CustomerReviews productId={product._id} />
+        {hasOrdered && <WriteReview productId={product?._id} />}
+        <CustomerReviews productId={product?._id} />
       </section>
     </>
   );
@@ -183,6 +181,25 @@ export const ImageGallery = ({ images }) => {
       setShowScrollDown(false);
     }
   };
+  const scrollLeft = () => {
+    if (scrollPosition > 0) {
+      setScrollPosition(scrollPosition - 1);
+      setShowScrollDown(true);
+    }
+    if (scrollPosition <= 1) {
+      setShowScrollUp(false);
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollPosition < images.length - 2) {
+      setScrollPosition + 1;
+      setShowScrollUp(true);
+    }
+    if (scrollPosition >= images.length - 5) {
+      setShowScrollDown(false);
+    }
+  };
 
   useEffect(() => {
     setActiveImage(images[0]);
@@ -195,48 +212,16 @@ export const ImageGallery = ({ images }) => {
     <>
       <div
         id="image-section"
-        className="relative lg:sticky top-28 z-10 w-full h-fit space-y-4 overflow-hidden"
+        className="relative lg:sticky lg:top-28 z-10 w-full min-h-[500px] lg:h-fit space-y-4 overflow-hidden"
       >
         <div
           id="images-gallery"
-          className="w-full h-fit lg:h-[65vh] flex gap-4 select-none overflow-hidden"
+          className="w-full min-h-[500px] lg:h-[65vh] flex flex-col lg:flex-row gap-4 select-none"
         >
-          <div id="images" className="w-[20%] h-full relative overflow-hidden">
-            <Button
-              type="button"
-              onClick={scrollUp}
-              disabled={!showScrollUp}
-              className="absolute top-0 left-0 z-10 w-full h-fit text-black bg-gray-200 hover:bg-gray-300 rounded-none p-0 transition-colors"
-            >
-              ▲
-            </Button>
-            <div className="h-full overflow-y-hidden mt-6">
-              {images.map((image, index) => (
-                <Image
-                  key={index}
-                  src={image}
-                  alt={`image ${index + 1}`}
-                  width={200}
-                  height={200}
-                  className={`w-full h-auto cursor-pointer transition-all mb-2 ${
-                    activeImage === image &&
-                    "border-2 border-primary-clr shadow-xl"
-                  }`}
-                  onClick={() => setActiveImage(image)}
-                  style={{ transform: `translateY(-${scrollPosition * 100}%)` }}
-                />
-              ))}
-            </div>
-            <Button
-              type="button"
-              onClick={scrollDown}
-              disabled={!showScrollDown}
-              className="absolute bottom-0 left-0 z-10 w-full h-fit text-black bg-gray-200 hover:bg-gray-300 rounded-none p-0 transition-colors"
-            >
-              ▼
-            </Button>
-          </div>
-          <div id="active-image" className="w-[80%] h-[400px] relative">
+          <div
+            id="active-image"
+            className="w-full lg:w-[80%] h-[400px] lg:h-full relative order-1 lg:order-2"
+          >
             {images.map((image, index) => (
               <Image
                 key={index}
@@ -249,10 +234,77 @@ export const ImageGallery = ({ images }) => {
               />
             ))}
           </div>
+          <div
+            id="images"
+            className="relative w-full lg:w-[20%] h-24 lg:h-full overflow-hidden order-2 lg:order-1 mb-4 lg:mb-0 overflow-x-hidden lg:overflow-y-hidden"
+          >
+            <Button
+              id="scroll-left"
+              type="button"
+              onClick={scrollLeft}
+              disabled={!showScrollUp}
+              className="lg:hidden absolute top-0 left-0 z-10 h-full lg:h-fit w-8 lg:w-full text-black bg-gray-200 hover:bg-gray-300 rounded-none p-0 transition-colors"
+            >
+              <span className="-rotate-90">▲</span>
+            </Button>
+            <Button
+              id="scroll-up"
+              type="button"
+              onClick={scrollUp}
+              disabled={!showScrollUp}
+              className="hidden lg:block absolute top-0 left-0 z-10 h-full lg:h-fit w-8 lg:w-full text-black bg-gray-200 hover:bg-gray-300 rounded-none p-0 transition-colors"
+            >
+              <span>▲</span>
+            </Button>
+            <div className="h-full w-full lg:mt-6 px-8 lg:px-0 overflow-x-scroll overflow-y-hidden lg:overflow-x-hidden lg:overflow-y-scroll">
+              <div
+                className="flex lg:flex-col gap-2 h-full"
+                style={{
+                  transform: `translate${
+                    window.innerWidth >= 1024 ? "Y" : "X"
+                  }(-${scrollPosition * 100}%)`,
+                }}
+              >
+                {images.map((image, index) => (
+                  <Image
+                    key={index}
+                    src={image}
+                    alt={`image ${index + 1}`}
+                    width={200}
+                    height={200}
+                    className={`h-full w-auto lg:w-full lg:h-auto cursor-pointer transition-all ${
+                      activeImage === image &&
+                      "border-2 border-primary-clr shadow-xl"
+                    }`}
+                    onClick={() => setActiveImage(image)}
+                  />
+                ))}
+              </div>
+            </div>
+            <Button
+              id="scroll-right"
+              type="button"
+              onClick={scrollRight}
+              disabled={!showScrollDown}
+              className="lg:hidden absolute top-0 right-0 z-10 h-full lg:h-fit w-8 lg:w-full text-black bg-gray-200 hover:bg-gray-300 rounded-none p-0 transition-colors"
+            >
+              <span className="-rotate-90">▼</span>
+            </Button>
+            <Button
+              id="scroll-right"
+              type="button"
+              onClick={scrollDown}
+              disabled={!showScrollDown}
+              className="hidden lg:block absolute bottom-0 left-0 z-10 h-full lg:h-fit w-8 lg:w-full text-black bg-gray-200 hover:bg-gray-300 rounded-none p-0 transition-colors"
+            >
+              <span>▼</span>
+            </Button>
+          </div>
         </div>
+
         <div
           id="certified-by-logos"
-          className="w-full h-16 lg:h-20 flex-center flex-wrap gap-6 bg-[#F9F6F0] rounded-lg py-2 px-4 md:px-6 lg:px-8 overflow-hidden"
+          className="w-full h-16 lg:h-20 flex-center flex-wrap gap-6 bg-[#F9F6F0] rounded-lg py-2 px-4 md:px-6 lg:px-8 mb-4 lg:mb-0"
         >
           <i className="w-fit font-semibold font-serif text-primary-clr overflow-hidden">
             Certified By
@@ -264,18 +316,17 @@ export const ImageGallery = ({ images }) => {
               scrollbarWidth: "none",
             }}
           >
-            {["/c1.png", "/c2.png", "/c3.png", "/c4.png", "/c5.png"].map(
-              (c, index) => (
-                <Image
-                  key={index}
-                  src={c}
-                  alt={`certificate ${index + 1}`}
-                  width={100}
-                  height={100}
-                  className="w-fit h-full"
-                />
-              )
-            )}
+            {certificationsData.map((c, index) => (
+              <Image
+                key={index}
+                src={c.img}
+                alt={c.alt}
+                title={c.alt}
+                width={100}
+                height={100}
+                className="w-fit h-full"
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -376,7 +427,10 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
               lable: "Free Shipping On Orders Above ₹999",
             },
           ].map((s, index) => (
-            <div key={index} className="flex-center flex-col gap-2 text-center">
+            <div
+              key={index}
+              className="flex items-center flex-col gap-2 text-center"
+            >
               <Image
                 src={s.img}
                 alt={s.lable}
@@ -405,7 +459,9 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
                       height={400}
                       className="w-fit h-fit"
                     />
-                    <span className="text-balance text-center text-xm sm:text-sm ">{benefit}</span>
+                    <span className="text-balance text-center text-xm sm:text-sm ">
+                      {benefit}
+                    </span>
                   </div>
                 </div>
               ))}

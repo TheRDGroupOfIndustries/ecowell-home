@@ -1,19 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { reverseSlug } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { CiFilter } from "react-icons/ci";
-import { CgSortAz } from "react-icons/cg";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import ProductCard from "../../ui/productCard";
+import ProductCard from "@/components/ui/productCard";
 import { useNotification } from "@/context/NotificationProvider";
-import { reverseSlug } from "@/lib/utils";
+import { CgSortAz } from "react-icons/cg";
+import { CiFilter } from "react-icons/ci";
 
-const Products = ({ category }) => {
+const Products = ({ category, search }) => {
   const { pt } = useNotification();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState(["All Products"]);
@@ -36,6 +36,7 @@ const Products = ({ category }) => {
         setLoading(true);
         const params = new URLSearchParams();
         if (activeCategory) params.append("category", activeCategory);
+        if (search) params.append("search", search);
         if (sort) params.append("sort", sort);
         params.append("page", pagination.currentPage.toString());
         params.append("limit", "12");
@@ -53,7 +54,7 @@ const Products = ({ category }) => {
     };
 
     fetchProducts();
-  }, [activeCategory, sort, pagination.currentPage]);
+  }, [activeCategory, sort, pagination.currentPage, search]);
 
   const handleSort = (value) => {
     setSort(value);

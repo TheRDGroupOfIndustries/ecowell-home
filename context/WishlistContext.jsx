@@ -2,15 +2,17 @@
 
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { useCart } from './CartProvider';
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useCart } from "./CartProvider";
 
 const WishlistContext = createContext();
 
 export function WishlistProvider({ children }) {
   const [wishlistProducts, setWishlistProducts] = useState([]);
   const { data: session } = useSession();
+  const userId = session?.user?._id;
+
   const router = useRouter();
   const { addToCart: cartAddToCart } = useCart();
 
@@ -33,6 +35,10 @@ export function WishlistProvider({ children }) {
   };
 
   const addToWishlist = async (productId) => {
+    if (!userId) {
+      router.push("/auth/sign-in");
+      return;
+    }
     try {
       const response = await fetch("/api/account/wishlist", {
         method: "POST",
@@ -48,6 +54,10 @@ export function WishlistProvider({ children }) {
   };
 
   const removeFromWishlist = async (productId) => {
+    if (!userId) {
+      router.push("/auth/sign-in");
+      return;
+    }
     try {
       const response = await fetch("/api/account/wishlist", {
         method: "DELETE",
@@ -63,22 +73,33 @@ export function WishlistProvider({ children }) {
   };
 
   const isInWishlist = (productId) => {
-    return wishlistProducts.some(product => product._id === productId);
+    return wishlistProducts.some((product) => product._id === productId);
   };
 
   const addAllToCart = async (products) => {
+    if (!userId) {
+      router.push("/auth/sign-in");
+      return;
+    }
     for (const product of products) {
       if (!product.inCart) {
         await cartAddToCart(product, 1, product.variants[0]);
       }
     }
-    router.push('/account/cart');
-    toast.success('All available items added to cart!');
+    router.push("/account/cart");
+    toast.success("All available items added to cart!");
   };
 
   return (
     <WishlistContext.Provider
-      value={{ wishlistProducts, addToWishlist, removeFromWishlist, isInWishlist, addAllToCart, cartAddToCart }}
+      value={{
+        wishlistProducts,
+        addToWishlist,
+        removeFromWishlist,
+        isInWishlist,
+        addAllToCart,
+        cartAddToCart,
+      }}
     >
       {children}
     </WishlistContext.Provider>

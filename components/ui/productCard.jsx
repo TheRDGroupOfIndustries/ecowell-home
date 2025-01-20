@@ -40,7 +40,7 @@ const ProductCard = ({ product, loading = false }) => {
           : "bg-white hover:bg-[#BDC3C7] ease-in-out duration-300"
       } overflow-hidden`}
     >
-      <Link href={`/products/${product?.sku}`}>
+      <Link href={`/products/${product?.sku}`} target="_blank">
         <div className="w-full aspect-square relative bg-gray-200 overflow-hidden">
           {!loading && product?.discount && product?.discount > 0 ? (
             <div className="absolute top-0 left-0 z-[5] bg-primary-clr text-white text-xs font-bold px-2 py-1 rounded-tr-lg">

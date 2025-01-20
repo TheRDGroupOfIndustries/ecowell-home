@@ -6,6 +6,9 @@ import {
   Youtube,
 } from "lucide-react";
 import { CiLocationOn, CiMail, CiPhone } from "react-icons/ci";
+import { GiDna2, GiHoneycomb } from "react-icons/gi";
+import { SiThunderstore } from "react-icons/si";
+import { TbDeviceLandlinePhone } from "react-icons/tb";
 
 export const emailRegex =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -20,9 +23,9 @@ export const contactNumber = "7065937377";
 
 export const links = [
   { id: 1, head: "Home", herf: "/" },
-  { id: 1, head: "Products", herf: "/products" },
-  { id: 1, head: "About Us", herf: "/about-us" },
-  { id: 1, head: "Contact", herf: "/#contact-us" },
+  { id: 2, head: "Products", herf: "/products" },
+  { id: 3, head: "About Us", herf: "/about-us" },
+  { id: 4, head: "Contact", herf: "/#contact-us" },
 ];
 
 export const footerData = {
@@ -126,6 +129,13 @@ export const footerData = {
     ],
   },
 };
+
+export const trendingSearchData = [
+  { icon: <GiDna2 size={20} />, text: "Protein" },
+  { icon: <GiHoneycomb size={20} />, text: "Collagen" },
+  { icon: <SiThunderstore size={20} />, text: "Stamina" },
+  { icon: <TbDeviceLandlinePhone size={20} />, text: "Diabetic" },
+];
 
 // bento grid section data
 export const features = [

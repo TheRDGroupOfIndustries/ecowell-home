@@ -1,5 +1,5 @@
 import Hero from "./sections/Hero";
-import Trending from "./sections/Trending";
+import TrendingSearches from "./sections/TrendingSearches";
 import ShopCategory from "./sections/ShopCategory";
 import SpecialOffers from "./sections/products/SpecialOffers";
 import WhyChooseUs from "./sections/WhyChooseUs";
@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Trending />
+      <TrendingSearches />
       <ShopCategory />
       <SpecialOffers />
       <WhyChooseUs />

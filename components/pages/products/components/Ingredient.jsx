@@ -1,34 +1,10 @@
 "use client";
 
-// import React, { useState, useEffect } from "react";
 import { fadeIn, staggerContainer } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-// const fetchProductData = async (sku) => {
-//   try {
-//     const response = await fetch(`/api/products/${sku}`);
-//     if (!response.ok) {
-//       throw new Error("Failed to fetch product");
-//     }
-//     return await response.json();
-//   } catch (error) {
-//     console.error("Error fetching product:", error);
-//     return null;
-//   }
-// };
-
-const Ingredient = ({ sku, productTitle, productIngredientHighlights }) => {
-  // const [productData, setProductData] = useState(null);
-
-  // useEffect(() => {
-  //   const loadProductData = async () => {
-  //     const data = await fetchProductData(sku);
-  //     setProductData(data);
-  //   };
-  //   loadProductData();
-  // }, [sku]);
-
+const Ingredient = ({ productTitle, productIngredientHighlights }) => {
   return (
     <motion.div
       variants={staggerContainer(0.1, 0.1)}
@@ -38,9 +14,13 @@ const Ingredient = ({ sku, productTitle, productIngredientHighlights }) => {
       className="w-full pt-10"
     >
       <div className="w-full relative pr-4 overflow-hidden">
-        <div className=" h-[150px] w-full border-1"></div>
-        <div className="h-[60px] md:h-[100px] w-full border border-dashed border-black border-l-0"></div>
-        <div className="flex flex-row w-[95%] items-center justify-between absolute bottom-[80px] left-0 ml-5">
+        {/* {productIngredientHighlights.length > 0 && ( */}
+        <>
+          <div className="h-[150px] w-full border-1"></div>
+          <div className="h-[60px] md:h-[100px] w-full border border-dashed border-black border-l-0"></div>
+        </>
+        {/*  )} */}
+        <div className="w-[95%] flex flex-row items-center justify-between absolute bottom-[80px] left-0 ml-5">
           <div className="w-fit bg-white">
             <motion.div className="flex flex-col w-full h-full text-dark_jungle_green">
               <motion.h1
@@ -53,7 +33,7 @@ const Ingredient = ({ sku, productTitle, productIngredientHighlights }) => {
                 variants={fadeIn("down", 0.2)}
                 className="text-xl md:text-5xl font-medium"
               >
-                The <span className="italic">Secret</span> inside
+                The <span className="italic font-serif">Secret</span> inside
               </motion.h1>
             </motion.div>
           </div>
@@ -73,8 +53,9 @@ const Ingredient = ({ sku, productTitle, productIngredientHighlights }) => {
           </div>
         </div>
       </div>
+      {/** Ingredient Cards */}
+      {/* {productIngredientHighlights.length > 0 && ( */}
       <div className="w-full h-[240px] md:h-[340px] grid grid-cols-3 gap-0">
-        {/** Ingredient Cards */}
         {[
           productIngredientHighlights[0] || 1,
           productIngredientHighlights[1] || 2,
@@ -99,9 +80,9 @@ const Ingredient = ({ sku, productTitle, productIngredientHighlights }) => {
                 className="w-full h-full object-cover"
               />
             </motion.div>
-            <div className="absolute top-[40px] self-center w-[80%] h-[100px] border bg-[#F9F6F0] leading-3 p-2 text-dark_jungle_green overflow-hidden">
+            <div className="absolute top-[40px] self-center w-[80%] min-h-[100px] border bg-[#F9F6F0] leading-3 p-2 text-dark_jungle_green overflow-hidden">
               <h1 className="text-sm md:text-xl font-semibold mt-1">
-                {ingredient.name || `[Ingredient ${ingredient}]`}:
+                {ingredient.name || `Ingredient ${ingredient}`}:
               </h1>
               <p className="text-xs md:text-base">
                 {ingredient.description ||
@@ -116,6 +97,7 @@ const Ingredient = ({ sku, productTitle, productIngredientHighlights }) => {
           </motion.div>
         ))}
       </div>
+      {/* )} */}
       <div className="w-full h-fit flex-center p-4 py-8 md:p-6 md:py-12 lg:py-16">
         <p className="w-full md:max-w-3xl lg:max-w-2xl xl:max-w-xl text-xl md:text-2xl lg:text-3xl text-primary-clr text-center">
           Every scoop (or capsule) is packed with the perfect balance of nature

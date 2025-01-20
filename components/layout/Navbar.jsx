@@ -93,7 +93,7 @@ const Navbar = ({ companyName }) => {
       variants={staggerContainer()}
       initial="hidden"
       animate="show"
-      className="fixed top-0 left-0 right-0 w-screen z-40 backdrop-blur-md "
+      className="fixed top-0 left-0 right-0 w-screen z-40 backdrop-blur-md"
     >
       {isNotificationOpen && <Notification />}
       <div className="w-full flex justify-between items-center  px-3 py-0 sm:px-4 sm:py-2 md:px-8 md:py-4">
@@ -147,7 +147,7 @@ const Navbar = ({ companyName }) => {
                       <CiHeart
                         size={20}
                         className={`hover:text-gray-700 size-[30px] md:size-[20px] ${
-                          isHomeScrolled ? "text-black" : "text-white"
+                          isHomeScrolled ? "text-black" : "text-black"
                         } ease-in-out duration-300`}
                       />
                       {wishlistProducts.length > 0 && (

@@ -1,40 +1,17 @@
 "use client";
+
 import { fadeIn, staggerContainer } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
 
-const fetchProductData = async (sku) => {
-  try {
-    const response = await fetch(`/api/products/${sku}`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch product");
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    return null;
-  }
-};
-
-export default function ProductDiscover({ sku, productName }) {
-  const [productData, setProductData] = useState(null);
-
-  useEffect(() => {
-    const loadProductData = async () => {
-      const data = await fetchProductData(sku);
-      setProductData(data);
-    };
-    loadProductData();
-  }, [sku]);
-
+export default function ProductDiscover({ productData, productName }) {
   return (
     <motion.div
       variants={staggerContainer}
       initial="hidden"
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
-      className="relative aspect-auto max-w-[1920px] h-[550px] sm:h-[750px] md:h-[800px] lg:h-[1050px]"
+      className="relative aspect-auto max-w-[1920px] h-[550px] sm:h-[750px] md:h-[800px] lg:h-[1050px] overflow-hidden"
     >
       {/* Top Section */}
       <motion.div
@@ -74,7 +51,7 @@ export default function ProductDiscover({ sku, productName }) {
               className="text-xs sm:text-base md:text-lg lg:text-xl mt-2 max-w-[250px] sm:max-w-[300px] md:max-w-[400px] lg:max-w-[500px] text-charcoal_black font-semibold"
             >
               {productData?.heroBanner?.description ||
-                "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil deserunt id quod ducimus consequatur rem sunt cum, dolorum fugiat sit quasi fuga quo doloribus laboriosam dolores unde, adipisci ullam vero?"}
+                "Discover our premium protein supplements, crafted with high-quality ingredients to support your fitness journey and overall wellness goals."}
             </motion.p>
           </div>
         </div>
@@ -84,7 +61,7 @@ export default function ProductDiscover({ sku, productName }) {
       <div className="absolute left-0 right-4 md:right-8 bottom-1 flex flex-row">
         <div className="w-full h-[330px] sm:h-[400px] md:h-[500px] lg:h-[600px] flex flex-row items-end bg-transparent pl-3 sm:pl-5 ms:pl-8 lg:pl-10">
           <motion.div
-            variants={fadeIn("left", 0.7, 1)}
+            variants={fadeIn("right", 0.7, 1)}
             className="max-w-[600px] mt-auto text-wrap overflow-hidden"
           >
             <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl text-wrap text-dark_jungle_green font-semibold">
@@ -92,12 +69,12 @@ export default function ProductDiscover({ sku, productName }) {
             </h1>
             <p className="line-clamp-5 md:line-clamp-none text-xs sm:text-base md:text-lg text-wrap mt-2 max-w-[500px] text-charcoal_black font-semibold">
               {productData?.dailyRitual?.description ||
-                "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil deserunt id quod ducimus consequatur rem sunt cum, dolorum fugiat sit quasi fuga quo doloribus laboriosam dolores unde, adipisci ullam vero?"}
+                "Transform your fitness routine with our protein supplements. Whether you're an athlete, fitness enthusiast, or just starting your wellness journey, our products are designed to help you achieve optimal nutrition and performance. Mix with your favorite beverage post-workout or anytime for a nutritious boost."}
             </p>
           </motion.div>
         </div>
         <motion.div
-          variants={fadeIn("right", 0.8, 1)}
+          variants={fadeIn("left", 0.8, 1)}
           className="w-[490px] md:w-[590px] lg:w-[680px] rounded-2xl h-[330px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden bg-pink-200 relative"
         >
           <Image
@@ -111,7 +88,6 @@ export default function ProductDiscover({ sku, productName }) {
             className="h-full w-full object-cover object-center rounded-2xl border-8 border-white"
           />
         </motion.div>
-
       </div>
     </motion.div>
   );
