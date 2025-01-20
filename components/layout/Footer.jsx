@@ -31,7 +31,9 @@ export default function Footer() {
               <div
                 key={index}
                 className={`${
-                  index === 2 ? "lg:border-r-2 border-[#333333] lg:pr-8 col-span-2 md:col-span-1" : ""
+                  index === 2
+                    ? "lg:border-r-2 border-[#333333] lg:pr-8 col-span-2 md:col-span-1"
+                    : ""
                 }  `}
               >
                 <h3 className="font-semibold text-center sm:text-start mb-4 border-b-2 border-[#333333] pb-2">
@@ -42,6 +44,7 @@ export default function Footer() {
                     <li className="mt-2" key={idx}>
                       <Link
                         href={item.href || "#"}
+                        target="_blank"
                         className="w-fit flex items-start gap-2 group  "
                       >
                         {item.icon}
@@ -59,12 +62,14 @@ export default function Footer() {
           {/* Company Info Section */}
           <div className="lg:col-span-4">
             <div className="mb-6">
-              <Image
-                src={footerData.companyInfo.logo}
-                alt={footerData.companyInfo.name}
-                width={200}
-                height={200}
-              />
+              <Link href="/">
+                <Image
+                  src={footerData.companyInfo.logo}
+                  alt={footerData.companyInfo.name}
+                  width={200}
+                  height={200}
+                />
+              </Link>
             </div>
             <p className="mb-8 text-lg">{footerData.companyInfo.description}</p>
             {/* Social Media Icons */}
@@ -73,6 +78,7 @@ export default function Footer() {
                 <Link
                   key={index}
                   href={social.href}
+                  target="_blank"
                   className="bg-primary-clr p-2 rounded-lg hover:opacity-90"
                 >
                   <social.icon className="w-6 h-6 text-white" />
@@ -90,7 +96,11 @@ export default function Footer() {
           rights reserved. |{" "}
           {footerData.copyright.links.map((link, index) => (
             <span key={index}>
-              <Link href={link.href} className="hover:underline">
+              <Link
+                href={link.href}
+                target="_blank"
+                className="hover-link-underline"
+              >
                 {link.label}
               </Link>
               {index < footerData.copyright.links.length - 1 && " | "}

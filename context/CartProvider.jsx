@@ -21,6 +21,7 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [fetchRetryCount, setFetchRetryCount] = useState(0); // Add this line
 
   const [userOrderList, setUserOrderList] = useState([]);
   const [placingOrder, setPlacingOrder] = useState(false);
@@ -30,6 +31,8 @@ export const CartProvider = ({ children }) => {
 
   const fetchCart = useCallback(async () => {
     if (!userId) return;
+    if (fetchRetryCount >= 2) return; // Add this line
+
     try {
       const response = await fetch(`/api/products/cart/get/${userId}`, {
         method: "GET",
@@ -46,33 +49,36 @@ export const CartProvider = ({ children }) => {
       // }
     } catch (error) {
       console.error("Error fetching cart:", error);
+    } finally {
+      setFetchRetryCount((prev) => prev + 1); // Add this line
     }
-  }, [userId]);
+  }, [userId, fetchRetryCount]); // Add fetchRetryCount to dependencies
 
   const addToCart = async (product, quantity, variant) => {
-    // console.log("add to cart variant", product, quantity, variant);
+    // console.log("add to cart variant", product, quantity, variant, userId);
     if (!userId) {
       router.push("/auth/sign-in");
       return;
     }
 
+    setFetchRetryCount(0); // Reset count at the start
+
+    const selectedVariant = {
+      flavor: variant?.flavor,
+      image_link: variant?.images[0],
+      stock: variant?.stock,
+    };
+
+    const newCartItemData = {
+      userId,
+      productId: product?._id,
+      variant: selectedVariant,
+      quantity,
+    };
+    // console.log("new Cart Item Data", newCartItemData, selectedVariant);
+
     try {
       setAddToCartLoading(true);
-
-      const selectedVariant = {
-        flavor: variant.flavor,
-        image_link: variant.images[0],
-        stock: variant.stock,
-      };
-
-      const newCartItemData = {
-        userId,
-        productId: product._id,
-        variant: selectedVariant,
-        quantity,
-      };
-
-      // console.log("new Cart Item Data", newCartItemData);
 
       const response = await fetch("/api/products/cart/create", {
         method: "POST",
@@ -86,6 +92,7 @@ export const CartProvider = ({ children }) => {
         // console.log("cartTotal: ", data?.updatedCart, data?.updatedCart?.items);
 
         if (data.status === 200) {
+          setFetchRetryCount(0);
           fetchCart();
           // setCartItems(data?.updatedCart?.items || []);
           // setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
@@ -113,6 +120,7 @@ export const CartProvider = ({ children }) => {
       return;
     }
 
+    setFetchRetryCount(0); // Reset count at the start
     setRemoveFromCartLoading(true);
     try {
       const response = await fetch("/api/products/cart/delete", {
@@ -133,6 +141,7 @@ export const CartProvider = ({ children }) => {
         // setCartItems(data?.updatedCart?.items || []);
         // setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
         // setTotalPrice(data?.updatedCart?.totalPrice || 0);
+        setFetchRetryCount(0);
         fetchCart();
 
         // console.log("cartTotal: ", data?.updatedCart?.items || []);
@@ -159,6 +168,7 @@ export const CartProvider = ({ children }) => {
       return;
     }
 
+    setFetchRetryCount(0); // Reset count at the start
     try {
       setUpdateCartLoading(true);
       const selectedVariant = {
@@ -198,6 +208,7 @@ export const CartProvider = ({ children }) => {
         // setCartItems(data?.updatedCart?.items || []);
         // setTotalQuantity(data?.updatedCart?.totalQuantity || 0);
         // setTotalPrice(data?.updatedCart?.totalPrice || 0);
+        setFetchRetryCount(0);
         fetchCart();
 
         toast.success(data?.message || "Product quantity updated!");

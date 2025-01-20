@@ -62,7 +62,7 @@ export default function AddToCartmodel({ loading, product }) {
 
 const Modal = ({ product }) => {
   const [imageTwoError, setImageTwoError] = useState(false);
-  const [variantCheck, setVariantCheck] = useState(product?.variants[0].flavor);
+  const [variantCheck, setVariantCheck] = useState(product?.variants[0]);
   //   console.log("variantCheck", variantCheck);
 
   const [quantity, setQuantity] = useState(1);
@@ -140,9 +140,9 @@ const Modal = ({ product }) => {
                   type="button"
                   key={index}
                   variant="ghost"
-                  onClick={() => setVariantCheck(variant.flavor)}
+                  onClick={() => setVariantCheck(variant)}
                   className={`px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600 border border-gray-400 aria-label="Decrease quantity ${
-                    variant.flavor === variantCheck &&
+                    variant.flavor === variantCheck.flavor &&
                     "bg-primary-clr text-white"
                   }`}
                 >
@@ -210,7 +210,11 @@ const Modal = ({ product }) => {
                   <LuLoaderCircle className="animate-spin" />
                 )}
               </Button>
-              <Link href={`/products/${product?.sku}`} className="w-full h-fit">
+              <Link
+                href={`/products/${product?.sku}`}
+                target="_blank"
+                className="w-full h-fit"
+              >
                 <Button
                   type="button"
                   size="sm"

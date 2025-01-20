@@ -115,17 +115,24 @@ const Navbar = ({ companyName }) => {
           variants={fadeIn("down", 0.3)}
           className=" space-x-4 hidden md:flex"
         >
-          {links.map((link, index) => (
-            <Link
-              key={index}
-              href={link.herf}
-              className={`hover:text-gray-700 text-lg text-bold ${
-                isHomeScrolled ? "text-black" : "text-black"
-              } ease-in-out duration-300`}
-            >
-              {link.head}
-            </Link>
-          ))}
+          {links.map((link, index) => {
+            const isActive = pathname === link.herf;
+            return (
+              <Link
+                key={index}
+                href={link.herf}
+                className={`hover:text-gray-700 text-lg text-bold ${
+                  isHomeScrolled ? "text-black" : "text-black"
+                } ${
+                  isActive
+                    ? "underline underline-offset-8"
+                    : "hover-link-underline"
+                } ease-in-out duration-300`}
+              >
+                {link.head}
+              </Link>
+            );
+          })}
         </motion.div>
         <motion.div variants={fadeIn("down", 0.4)} className="flex space-x-4">
           <NavigationMenu>
@@ -172,7 +179,7 @@ const Navbar = ({ companyName }) => {
                         <CiShoppingCart
                           size={20}
                           className={`hover:text-gray-700 ${
-                            isHomeScrolled ? "text-black" : "text-white"
+                            isHomeScrolled ? "text-black" : "text-black"
                           } ease-in-out duration-300 hidden sm:block size-[30px] md:size-[20px]`}
                         />
                       </div>
@@ -241,7 +248,7 @@ const Navbar = ({ companyName }) => {
                     <CiUser
                       size={20}
                       className={`hover:text-gray-700 ${
-                        isHomeScrolled ? "text-black" : "text-white"
+                        isHomeScrolled ? "text-black" : "text-black"
                       } ease-in-out duration-300 cursor-pointer size-[30px] md:size-[20px] hidden sm:block`}
                       onClick={handleUserIconClick}
                     />
@@ -286,7 +293,7 @@ const Navbar = ({ companyName }) => {
                   <List
                     size={20}
                     className={`hover:text-gray-700 ${
-                      isHomeScrolled ? "text-black" : "text-white"
+                      isHomeScrolled ? "text-black" : "text-black"
                     } ease-in-out duration-300 cursor-pointer size-[25px] md:size-[20px]`}
                   />
                 </SheetTrigger>
@@ -467,7 +474,7 @@ export function Search({
         <CiSearch
           size={20}
           className={`hover:text-gray-700 size-[30px] md:size-[20px] cursor-default ${
-            isHomeScrolled ? "text-black" : "text-white"
+            isHomeScrolled ? "text-black" : "text-black"
           } ease-in-out duration-300`}
           onClick={() => setOpen(true)}
         />

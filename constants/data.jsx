@@ -94,6 +94,7 @@ export const footerData = {
           },
           {
             type: "address",
+            href: "https://maps.app.goo.gl/2axEXGdAZiWrEHLD6",
             content:
               "19, Park Lane, Church road, Vasant Kunj, New Delhi-110070",
             icon: (

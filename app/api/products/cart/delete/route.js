@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { revalidatePath } from 'next/cache';
+import { revalidatePath } from "next/cache";
 import connectToMongoDB from "@/utils/db";
 import Cart from "@/models/Cart";
 
@@ -26,7 +26,8 @@ export async function DELETE(request) {
       return NextResponse.json({ error: "Cart item not found", status: 404 });
     }
 
-    const productName = cartItem.variant.flavor;
+    const productName = cartItem?.productId?.title;
+    const productVariantFlavor = cartItem.variant.flavor;
 
     // Remove cart item
     cart.items.pull(cartItemId);
@@ -60,7 +61,7 @@ export async function DELETE(request) {
 
     revalidatePath(request.url);
     return NextResponse.json({
-      message: `Cart ${productName} deleted successfully`,
+      message: `Removed ${productName} of variant ${productVariantFlavor} from your cart!`,
       status: 200,
       updatedCart,
     });
