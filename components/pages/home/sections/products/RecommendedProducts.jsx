@@ -32,8 +32,8 @@ const RecommendedProducts = () => {
     fetchProducts();
   }, []);
 
-  if(!loading && products.length === 0){
-    return null
+  if (!loading && products.length === 0) {
+    return null;
   }
 
   return (

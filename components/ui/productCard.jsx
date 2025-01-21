@@ -3,8 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Star } from "lucide-react";
-import { Button } from "./button";
-import { useCart } from "@/context/CartProvider";
 import Link from "next/link";
 import AddToCartmodel from "./addToCartmodel";
 import { CiHeart } from "react-icons/ci";
@@ -12,7 +10,6 @@ import { useWishlist } from "@/context/WishlistContext";
 import { AiFillHeart } from "react-icons/ai";
 
 const ProductCard = ({ product, loading = false }) => {
-  const { addToCart } = useCart();
   const { wishlistProducts, addToWishlist, removeFromWishlist } = useWishlist();
 
   const [imageError, setImageError] = useState(false);

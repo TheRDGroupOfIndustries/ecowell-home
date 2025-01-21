@@ -403,20 +403,22 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
             </div>
           ))}
         </div>
-        <div className="flex flex-wrap gap-3">
-          {product?.variants.map((variant, index) => (
-            <div
-              key={index}
-              className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer ${
-                selectedVariant.flavor === variant.flavor &&
-                "bg-primary-clr text-white"
-              }`}
-              onClick={() => handleVariantChange(variant)}
-            >
-              {variant.flavor.toUpperCase()}
-            </div>
-          ))}
-        </div>
+        {!product?.isSingleVariantProduct && (
+          <div className="flex flex-wrap gap-3">
+            {product?.variants.map((variant, index) => (
+              <div
+                key={index}
+                className={`text-sm text-primary-clr border border-gray-300 p-1 px-3 cursor-pointer ${
+                  selectedVariant.flavor === variant.flavor &&
+                  "bg-primary-clr text-white"
+                }`}
+                onClick={() => handleVariantChange(variant)}
+              >
+                {variant.flavor.toUpperCase()}
+              </div>
+            ))}
+          </div>
+        )}
         <hr className="border border-gray-300" />
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 overflow-hidden">
           {[

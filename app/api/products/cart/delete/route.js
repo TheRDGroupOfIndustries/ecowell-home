@@ -59,9 +59,13 @@ export async function DELETE(request) {
 
     // console.log(updatedCart);
 
+    const message =
+      productVariantFlavor === "none"
+        ? `Removed ${productName} from your cart!`
+        : `Removed ${productName} of variant ${productVariantFlavor} from your cart!`;
     revalidatePath(request.url);
     return NextResponse.json({
-      message: `Removed ${productName} of variant ${productVariantFlavor} from your cart!`,
+      message: message,
       status: 200,
       updatedCart,
     });

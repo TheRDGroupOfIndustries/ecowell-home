@@ -61,6 +61,8 @@ export default function AddToCartmodel({ loading, product }) {
 }
 
 const Modal = ({ product }) => {
+  // console.log("product", product);
+
   const [imageTwoError, setImageTwoError] = useState(false);
   const [variantCheck, setVariantCheck] = useState(product?.variants[0]);
   //   console.log("variantCheck", variantCheck);
@@ -132,25 +134,27 @@ const Modal = ({ product }) => {
             </div>
           </div>
 
-          <div className="mb-4">
-            <h3 className="font-semibold mb-2">variants</h3>
-            <div className="flex max-w-[200px] items-center  h-9 ">
-              {product.variants.map((variant, index) => (
-                <Button
-                  type="button"
-                  key={index}
-                  variant="ghost"
-                  onClick={() => setVariantCheck(variant)}
-                  className={`px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600 border border-gray-400 aria-label="Decrease quantity ${
-                    variant.flavor === variantCheck.flavor &&
-                    "bg-primary-clr text-white"
-                  }`}
-                >
-                  {variant.flavor}
-                </Button>
-              ))}
+          {!product?.isSingleVariantProduct && (
+            <div className="mb-4">
+              <h3 className="font-semibold mb-2">variants</h3>
+              <div className="flex max-w-[200px] items-center  h-9 ">
+                {product.variants.map((variant, index) => (
+                  <Button
+                    type="button"
+                    key={index}
+                    variant="ghost"
+                    onClick={() => setVariantCheck(variant)}
+                    className={`px-4 py-2 text-xl hover:bg-transparent font-medium text-gray-600 border border-gray-400 aria-label="Decrease quantity ${
+                      variant.flavor === variantCheck.flavor &&
+                      "bg-primary-clr text-white"
+                    }`}
+                  >
+                    {variant.flavor}
+                  </Button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Quantity Selector */}
 

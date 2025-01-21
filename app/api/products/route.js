@@ -83,6 +83,7 @@ export async function GET(request) {
               variants: { $slice: ["$variants", 1] },
               ratings: 1,
               reviews_number: 1,
+              isSingleVariantProduct: 1,
             },
           },
         ])
@@ -103,6 +104,7 @@ export async function GET(request) {
             variants: { $slice: 1 },
             ratings: 1,
             reviews_number: 1,
+            isSingleVariantProduct: 1,
           });
 
     const [products, totalCount] = await Promise.all([

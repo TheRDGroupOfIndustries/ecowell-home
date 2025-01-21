@@ -105,8 +105,9 @@ export function FrequentlyBoughtTogether() {
                   price: `₹${product.salePrice || product.price}`,
                   oldPrice: product.salePrice ? `₹${product.price}` : undefined,
                   image: product.variants[0]?.images[0] || "/placeholder.png",
-                  hoverImage:
-                    product.variants[0]?.images[1] || "/placeholder.png",
+                  hoverImage: product.variants[0]?.images[1]
+                    ? product.variants[0]?.images[1]
+                    : product.variants[0]?.images[0] || "/placeholder.png",
                 }}
                 isSelected={selectedProducts.has(product._id)}
                 onToggle={() => toggleProduct(product._id)}

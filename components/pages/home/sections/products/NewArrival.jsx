@@ -21,6 +21,7 @@ const NewArrival = () => {
 
         const response = await fetch(`/api/products?${params}`);
         const data = await response.json();
+
         setProducts(data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -32,8 +33,8 @@ const NewArrival = () => {
     fetchProducts();
   }, []);
 
-  if(!loading && products.length === 0){
-    return null
+  if (!loading && products.length === 0) {
+    return null;
   }
   return (
     <motion.div

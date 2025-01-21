@@ -17,10 +17,10 @@ const FaqSchema = new Schema({
 });
 
 const AdditionalInfoSchema = new Schema({
-  manufacturedBy: { type: String, required: true },
-  countryOfOrigin: { type: String, required: true },
-  phone: { type: String, required: true },
-  email: { type: String, required: true },
+  manufacturedBy: { type: String, required: true, default: "Ecowell" },
+  countryOfOrigin: { type: String, required: true, default: "India" },
+  phone: { type: String, required: true, default: "7065937377" },
+  email: { type: String, required: true, default: "contact@ecowellonline.com" },
 });
 
 // new feilds schema
@@ -58,8 +58,8 @@ const ProductSchema = new Schema(
     salePrice: { type: Number, required: true },
     discount: { type: Number, required: false },
     sell_on_google_quantity: { type: Number, required: true },
+    isSingleVariantProduct: { type: Boolean, required: true, default: false },
     variants: [VariantSchema],
-    // bestBefore: { type: Date, required: true },
     directions: { type: [String], required: true },
     ingredients: { type: [String], required: true },
     benefits: { type: [String], required: true },
@@ -68,11 +68,9 @@ const ProductSchema = new Schema(
     ratings: { type: Number, default: 0 },
     reviews_number: { type: Number, default: 0 },
 
-    // New fields based on the images
-    // productFeatures: [{
-    //   title: { type: String, required: true },
-    //   icon: { type: String, required: true }
-    // }],
+    bestBefore: { type: Date, required: true },
+
+    // new fields
     heroBanner: HeroBannerSchema,
     dailyRitual: DailyRitualSchema,
     ingredientHighlights: [IngredientHighlightSchema],

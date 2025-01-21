@@ -85,7 +85,7 @@ const Products = ({ category, search }) => {
           Filter
         </Button>
       </div>
-      <div className="flex-between space-x-4 overflow-x-auto mt-4 text-lg text-primary-clr border-b-2 border-primary-clr pb-4">
+      <div className="flex space-x-4 overflow-x-auto mt-4 text-lg text-primary-clr border-b-2 border-primary-clr pb-4">
         {Array.isArray(categories) &&
           categories.map((category) => (
             <button

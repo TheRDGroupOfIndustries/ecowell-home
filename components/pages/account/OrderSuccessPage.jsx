@@ -1,18 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { CheckCircle2, ImageIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import Link from "next/link";
+import Image from "next/image";
 import Loader from "@/components/ui/loader";
 import ReactCountUp from "@/components/ui/countUp";
 import { formatDateString, getDeliveryDate } from "@/lib/utils";
-import Link from "next/link";
-import Image from "next/image";
+import { Check, CheckCircle2, Copy, ImageIcon } from "lucide-react";
 
 const OrderSuccess = ({ orderId }) => {
   const { data: session } = useSession();
   const user = session?.user;
   const [orderDetails, setOrderDetails] = useState(null);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopyOrderId = async () => {
+    try {
+      await navigator.clipboard.writeText(orderId);
+      setIsCopied(true);
+      toast.success("Order ID copied to clipboard");
+
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 3000);
+    } catch (error) {
+      toast.error("Failed to copy order ID");
+      console.error("Failed to copy:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -45,7 +62,18 @@ const OrderSuccess = ({ orderId }) => {
             <p className="text-gray-400 w-[90%] sm:w-full">
               Payment is successfully processed and your order is on the way
             </p>
-            <p className="text-gray-400 text-nowrap font-semibold">Order ID: {orderId}</p>
+            <p className="text-gray-400 text-nowrap font-semibold flex items-center gap-2">
+              Order ID: {orderId}
+              {isCopied ? (
+                <Check size={16} className="text-green-500" />
+              ) : (
+                <Copy
+                  size={16}
+                  className="cursor-pointer hover:text-gray-600 transition-colors"
+                  onClick={handleCopyOrderId}
+                />
+              )}
+            </p>
           </div>
         </div>
         {!orderDetails ? (
@@ -74,7 +102,7 @@ const OrderSuccess = ({ orderId }) => {
                 <div className="w-full grid grid-cols-2">
                   <div className="w-full flex flex-col gap-1">
                     <h5 className="text-base font-semibold">Summary</h5>
-                    <p className="text-base">order ID: {orderId}</p>
+                    <p className="text-base">Order ID: {orderId}</p>
                     <p className="text-base">
                       Order Date:{" "}
                       {formatDateString(orderDetails?.order_info?.order_date)}
@@ -176,7 +204,9 @@ const ProductNode = (productDetails) => {
             <h5 className="text-base font-semibold">
               {productDetail?.product_id?.title}
             </h5>
-            <p className="text-base">{productDetail?.variant_flavor}</p>
+            {productDetail?.variant_flavor !== "none" && (
+              <p className="text-base">{productDetail?.variant_flavor}</p>
+            )}
           </div>
 
           <div className="w-full flex flex-col gap-1">

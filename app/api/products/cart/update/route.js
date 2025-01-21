@@ -26,7 +26,9 @@ export async function PUT(request) {
       return NextResponse.json({ error: "Cart item not found", status: 404 });
     }
 
-    console.log("cart item", cartItem);
+    const productName = cartItem?.productId?.title;
+    const productVariantFlavor = cartItem?.variant?.flavor;
+    // console.log("cart item", cartItem);
 
     let message = "";
 
@@ -40,13 +42,20 @@ export async function PUT(request) {
           });
         }
         cartItem.quantity += 1;
-        message = `Quantity for "${cartItem.variant.flavor}" incremented successfully.`;
+        message =
+          productVariantFlavor === "none"
+            ? `Quantity for "${productName}" incremented successfully.`
+            : `Quantity for "${productVariantFlavor}" incremented successfully.`;
         break;
 
       case "decrement-quantity":
         if (cartItem.quantity > 1) {
           cartItem.quantity -= 1;
-          message = `Quantity for "${cartItem.variant.flavor}" decremented successfully.`;
+          productVariantFlavor === "none"
+            ? `Quantity for "${productName}" decremented successfully.`
+            : `Quantity for "${productVariantFlavor}" decremented successfully.`;
+
+          // message = `Quantity for "${cartItem.variant.flavor}" decremented successfully.`;
         } else {
           return NextResponse.json({
             error: "Quantity cannot be less than 1",

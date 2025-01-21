@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import Loader from "@/components/ui/loader";
 import ReactCountUp from "@/components/ui/countUp";
+import { Check, Copy } from "lucide-react";
 
 const MyOrders = () => {
   const { data: session } = useSession();
@@ -60,9 +61,21 @@ const MyOrders = () => {
 
   const handleTabChange = (tab) => setActiveTab(tab);
 
-  const handleCopy = (orderId) => {
-    navigator.clipboard.writeText(orderId);
-    toast.success("Copied Order ID!");
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopyOrderId = async (orderId) => {
+    try {
+      await navigator.clipboard.writeText(orderId);
+      setIsCopied(true);
+      toast.success("Order ID copied to clipboard");
+
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 3000);
+    } catch (error) {
+      toast.error("Failed to copy order ID");
+      console.error("Failed to copy:", error);
+    }
   };
 
   const filteredOrders =
@@ -192,19 +205,30 @@ const MyOrders = () => {
                     </AccordionTrigger>
                     <AccordionContent className="p-4 bg-gray-50">
                       <div className="mb-2 flex-between gap-4">
-                        <p>
+                        <p className="flex-center gap-1.5">
                           <span className="text-green-700 font-bold">
                             Order ID:
                           </span>{" "}
-                          {order.order_info.order_id}
-                          <button
+                          <span className="flex-center gap-3">
+                            {order.order_info.order_id}
+                            {isCopied ? (
+                              <Check size={16} className="text-green-500" />
+                            ) : (
+                              <Copy
+                                size={16}
+                                className="cursor-pointer hover:text-gray-600 transition-colors"
+                                onClick={handleCopyOrderId}
+                              />
+                            )}
+                          </span>
+                          {/* <button
                             className="ml-2 text-blue-500 underline"
                             onClick={() =>
-                              handleCopy(order.order_info.order_id)
+                              handleCopyOrderId(order.order_info.order_id)
                             }
                           >
                             copy
-                          </button>
+                          </button> */}
                         </p>
                         {order.order_info.status === "pending" && (
                           <Button
@@ -219,7 +243,7 @@ const MyOrders = () => {
                           </Button>
                         )}
                       </div>
-                      <h5 className="font-semibold">Products:</h5>
+                      <h5 className="font-semibold mb-2">Products:</h5>
                       <ul>
                         {order.products.map((product) => (
                           <OrderItem
@@ -241,7 +265,7 @@ const MyOrders = () => {
         )}
       </div>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
+        <DialogContent className="w-fit h-fit max-h-[80%]">
           <DialogHeader>
             <DialogTitle>Confirm Cancellation</DialogTitle>
             <DialogDescription>
@@ -289,7 +313,9 @@ const OrderItem = ({ product }) => {
         >
           {product?.product_id?.title}
         </Link>
-        <p className="text-sm">Flavor: {product?.variant_flavor}</p>
+        {product?.variant_flavor !== "none" && (
+          <p className="text-sm">Flavor: {product?.variant_flavor}</p>
+        )}
         <p className="text-sm">
           Quantity: <ReactCountUp amt={product?.quantity} duration={1.5} />
         </p>
