@@ -17,11 +17,19 @@ const SpecialOffers = () => {
         const params = new URLSearchParams();
         params.append("page", "1");
         params.append("limit", "4");
-        params.append("sort", "random-products");
 
-        const response = await fetch(`/api/products?${params}`);
+        const response = await fetch(
+          `/api/products/special-offer-products?${params}`
+        );
         const data = await response.json();
-        setProducts(data.products);
+        console.log("Special Offers:", data);
+
+        const specialOfferProductArray =
+          data?.specialOfferProducts?.map((item) => item.product) || [];
+
+        // console.log("Special Offers:", specialOfferProductArray);
+
+        setProducts(specialOfferProductArray);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -33,7 +41,7 @@ const SpecialOffers = () => {
   }, []);
 
   if (!loading && products.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -53,24 +61,24 @@ const SpecialOffers = () => {
       <div className="w-full grid md:flex grid-cols-2  items-center justify-center gap-3 md:gap-6">
         {!loading
           ? products?.map((product, index) => (
-            <motion.div
-              key={index}
-              variants={fadeIn("up", 0.3 + index * 0.1)}
-            >
-              <ProductCard product={product} />
-            </motion.div>
-          ))
+              <motion.div
+                key={index}
+                variants={fadeIn("up", 0.3 + index * 0.1)}
+              >
+                <ProductCard product={product} />
+              </motion.div>
+            ))
           : Array.from({ length: 4 }, (_, index) => (
-            <motion.div
-              key={index}
-              variants={fadeIn("up", 0.3 + index * 0.1)}
-            >
-              <ProductCard
-                loading={loading}
-                product={specialOfferProducts[index]}
-              />
-            </motion.div>
-          ))}
+              <motion.div
+                key={index}
+                variants={fadeIn("up", 0.3 + index * 0.1)}
+              >
+                <ProductCard
+                  loading={loading}
+                  product={specialOfferProducts[index]}
+                />
+              </motion.div>
+            ))}
       </div>
 
       {/* <div className="w-full flex flex-wrap items-center justify-center gap-6">
