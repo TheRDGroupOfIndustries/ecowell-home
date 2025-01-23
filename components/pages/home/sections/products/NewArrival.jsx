@@ -15,14 +15,21 @@ const NewArrival = () => {
       // setLoading(true);
       try {
         const params = new URLSearchParams();
-        params.append("sort", "newest");
         params.append("page", "1");
         params.append("limit", "4");
 
-        const response = await fetch(`/api/products?${params}`);
+        const response = await fetch(
+          `/api/products/new-arrival-products?${params}`
+        );
         const data = await response.json();
+        // console.log("New arrival api:", data);
 
-        setProducts(data.products);
+        const newArrivalProductArray =
+          data?.newArrivalProducts?.map((item) => item.product) || [];
+
+        // console.log("New arrival products:", newArrivalProductArray);
+
+        setProducts(newArrivalProductArray);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {

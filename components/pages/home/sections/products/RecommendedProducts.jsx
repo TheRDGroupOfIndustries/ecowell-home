@@ -17,11 +17,19 @@ const RecommendedProducts = () => {
         const params = new URLSearchParams();
         params.append("page", "1");
         params.append("limit", "4");
-        params.append("sort", "random-products");
 
-        const response = await fetch(`/api/products?${params}`);
+        const response = await fetch(
+          `/api/products/recommended-products?${params}`
+        );
         const data = await response.json();
-        setProducts(data.products);
+        // console.log("Recommended api:", data);
+
+        const recommendedProductArray =
+          data?.recommendedProducts?.map((item) => item.product) || [];
+
+        // console.log("Recommended products:", recommendedProductArray);
+
+        setProducts(recommendedProductArray);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
