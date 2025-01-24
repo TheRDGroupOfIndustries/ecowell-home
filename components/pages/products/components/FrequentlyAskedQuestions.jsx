@@ -39,12 +39,12 @@ export default function FrequentlyAskedQuestions({ faqs }) {
               <motion.div key={index} variants={fadeIn("up", 0.2, 0.8 * index)}>
                 <AccordionItem
                   value={`item-${index}`}
-                  className="border-2 border-[#4b5d6b94] rounded-xl p-2"
+                  className="border-2 border-[#4b5d6b94] rounded-xl p-2 md:px-4 lg:px-6"
                 >
                   <AccordionTrigger className="text-primary-clr text-lg md:text-xl focus:no-underline">
                     {faq?.question}
                   </AccordionTrigger>
-                  <AccordionContent className="md:text-lg">
+                  <AccordionContent className="md:text-md lg:text-lg text-gray-700 font-light">
                     {faq?.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -52,7 +52,7 @@ export default function FrequentlyAskedQuestions({ faqs }) {
             ))}
           </Accordion>
         ) : (
-          <div className="text-center text-lg md:text-xl text-primary-clr font-medium p-4">
+          <div className="text-center text-lg md:text-xl text-primary-clr font-medium p-4 md:py-6 lg:py-8 xl:py-10">
             No FAQs available at the moment.
           </div>
         )}

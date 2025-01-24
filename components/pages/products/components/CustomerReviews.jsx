@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Star, StarHalf } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Star, StarHalf } from "lucide-react";
 import Image from "next/image";
 
 function CustomerReviews({ productId }) {
@@ -15,13 +15,13 @@ function CustomerReviews({ productId }) {
       try {
         const response = await fetch(`/api/products/reviews/${productId}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch reviews');
+          throw new Error("Failed to fetch reviews");
         }
         const data = await response.json();
         setReviews(data);
-        
+
         // Extract common words from reviews
-        const words = data.reviews.flatMap(review => 
+        const words = data.reviews.flatMap((review) =>
           review.review_descr.toLowerCase().split(/\s+/)
         );
         const wordCounts = words.reduce((acc, word) => {
@@ -34,7 +34,7 @@ function CustomerReviews({ productId }) {
           .map(([word]) => word);
         setCommonTags(sortedWords);
       } catch (error) {
-        console.error('Error fetching reviews:', error);
+        console.error("Error fetching reviews:", error);
       } finally {
         setLoading(false);
       }
@@ -44,7 +44,7 @@ function CustomerReviews({ productId }) {
   }, [productId]);
 
   const filteredReviews = selectedTag
-    ? reviews.reviews.filter(review => 
+    ? reviews.reviews.filter((review) =>
         review.review_descr.toLowerCase().includes(selectedTag.toLowerCase())
       )
     : reviews?.reviews;
@@ -54,18 +54,24 @@ function CustomerReviews({ productId }) {
   }
 
   if (!reviews || reviews.reviews.length === 0) {
-    return <div className='flex justify-center'>No reviews available for this product.</div>;
+    return (
+      <div className="flex-center p-4 md:py-6 lg:py-8 xl:py-10">
+        No reviews available for this product.
+      </div>
+    );
   }
 
   const totalRatings = reviews.reviews.length;
-  const averageRating = reviews.reviews.reduce((acc, review) => acc + review.rating, 0) / totalRatings;
+  const averageRating =
+    reviews.reviews.reduce((acc, review) => acc + review.rating, 0) /
+    totalRatings;
   const ratingDistribution = reviews.reviews.reduce((acc, review) => {
     acc[review.rating] = (acc[review.rating] || 0) + 1;
     return acc;
   }, {});
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen">
       <div className="w-full md:w-[80%] mx-auto px-4 py-12">
         <h1 className="text-3xl text-center font-bold text-gray-900 mb-8">
           Customer Reviews
@@ -79,7 +85,11 @@ function CustomerReviews({ productId }) {
             />
           </div>
 
-          <CommonTags tags={commonTags} selectedTag={selectedTag} setSelectedTag={setSelectedTag} />
+          <CommonTags
+            tags={commonTags}
+            selectedTag={selectedTag}
+            setSelectedTag={setSelectedTag}
+          />
         </div>
 
         <div className="lg:col-span-7">
@@ -119,7 +129,9 @@ function RatingStats({ totalRatings, averageRating, ratingDistribution }) {
                 />
               ))}
             </div>
-            <span className="text-xl font-bold">{averageRating.toFixed(1)}</span>
+            <span className="text-xl font-bold">
+              {averageRating.toFixed(1)}
+            </span>
           </div>
         </div>
       </div>
@@ -138,7 +150,9 @@ function RatingStats({ totalRatings, averageRating, ratingDistribution }) {
                   />
                 </div>
               </div>
-              <div className="w-12 text-sm text-gray-600">{((count / totalRatings) * 100).toFixed(0)}%</div>
+              <div className="w-12 text-sm text-gray-600">
+                {((count / totalRatings) * 100).toFixed(0)}%
+              </div>
             </div>
           ))}
       </div>
@@ -146,7 +160,14 @@ function RatingStats({ totalRatings, averageRating, ratingDistribution }) {
   );
 }
 
-function CustomerReview({ author, rating, timeAgo, content, verified, profileImage }) {
+function CustomerReview({
+  author,
+  rating,
+  timeAgo,
+  content,
+  verified,
+  profileImage,
+}) {
   return (
     <div className="border-b border-gray-100 py-6">
       <div className="flex items-center gap-4">
@@ -192,9 +213,7 @@ function CustomerReview({ author, rating, timeAgo, content, verified, profileIma
 function CommonTags({ tags, selectedTag, setSelectedTag }) {
   return (
     <div className="mt-8">
-      <h3 className="text-lg font-medium text-gray-900 mb-4">
-        Common Tags
-      </h3>
+      <h3 className="text-lg font-medium text-gray-900 mb-4">Common Tags</h3>
       <div className="flex flex-wrap gap-2">
         {tags.map((tag) => (
           <button
@@ -202,8 +221,8 @@ function CommonTags({ tags, selectedTag, setSelectedTag }) {
             onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
             className={`inline-flex items-center px-4 py-3 text-sm ${
               selectedTag === tag
-                ? 'bg-primary-clr text-white'
-                : 'bg-gray-100 text-gray-800'
+                ? "bg-primary-clr text-white"
+                : "bg-gray-100 text-gray-800"
             }`}
           >
             {tag}

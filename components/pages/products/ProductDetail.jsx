@@ -75,14 +75,14 @@ const ProductDetail = ({ productSku }) => {
 
   return (
     <>
-      <section className="w-full h-full md:pt-28">
+      <section className="w-full h-full md:pt-24">
         <AddToCartBtn product={product} selectedVariant={selectedVariant} />
 
         <motion.div
           initial={{ opacity: 0, y: -150 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-6 lg:gap-8 p-4 md:px-8 lg:px-10 xl:px-14"
+          className="w-full h-full grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 md:gap-8 lg:gap-10 xl:gap-12 2xl:gap-14 p-4 md:px-8 lg:px-10 xl:px-14 overflow-hidden"
         >
           <ImageGallery images={selectedVariant?.images} />
           <Details

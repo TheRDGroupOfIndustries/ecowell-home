@@ -1,13 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useAnimationControls } from "framer-motion";
 import { fadeIn, staggerContainer } from "@/lib/utils";
 
+const useWindowSize = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  return isMobile;
+};
+
 const VoiceOfWellness = () => {
-  // Add testimonials data
-  const testimonials = [
+  const isMobile = useWindowSize();
+  const testimonialsData = [
     {
       id: 1,
       name: "John Smith",
@@ -61,21 +76,20 @@ const VoiceOfWellness = () => {
 
   const paginate = (newDirection) => {
     const newPage = page + newDirection;
-    if (newPage >= 0 && newPage < testimonials.length) {
+    if (newPage >= 0 && newPage < testimonialsData.length) {
       setPage([newPage, newDirection]);
     }
   };
 
   return (
     <motion.div
-      className="bg-[#E7E9EB] py-20 h-[813px] xs:h-[652px]  w-full relative overflow-hidden"
+      className="bg-[#E7E9EB] py-20 h-[813px] xs:h-[650px]  w-full relative overflow-hidden"
       variants={staggerContainer(0.1, 0.1)}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.25 }}
     >
       {/* Right gradient overlay */}
-      <div className="absolute right-0 top-0 w-20 md:w-60 h-full bg-gradient-to-l from-[#E7E9EB] to-transparent z-10" />
       <div className="max-w-4xl mx-auto px-4">
         {/* Header Section */}
         <motion.div
@@ -93,15 +107,17 @@ const VoiceOfWellness = () => {
         </motion.div>
 
         {/* Testimonials Section */}
-        <div className="relative h-[300px]">
-          {testimonials.map((testimonial, index) => (
+        <div className="relative h-[250px] w-full">
+          {testimonialsData.map((testimonial, index) => (
             <motion.div
               key={testimonial.id}
               initial={false}
               animate={{
                 x:
                   index === page
-                    ? "20%"
+                    ? isMobile
+                      ? "5%"
+                      : "10%"
                     : index < page
                     ? `-${(page - index) * 100}px`
                     : "200%",
@@ -111,12 +127,13 @@ const VoiceOfWellness = () => {
                     : index < page
                     ? 40 + (page - index) * 25
                     : -10,
-                scale: index === page ? 1 : 0.8,
+                scale:
+                  index === page ? (isMobile ? 0.75 : 1) : isMobile ? 0.6 : 0.8,
                 opacity:
                   index === page
                     ? 1
                     : Math.max(0, 1 - Math.abs(index - page) * 0.3),
-                zIndex: testimonials.length - Math.abs(index - page),
+                zIndex: testimonialsData.length - Math.abs(index - page),
                 rotateY: index === page ? 0 : index < page ? 15 : -15,
               }}
               drag="x"
@@ -134,15 +151,15 @@ const VoiceOfWellness = () => {
             </motion.div>
           ))}
 
-          {/* Navigation Buttons */}
-          <div className="absolute bottom-[-60px] -right-10 transform -translate-x-1/2 flex justify-center gap-4 z-20">
+          {/* navigation arrow buttons */}
+          <div className="absolute z-20 -bottom-32 md:-bottom-24 -right-10 transform -translate-x-1/2 flex justify-center gap-4">
             <button
               onClick={() => paginate(-1)}
               disabled={page === 0}
               className={`w-10 h-10 select-none rounded-full ${
                 page === 0
                   ? "bg-gray-300"
-                  : page === testimonials.length - 1
+                  : page === testimonialsData.length - 1
                   ? "bg-secondary-clr hover:bg-yellow-600 text-white"
                   : "bg-gray-200 hover:bg-secondary-clr hover:text-white text-secondary-clr"
               } flex items-center justify-center transition-colors z-50`}
@@ -151,9 +168,9 @@ const VoiceOfWellness = () => {
             </button>
             <button
               onClick={() => paginate(1)}
-              disabled={page === testimonials.length - 1}
+              disabled={page === testimonialsData.length - 1}
               className={`w-10 h-10 rounded-full ${
-                page === testimonials.length - 1
+                page === testimonialsData.length - 1
                   ? "bg-gray-300"
                   : "bg-secondary-clr hover:bg-yellow-600"
               } text-white flex items-center justify-center transition-colors z-50`}
@@ -163,6 +180,7 @@ const VoiceOfWellness = () => {
           </div>
         </div>
       </div>
+      <div className="absolute right-0 top-0 w-20 md:w-60 h-full bg-gradient-to-l from-[#E7E9EB] to-transparent z-10" />
     </motion.div>
   );
 };

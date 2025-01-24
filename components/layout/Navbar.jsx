@@ -487,6 +487,7 @@ export function Search({
           <DialogTitle className="text-left mb-2">Search Products</DialogTitle>
           <div className="relative">
             <Input
+              type="search"
               placeholder="Search for products..."
               value={searchQuery}
               onChange={handleSearchChange}

@@ -57,7 +57,8 @@ const ShopCategory = () => {
                   <SkeletonCard />
                 </motion.div>
               ))
-          : categories.slice(0, 4).map((category, index) => (
+          : categories?.length &&
+            categories?.slice(0, 4).map((category, index) => (
               <motion.div
                 key={index}
                 variants={fadeIn("up", 0.3 + index * 0.1)}
@@ -83,7 +84,7 @@ const CategoryCard = ({ category }) => {
     <Link
       href={{
         pathname: "/products",
-        query: { category: category.slug },
+        query: { category: category?.slug },
       }}
     >
       <div className="w-full h-[220px] sm:h-[300px] relative group rounded-3xl [perspective:1000px] hover:translate-x-2 hover:translate-y-4 transition-all duration-500 overflow-hidden">
@@ -94,8 +95,8 @@ const CategoryCard = ({ category }) => {
         ></div>
         <div className="w-full h-full relative flex-center flex-col p-4 overflow-hidden">
           <Image
-            src={category.image_link}
-            alt={category.title}
+            src={category?.image_link}
+            alt={category?.title}
             width={400}
             height={400}
             className="w-full sm:h-full object-contain mb-4 scale-95 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 overflow-hidden"
