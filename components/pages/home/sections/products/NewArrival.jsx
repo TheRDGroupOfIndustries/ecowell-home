@@ -43,6 +43,8 @@ const NewArrival = () => {
   if (!loading && products.length === 0) {
     return null;
   }
+  console.log("New arrival products:", products);
+
   return (
     <motion.div
       variants={staggerContainer(0.1, 0.1)}
@@ -59,14 +61,17 @@ const NewArrival = () => {
       </motion.h2>
       <div className="w-full grid md:flex grid-cols-2  items-center justify-center gap-3 md:gap-6">
         {!loading
-          ? products?.map((product, index) => (
-              <motion.div
-                key={index}
-                variants={fadeIn("up", 0.3 + index * 0.1)}
-              >
-                <ProductCard product={product} />
-              </motion.div>
-            ))
+          ? products?.map(
+              (product, index) =>
+                product && (
+                  <motion.div
+                    key={index}
+                    variants={fadeIn("up", 0.3 + index * 0.1)}
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
+                )
+            )
           : Array.from({ length: 4 }, (_, index) => (
               <motion.div
                 key={index}
