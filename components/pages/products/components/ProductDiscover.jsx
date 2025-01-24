@@ -58,11 +58,11 @@ export default function ProductDiscover({ productData }) {
       </motion.div>
 
       {/* Bottom Section */}
-      <div className="absolute left-0 right-4 md:right-8 bottom-1 flex flex-row">
-        <div className="w-full h-[330px] sm:h-[400px] md:h-[500px] lg:h-[600px] flex flex-row items-end bg-transparent pl-3 sm:pl-5 ms:pl-8 lg:pl-10">
+      <div className="absolute left-0 right-4 md:right-8 bottom-0 flex flex-row">
+        <div className="w-full h-[330px] sm:h-[400px] md:h-[500px] lg:h-[600px] flex flex-row items-center bg-transparent px-3 sm:px-5 ms:px-8 lg:px-10">
           <motion.div
             variants={fadeIn("right", 0.7, 1)}
-            className="max-w-[600px] mt-auto text-wrap overflow-hidden"
+            className="max-w-[600px] mt-aut text-wrap overflow-hidden"
           >
             <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl text-wrap text-dark_jungle_green font-semibold">
               {productData?.dailyRitual?.title || "Your New Daily Ritual"}
