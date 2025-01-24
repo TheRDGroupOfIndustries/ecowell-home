@@ -75,7 +75,7 @@ export default function ProductDiscover({ productData }) {
         </div>
         <motion.div
           variants={fadeIn("left", 0.8, 1)}
-          className="w-[490px] md:w-[590px] lg:w-[680px] rounded-2xl h-[330px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden bg-pink-200 relative"
+          className="w-[490px] md:w-[590px] lg:w-[680px] rounded-2xl h-[330px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden bg-gray-200 relative"
         >
           <Image
             src={

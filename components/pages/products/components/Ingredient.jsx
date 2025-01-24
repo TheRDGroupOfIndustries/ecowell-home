@@ -98,7 +98,7 @@ const Ingredient = ({ productTitle, productIngredientHighlights }) => {
         ))}
       </div>
       {/* )} */}
-      <div className="w-full h-fit flex-center p-4 py-8 md:p-6 md:py-12 lg:py-16">
+      <div className="w-full h-fit flex-center p-4 py-8 md:p-6 md:py-26 lg:py-20 xl:py-24">
         <p className="w-full md:max-w-3xl lg:max-w-2xl xl:max-w-xl text-xl md:text-2xl lg:text-3xl text-primary-clr text-center">
           Every scoop (or capsule) is packed with the perfect balance of nature
           and science, ensuring you get{" "}
