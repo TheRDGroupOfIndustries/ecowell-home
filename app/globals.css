@@ -179,6 +179,23 @@ body {
   clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
 }
 
+.hex {
+  @apply w-[85px] sm:w-4/5 xl:w-[85px] h-[90px] xl:h-[93px] 2xl:w-[100px] 2xl:h-[103px] relative transition-all duration-300 ease-out md:w-[90px] md:h-[93px] lg:w-20 lg:h-[83px] flex-center bg-primary-clr;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  /* clip-path: path(
+    "M68.75 3.18579C71.3799 1.66741 74.6201 1.66741 77.25 3.18579L139.996 39.4123C142.626 40.9307 144.246 43.7367 144.246 46.7735V119.227C144.246 122.263 142.626 125.069 139.996 126.588L77.25 162.814C74.6201 164.333 71.3799 164.333 68.75 162.814L6.00387 126.588C3.37396 125.069 1.75387 122.263 1.75387 119.226V46.7735C1.75387 43.7367 3.37396 40.9307 6.00387 39.4123L68.75 3.18579Z"
+  ); */
+}
+
+.hex2 {
+  @apply w-[calc(100%-4px)] h-[calc(100%-4px)] bg-white transition-colors duration-300 ease-out;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.hex:hover .hex2 {
+  @apply bg-primary-clr;
+}
+
 .customBtn {
   &:focus {
     box-shadow: none;

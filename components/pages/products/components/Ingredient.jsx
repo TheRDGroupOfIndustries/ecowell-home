@@ -17,7 +17,7 @@ const Ingredient = ({ productTitle, productIngredientHighlights }) => {
         {/* {productIngredientHighlights.length > 0 && ( */}
         <>
           <div className="h-[150px] w-full border-1"></div>
-          <div className="h-[60px] md:h-[100px] w-full border border-dashed border-black border-l-0"></div>
+          <div className="h-[60px] md:h-[100px] w-full border-2 border-dashed border-black border-l-0"></div>
         </>
         {/*  )} */}
         <div className="w-[95%] flex flex-row items-center justify-between absolute bottom-[80px] left-0 ml-5">
@@ -81,7 +81,10 @@ const Ingredient = ({ productTitle, productIngredientHighlights }) => {
               />
             </motion.div>
             <div className="absolute top-[40px] self-center w-[80%] min-h-[100px] border bg-[#F9F6F0] leading-3 p-2 text-dark_jungle_green overflow-hidden">
-              <h1 className="text-sm md:text-xl font-semibold mt-1">
+              <div className="absolute top-0.5 left-0 right-0 w-full h-2 flex-center overflow-hidden">
+                <div className="w-2 h-2 bg-black rounded-full"></div>
+              </div>
+              <h1 className="text-sm md:text-xl font-semibold font-serif mt-1">
                 {ingredient.name || `Ingredient ${ingredient}`}:
               </h1>
               <p className="text-xs md:text-base">

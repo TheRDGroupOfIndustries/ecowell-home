@@ -5,27 +5,32 @@ const features = [
   {
     title: "Chemical Free",
     description: "Made without harmful chemicals",
-    link: "/hex1.png",
+    icon: "/assets/harmless/iconOne.svg",
+    hoverIcon: "/assets/harmless/iconOneHover.svg",
   },
   {
     title: "Well Certified",
     description: "Meets highest standards",
-    link: "/hex2.png",
+    icon: "/assets/harmless/iconTwo.svg",
+    hoverIcon: "/assets/harmless/iconTwoHover.svg",
   },
   {
     title: "Safety Tested",
     description: "Thoroughly tested for safety",
-    link: "/hex3.png",
+    icon: "/assets/harmless/iconThree.svg",
+    hoverIcon: "/assets/harmless/iconThreeHover.svg",
   },
   {
     title: "No Preservatives",
     description: "Pure and natural formula",
-    link: "/hex4.png",
+    icon: "/assets/harmless/iconFour.svg",
+    hoverIcon: "/assets/harmless/iconFourHover.svg",
   },
   {
     title: "No-GMO",
     description: "100% natural ingredients",
-    link: "/hex5.png",
+    icon: "/assets/harmless/iconFive.svg",
+    hoverIcon: "/assets/harmless/iconFiveHover.svg",
   },
 ];
 
@@ -44,18 +49,34 @@ const SafetyProduct = () => {
             {features.map((feature, index) => (
               <div
                 key={feature.title}
-                className={`flex flex-col items-center  ${
-                  index % 2 === 1 ? "md:mt-[100px]" : "md:mt-[10px]"
+                className={`flex flex-col items-center h-fit  ${
+                  index % 2 === 1 ? "md:mt-[85px]" : "md:mt-[10px]"
                 } `}
               >
-                <Image
-                  src={feature.link}
-                  alt="Chemical Free"
-                  width={100}
-                  height={100}
-                  className="w-20 h-20"
-                />
-                <h3 className="text-sm font-semibold text-gray-800 text-center mb-1">
+                <div className="hex group">
+                  <div className="hex2 relative w-full h-full flex-center overflow-hidden">
+                    <div className="absolute inset-0 z-10 flex-center overflow-hidden">
+                      <Image
+                        src={feature.icon}
+                        alt={feature.title}
+                        width={100}
+                        height={100}
+                        className="w-11 h-11 object-contain group-hover:opacity-0 ease-in-out duration-300"
+                      />
+                    </div>
+                    <div className="absolute inset-0 z-0 flex-center overflow-hidden">
+                      <Image
+                        src={feature.hoverIcon}
+                        alt={feature.title}
+                        width={100}
+                        height={100}
+                        className="w-11 h-16 object-contain opacity-0 group-hover:opacity-100 ease-in-out duration-300"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <h3 className="text-sm md:text-md lg:text-lg font-semibold text-gray-800 text-center mb-1">
                   {feature.title}
                 </h3>
                 <p className="text-xs text-gray-600 text-center max-w-[120px]">
@@ -78,7 +99,7 @@ const HexagonConnector = () => {
       className="absolute left-0 right-0 w-full hidden md:block overflow-hidden"
       height="240"
       style={{
-        top: "50%",
+        top: "48%",
         transform: "translateY(-50%)",
         zIndex: 1,
         overflow: "visible",

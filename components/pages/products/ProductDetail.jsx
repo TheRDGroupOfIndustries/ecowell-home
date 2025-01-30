@@ -75,7 +75,7 @@ const ProductDetail = ({ productSku }) => {
 
   return (
     <>
-      <section className="w-full h-full md:pt-24">
+      <section className="w-full h-full pt-12 md:pt-24">
         <AddToCartBtn product={product} selectedVariant={selectedVariant} />
 
         <motion.div
@@ -161,6 +161,8 @@ export const ImageGallery = ({ images }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [showScrollUp, setShowScrollUp] = useState(false);
   const [showScrollDown, setShowScrollDown] = useState(true);
+  const [showScrollLeft, setShowScrollLeft] = useState(false);
+  const [showScrollRight, setShowScrollRight] = useState(true);
 
   const scrollUp = () => {
     if (scrollPosition > 0) {
@@ -181,23 +183,25 @@ export const ImageGallery = ({ images }) => {
       setShowScrollDown(false);
     }
   };
+
   const scrollLeft = () => {
     if (scrollPosition > 0) {
       setScrollPosition(scrollPosition - 1);
-      setShowScrollDown(true);
+      setShowScrollRight(true);
     }
     if (scrollPosition <= 1) {
-      setShowScrollUp(false);
+      setShowScrollLeft(false);
     }
   };
 
   const scrollRight = () => {
     if (scrollPosition < images.length - 2) {
-      setScrollPosition + 1;
-      setShowScrollUp(true);
+      setScrollPosition(scrollPosition + 1); // Fixed: was missing proper assignment
+      setShowScrollLeft(true);
     }
-    if (scrollPosition >= images.length - 5) {
-      setShowScrollDown(false);
+    if (scrollPosition >= images.length - 3) {
+      // Adjusted threshold
+      setShowScrollRight(false);
     }
   };
 
@@ -205,7 +209,9 @@ export const ImageGallery = ({ images }) => {
     setActiveImage(images[0]);
     setScrollPosition(0);
     setShowScrollUp(false);
-    setShowScrollDown(images.length > 4);
+    setShowScrollLeft(false);
+    setShowScrollRight(images.length > 2); // Adjusted for horizontal scroll
+    setShowScrollDown(images.length > 4); // Keep vertical scroll logic
   }, [images]);
 
   return (
@@ -220,7 +226,7 @@ export const ImageGallery = ({ images }) => {
         >
           <div
             id="active-image"
-            className="w-full lg:w-[80%] h-[400px] lg:h-full relative order-1 lg:order-2"
+            className="w-full lg:w-[80%] h-[400px] lg:h-full relative order-1 lg:order-2 overflow-hidden"
           >
             {images.map((image, index) => (
               <Image
@@ -228,7 +234,7 @@ export const ImageGallery = ({ images }) => {
                 src={image}
                 alt={`Active product image ${index + 1}`}
                 fill
-                className={`w-full h-full object-contain absolute top-0 left-0 transition-opacity duration-500 ease-in-out ${
+                className={` absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out ${
                   activeImage === image ? "opacity-100" : "opacity-0"
                 }`}
               />
@@ -242,7 +248,7 @@ export const ImageGallery = ({ images }) => {
               id="scroll-left"
               type="button"
               onClick={scrollLeft}
-              disabled={!showScrollUp}
+              disabled={!showScrollLeft}
               className="lg:hidden absolute top-0 left-0 z-10 h-full lg:h-fit w-8 lg:w-full text-black bg-gray-200 hover:bg-gray-300 rounded-none p-0 transition-colors"
             >
               <span className="-rotate-90">▲</span>
@@ -256,7 +262,7 @@ export const ImageGallery = ({ images }) => {
             >
               <span>▲</span>
             </Button>
-            <div className="h-full w-full lg:mt-6 px-8 lg:px-0 overflow-x-scroll overflow-y-hidden lg:overflow-x-hidden lg:overflow-y-scroll">
+            <div className="h-full w-full lg:mt-6 px-8 lg:px-0 overflow-x-scroll overflow-y-hidden lg:overflow-x-hidden lg:overflow-y-scroll scroll-none">
               <div
                 className="flex lg:flex-col gap-2 h-full"
                 style={{
@@ -272,7 +278,7 @@ export const ImageGallery = ({ images }) => {
                     alt={`image ${index + 1}`}
                     width={200}
                     height={200}
-                    className={`h-full w-auto lg:w-full lg:h-auto cursor-pointer transition-all ${
+                    className={`h-full w-auto lg:w-full lg:h-auto lg:max-h-32 cursor-pointer transition-all ${
                       activeImage === image &&
                       "border-2 border-primary-clr shadow-xl"
                     }`}
@@ -285,7 +291,7 @@ export const ImageGallery = ({ images }) => {
               id="scroll-right"
               type="button"
               onClick={scrollRight}
-              disabled={!showScrollDown}
+              disabled={!showScrollRight}
               className="lg:hidden absolute top-0 right-0 z-10 h-full lg:h-fit w-8 lg:w-full text-black bg-gray-200 hover:bg-gray-300 rounded-none p-0 transition-colors"
             >
               <span className="-rotate-90">▼</span>
@@ -420,7 +426,7 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
           </div>
         )}
         <hr className="border border-gray-300" />
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 overflow-hidden">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6 lg:gap-8 xl:gap-10 overflow-hidden">
           {[
             { img: "/assets/emi.png", lable: "EMI Available" },
             { img: "/assets/cod.png", lable: "Cash on Delivery Available" },
@@ -431,14 +437,14 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
           ].map((s, index) => (
             <div
               key={index}
-              className="flex items-center flex-col gap-2 text-center"
+              className="flex items-center flex-col gap-2 text-center overflow-hidden"
             >
               <Image
                 src={s.img}
                 alt={s.lable}
                 width={400}
                 height={400}
-                className="w-fit h-fit"
+                className="w-10 h-10"
               />
               <span>{s.lable}</span>
             </div>
@@ -449,19 +455,19 @@ const Details = ({ product, selectedVariant, setSelectedVariant }) => {
             <div className="text-md md:text-lg lg:text-xl xl:text-2xl">
               How this Formula supports your wellness
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 py-2 overflow-hidden">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6 py-2 overflow-hidden">
               {product?.benefits.map((benefit, index) => (
                 <div key={index} className="w-full h-full relative group">
                   <div className="absolute inset-0 z-[-1] opacity-0 group-hover:opacity-100 bg-[#FDFBF9] translate-x-1 translate-y-1 flex items-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 ease-in-out duration-300 overflow-hidden"></div>
                   <div className="relative w-full h-full bg-[#FDFBF9] flex items-center flex-col gap-1 text-center border border-secondary-clr rounded-xl p-2 px-4 md:px-6 hover:shadow-sm ease-in-out duration-300 overflow-hidden">
                     <Image
-                      src="/assets/biceps.png"
+                      src="/assets/harmless/iconThreeHover.svg"
                       alt={benefit}
                       width={400}
                       height={400}
-                      className="w-fit h-fit"
+                      className="w-7 h-7"
                     />
-                    <span className="text-balance text-center text-xm sm:text-sm ">
+                    <span className="text-balance text-center text-xm sm:text-sm md:text-base">
                       {benefit}
                     </span>
                   </div>

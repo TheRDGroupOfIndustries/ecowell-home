@@ -67,7 +67,7 @@ export default function PurposeAndTrust() {
       {/* Features */}
       <motion.div
         variants={staggerContainer}
-        className="flex items-center justify-between flex-wrap px-3"
+        className="flex items-center justify-between flex-wrap px-3 md:px-10 lg:px-20 gap-5"
       >
         {features.map((feature, index) => (
           <motion.div
